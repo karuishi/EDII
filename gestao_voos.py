@@ -41,4 +41,15 @@ def excluir_voo(voos):
         print("\nCódigo de voo não encontrado!")
 
 def editar_voo(voos):
+    codigo_voo_digitado = input("Informe o código do voo a ser editado: ")
+    dado_atualizado = input("Informe o dado a ser atualizado: ")
+    novo_valor = input("Informe o novo valor: ")
     
+    if codigo_voo_digitado in voos:
+        if dado_atualizado in voos[codigo_voo_digitado]:
+            voos[codigo_voo_digitado][dado_atualizado] = novo_valor
+            print(f"\n{dado_atualizado} editado com sucesso!")
+        else:
+            print("\nDado não encontrado!")
+    else:
+        print("\nCódigo de voo não encontrado!")
