@@ -2,11 +2,17 @@ def adicionar_voo(voos):
     codigo_voo = input("Informe o código do voo: ")
     origem_voo = input("Informe a origem do voo: ")
     destino_voo = input("Informe o destino do voo: ")
-    milhas_voo = input("Informe a quantidade de milhas percorridas durante o voo: ")
-    preco_passagem_ida = input("Informe o preço da passagem de ida: ")
-    preco_passagem_volta = input("Informe o preço da passagem de volta: ")
+
+    try:
+        milhas_voo = int(input("Informe a quantidade de milhas percorridas durante o voo: "))
+        preco_passagem_ida = float(input("Informe o preço da passagem de ida: "))
+        preco_passagem_volta = float(input("Informe o preço da passagem de volta: "))
+        total_assentos = int(input("Informe o número total de assentos da aeronave: "))
+    except ValueError:
+        print("\nValor inválido para milhas, preço ou assentos. Apenas número são permitidos.")
+        return
+    
     tipo_aeronave = input("Informe o tipo da aeronave: ")
-    total_assentos = input("Informe o número total de assentos da aeronave: ")
 
     voos[codigo_voo] = {
         "origem" : origem_voo,
@@ -19,18 +25,6 @@ def adicionar_voo(voos):
     }
     print(f"\nVoo {codigo_voo} adicionado com sucesso!")
 
-    # origem_voo_salva = voos[codigo_voo][origem_voo]
-    # destino_voo_salva = voos[codigo_voo][destino_voo]
-    # preco_ida_salva = voos[codigo_voo][preco_passagem_ida]
-    # preco_volta_salva = voos[codigo_voo][preco_passagem_volta]
-    # milhas_salva = voos[codigo_voo][milhas_voo]
-    # print(origem_voo_salva)
-    # print(destino_voo_salva)
-    # print(preco_ida_salva)
-    # print(preco_volta_salva)
-    # print(milhas_salva)
-    # print(preco_ida_salva + preco_volta_salva)
-
 def excluir_voo(voos):
     codigo_voo_digitado = input("Informe o código do voo a ser deletado: ")
 
@@ -42,14 +36,53 @@ def excluir_voo(voos):
 
 def editar_voo(voos):
     codigo_voo_digitado = input("Informe o código do voo a ser editado: ")
-    dado_atualizado = input("Informe o dado a ser atualizado: ")
-    novo_valor = input("Informe o novo valor: ")
     
-    if codigo_voo_digitado in voos:
-        if dado_atualizado in voos[codigo_voo_digitado]:
-            voos[codigo_voo_digitado][dado_atualizado] = novo_valor
-            print(f"\n{dado_atualizado} editado com sucesso!")
-        else:
-            print("\nDado não encontrado!")
-    else:
+    if codigo_voo_digitado not in voos:
         print("\nCódigo de voo não encontrado!")
+        return 
+
+    print(f"Dados do voo {codigo_voo_digitado}: {voos[codigo_voo_digitado]}\n")
+    dado_atualizado = input("Informe o campo a ser atualizado (ex: origem, destino, preco_ida): ")
+
+    if dado_atualizado in voos[codigo_voo_digitado]:
+        novo_valor = input(f"Informe o novo valor para '{dado_atualizado}': ")
+        try:
+            if dado_atualizado in ["preco_ida", "preco_volta"]:
+                voos[codigo_voo_digitado][dado_atualizado] = float(novo_valor)
+            elif dado_atualizado in ["milhas", "total_assentos"]:
+                voos[codigo_voo_digitado][dado_atualizado] = int(novo_valor)
+            else:
+                voos[codigo_voo_digitado][dado_atualizado] = novo_valor 
+            print(f"\nCampo '{dado_atualizado}' editado com sucesso!")
+        except ValueError:
+            print("\nErro: Valor inválido para um campo numérico.")
+    else:
+        print("\nCampo não encontrado!")
+
+def exibir_menu():
+    print("\n--- Menu ---")
+    print("1. Adicionar voo")
+    print("2. Excluir voo")
+    print("3. Editar voo")
+    print("4. Sair")
+
+def main():
+    voos = {}
+    while True:
+        exibir_menu()
+        escolha = input("Digite um número da sua opção: ")
+
+        if escolha == '1':
+            adicionar_voo(voos)
+        elif escolha == '2':
+            excluir_voo(voos)
+        elif escolha == '3':
+            editar_voo(voos)
+        elif escolha == '4':
+            print("\nSaindo do programa...")
+            break
+        else:
+            print("\nOpção inválida! Escolha um número de 1 a 4")     
+
+if __name__ == "__main__":
+    main()
