@@ -1,9 +1,6 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Adicionar Voo</title>
-</head>
-<body>
+{% extends "base.html" %}
+{% block title %}Adicionar Voo{% endblock %}
+{% block content %}
     <h1>Adicionar Novo Voo</h1>
     <form method="post">
         Código: <input type="text" name="codigo" required><br>
@@ -16,5 +13,4 @@
         Total de Assentos: <input type="text" name="total_assentos" required><br>
         <input type="submit" value="Adicionar Voo">
     </form>
-</body>
-</html>
+{% endblock %}

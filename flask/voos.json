@@ -16,5 +16,14 @@
         "Milhas": 1000,
         "Aeronave": "Airbus A320",
         "Total_assentos": 5
+    },
+    "ED-003": {
+        "Origem": "Bras\u00edlia",
+        "Destino": "Vit\u00f3ria",
+        "Preco_ida": 1250.0,
+        "Preco_volta": 1590.75,
+        "Milhas": 3000,
+        "Aeronave": "Boing 777",
+        "Total_assentos": 45
     }
 }

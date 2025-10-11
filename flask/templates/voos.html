@@ -1,37 +1,36 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Lista de Voos - Linhas Aéreas ED-II</title>
-</head>
-<body>
+{% extends "base.html" %}
+{% block title %}Lista de Voos{% endblock %}
+{% block content %}
     <h1>Voos Disponíveis</h1>
-    
-    <a href="{{ url_for('adicionar_voo')}}">Adicionar Novo Voo</a>
-
+    <a href="{{ url_for('adicionar_voo') }}">Adicionar Novo Voo</a>
     <br><br>
-    <table border="1">
-        <tr>
-            <th>Código</th>
-            <th>Origem</th>
-            <th>Destino</th>
-            <th>Preço Ida</th>
-            <th>Milhas</th>
-            <th>Assentos</th>
-        </tr>
-        {% for codigo, detalhes in voos.items() %}
-        <tr>
-            <td>{{ codigo }}</td>
-            <td>{{ detalhes.Origem }}</td>
-            <td>{{ detalhes.Destino }}</td>
-            <td>R$ {{ "%.2f"|format(detalhes.Preco_ida) }}</td>
-            <td>{{ detalhes.Milhas }}</td>
-            <td>{{ detalhes.Total_assentos }}</td>
-            <td>
-                <a href="{{ url_for('editar_voo', codigo_voo=codigo) }}">Editar</a> |
-                <a href="{{ url_for('excluir_voo', codigo_voo=codigo) }}">Excluir</a>
-            </td>
-        </tr>
-        {% endfor %}
+    <table>
+        <thead>
+            <tr>
+                <th>Código</th>
+                <th>Origem</th>
+                <th>Destino</th>
+                <th>Preço Ida</th>
+                <th>Milhas</th>
+                <th>Assentos</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for codigo, detalhes in voos.items() %}
+            <tr>
+                <td>{{ codigo }}</td>
+                <td>{{ detalhes.Origem }}</td>
+                <td>{{ detalhes.Destino }}</td>
+                <td>R$ {{ "%.2f"|format(detalhes.Preco_ida) }}</td>
+                <td>{{ detalhes.Milhas }}</td>
+                <td>{{ detalhes.Total_assentos }}</td>
+                <td>
+                    <a href="{{ url_for('editar_voo', codigo_voo=codigo) }}">Editar</a> |
+                    <a href="{{ url_for('excluir_voo', codigo_voo=codigo) }}">Excluir</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
     </table>
-</body>
-</html>
+{% endblock %}

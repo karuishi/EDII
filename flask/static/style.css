@@ -1,0 +1,83 @@
+/* Estilo geral do corpo da página */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f9;
+    color: #333;
+    margin: 0;
+    padding: 20px;
+}
+
+/* Estilo para os títulos principais */
+h1 {
+    color: #4a4e69;
+    text-align: center;
+}
+
+/* Estilo da tabela */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+th, td {
+    padding: 12px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+thead {
+    background-color: #4a4e69;
+    color: white;
+}
+
+tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+/* Estilo para links e botões */
+a {
+    color: #9a8c98;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+a:hover {
+    color: #22223b;
+}
+
+/* Estilo para os formulários */
+form {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    max-width: 500px;
+    margin: 20px auto;
+}
+
+input[type="text"], input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0 20px 0;
+    box-sizing: border-box; /* Garante que padding não afete a largura total */
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+input[type="submit"] {
+    width: 100%;
+    background-color: #4a4e69;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+input[type="submit"]:hover {
+    background-color: #22223b;
+}

@@ -1,9 +1,6 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Editar Voo</title>
-</head>
-<body>
+{% extends "base.html" %}
+{% block title %}Editar Voo{% endblock %}
+{% block content %}
     <h1>Editar Voo: {{ codigo_voo }}</h1>
     <form method="post">
         Origem: <input type="text" name="origem" value="{{ voo.Origem }}" required><br>
@@ -15,5 +12,4 @@
         Total de Assentos: <input type="text" name="total_assentos" value="{{ voo.Total_assentos }}" required><br>
         <input type="submit" value="Salvar Alterações">
     </form>
-</body>
-</html>
+{% endblock %}
