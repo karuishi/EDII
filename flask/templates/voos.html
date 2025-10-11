@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Lista de Voos - Linhas Aéreas ED-II</title>
+</head>
+<body>
+    <h1>Voos Disponíveis</h1>
+    <table border="1">
+        <tr>
+            <th>Código</th>
+            <th>Origem</th>
+            <th>Destino</th>
+            <th>Preço Ida</th>
+            <th>Milhas</th>
+            <th>Assentos</th>
+        </tr>
+        {% for codigo, detalhes in voos.items() %}
+        <tr>
+            <td>{{ codigo }}</td>
+            <td>{{ detalhes.Origem }}</td>
+            <td>{{ detalhes.Destino }}</td>
+            <td>R$ {{ "%.2f"|format(detalhes.Preco_ida) }}</td>
+            <td>{{ detalhes.Milhas }}</td>
+            <td>{{ detalhes.Total_assentos }}</td>
+        </tr>
+        {% ednfor %}
+    </table>
+</body>
+</html>
