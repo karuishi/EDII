@@ -5,6 +5,10 @@
 </head>
 <body>
     <h1>Voos Disponíveis</h1>
+    
+    <a href="{{ url_for('adicionar_voo')}}">Adicionar Novo Voo</a>
+
+    <br><br>
     <table border="1">
         <tr>
             <th>Código</th>
@@ -22,8 +26,12 @@
             <td>R$ {{ "%.2f"|format(detalhes.Preco_ida) }}</td>
             <td>{{ detalhes.Milhas }}</td>
             <td>{{ detalhes.Total_assentos }}</td>
+            <td>
+                <a href="{{ url_for('editar_voo', codigo_voo=codigo) }}">Editar</a> |
+                <a href="{{ url_for('excluir_voo', codigo_voo=codigo) }}">Excluir</a>
+            </td>
         </tr>
-        {% ednfor %}
+        {% endfor %}
     </table>
 </body>
 </html>

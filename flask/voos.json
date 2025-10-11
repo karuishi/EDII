@@ -1,0 +1,20 @@
+{
+    "ED-001": {
+        "Origem": "Salvador",
+        "Destino": "S\u00e3o Paulo",
+        "Preco_ida": 1200.0,
+        "Preco_volta": 1150.0,
+        "Milhas": 1500,
+        "Aeronave": "Boeing 737",
+        "Total_assentos": 8
+    },
+    "ED-002": {
+        "Origem": "Rio de janeiro",
+        "Destino": "Bras\u00edlia",
+        "Preco_ida": 950.0,
+        "Preco_volta": 900.0,
+        "Milhas": 1000,
+        "Aeronave": "Airbus A320",
+        "Total_assentos": 5
+    }
+}

@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Editar Voo</title>
+</head>
+<body>
+    <h1>Editar Voo: {{ codigo_voo }}</h1>
+    <form method="post">
+        Origem: <input type="text" name="origem" value="{{ voo.Origem }}" required><br>
+        Destino: <input type="text" name="destino" value="{{ voo.Destino }}" required><br>
+        Preço Ida: <input type="text" name="preco_ida" value="{{ voo.Preco_ida }}" required><br>
+        Preço Volta: <input type="text" name="preco_volta" value="{{ voo.Preco_volta }}" required><br>
+        Milhas: <input type="text" name="milhas" value="{{ voo.Milhas }}" required><br>
+        Aeronave: <input type="text" name="aeronave" value="{{ voo.Aeronave }}" required><br>
+        Total de Assentos: <input type="text" name="total_assentos" value="{{ voo.Total_assentos }}" required><br>
+        <input type="submit" value="Salvar Alterações">
+    </form>
+</body>
+</html>
