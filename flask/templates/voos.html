@@ -11,6 +11,7 @@
                 <th>Origem</th>
                 <th>Destino</th>
                 <th>Preço Ida</th>
+                <th>Preço Volta</th>
                 <th>Milhas</th>
                 <th>Assentos</th>
                 <th>Ações</th>
@@ -23,6 +24,7 @@
                 <td>{{ detalhes.Origem }}</td>
                 <td>{{ detalhes.Destino }}</td>
                 <td>R$ {{ "%.2f"|format(detalhes.Preco_ida) }}</td>
+                <td>R$ {{ "%.2f"|format(detalhes.Preco_volta) }}</td>
                 <td>{{ detalhes.Milhas }}</td>
                 <td>{{ detalhes.Total_assentos }}</td>
                 <td>
