@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}Gestão de Clientes{% endblock %}
+{% block content %}
+    <h1>Gestão de Clientes</h1>
+    <a href="{{ url_for('adicionar_cliente') }}">Adicionar Novo Cliente</a>
+    <a href="{{ url_for('listar_clientes_cpf') }}" style="margin-left: 20px;">Ordenar por CPF (B-Tree)</a>
+    <a href="{{ url_for('listar_clientes') }}" style="margin-left: 20px;">Ordenar por Nome</a>
+    <br><br>
+    <table>
+        <thead>
+            <tr>
+                <th>CPF</th>
+                <th>Nome</th>
+                <th>Data Viagem</th>
+                <th>Milhas</th>
+                <th>Reservas</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for cpf, dados in clientes_ordenados %}
+            <tr>
+                <td>{{ cpf }}</td>
+                <td>{{ dados.Nome }}</td>
+                <td>{{ dados.Data_viagem }}</td>
+                <td>{{ dados.Milhas }}</td>
+                <td>{{ dados.Reservas | length }}</td>
+                <td>
+                    <a href="#">Editar</a> |
+                    <a href="#">Excluir</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <br>
+    <a href="{{ url_for('listar_voos') }}">Voltar para Gestão de Voos</a>
+{% endblock %}

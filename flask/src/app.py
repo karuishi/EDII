@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for
+from BTree import BTree
 import json
 import os
 
@@ -42,7 +43,7 @@ def login():
         login = request.form['login']
         senha = request.form['senha']
         if login in login_senha and login_senha[login] == senha:
-            return redirect(url_for('listar_voos'))
+            return redirect(url_for('listar_clientes')) # listar_voos
         else:
             return "Login ou senha incorretos!"
     return render_template('login.html')
@@ -94,5 +95,94 @@ def excluir_voo(codigo_voo):
         salvar_voos(voos) # Salva após excluir
     return redirect(url_for('listar_voos'))
 
+# Nome do arquivo onde salvaremos os clientes
+ARQUIVO_CLIENTES = 'clientes.json'
+
+def salvar_clientes(dados_clientes):
+    with open(ARQUIVO_CLIENTES, 'w') as f:
+        # Temos de guardar as chaves (CPFs) como strings no JSON
+        dados_para_salvar = {str(cpf): dados for cpf, dados in dados_clientes.items()}
+        json.dump(dados_para_salvar, f, indent=4)
+
+def carregar_clientes():
+    dados_clientes = {}
+    clientes_btree = BTree(t=3) # Cria uma nova Árvore B vazia
+
+    if os.path.exists(ARQUIVO_CLIENTES):
+        with open(ARQUIVO_CLIENTES, 'r') as f:
+            dados_do_json = json.load(f)
+            
+            # Reconstrói o dicionário com chaves INT
+            dados_clientes = {int(cpf): dados for cpf, dados in dados_do_json.items()}
+
+            # A "magia" está aqui:
+            # Reconstrói o índice da Árvore B a partir dos dados carregados
+            print("A reconstruir o índice da Árvore B...")
+            for cpf in dados_clientes.keys():
+                clientes_btree.insert(cpf)
+            print("Índice B-Tree pronto.")
+            
+    return dados_clientes, clientes_btree
+
+dados_clientes, clientes_btree_cpf = carregar_clientes()
+
+@app.route('/clientes')
+def listar_clientes():
+    if not dados_clientes:
+        return render_template('clientes.html', clientes_ordenados=[])
+        
+    # Ordena por nome para a exibição principal
+    lista_ordenada = sorted(dados_clientes.items(), key=lambda item: item[1]["Nome"])
+    
+    return render_template('clientes.html', clientes_ordenados=lista_ordenada)
+
+@app.route('/clientes/adicionar', methods=['GET', 'POST'])
+def adicionar_cliente():
+    if request.method == 'POST':
+        try:
+            cpf = int(request.form['cpf'])
+        except ValueError:
+            return "Erro: CPF deve conter apenas números."
+
+        # 1. Verifica na Árvore B (Otimizado!)
+        if clientes_btree_cpf.search(cpf):
+            return "Erro: Cliente com este CPF já cadastrado!"
+        
+        # 2. Se não existe, adiciona em ambos
+        nome = request.form['nome']
+        
+        # A. Adiciona ao índice B-Tree
+        clientes_btree_cpf.insert(cpf)
+        
+        # B. Adiciona ao dicionário de dados
+        dados_clientes[cpf] = {
+            "Nome" : nome,
+            "Reservas" : [],
+            "Data_viagem" : request.form['data_viagem'],
+            "Milhas" : request.form['milhas']
+        }
+        
+        # 3. Salva os dados no ficheiro JSON
+        salvar_clientes(dados_clientes)
+        
+        return redirect(url_for('listar_clientes'))
+
+    # Se for GET, apenas mostra o formulário
+    return render_template('adicionar_cliente.html')
+
+@app.route('/clientes/ordenar_cpf')
+def listar_clientes_cpf():
+    if not dados_clientes:
+        return render_template('clientes.html', clientes_ordenados=[])
+        
+    # Pega todos os CPFs (keys), que a B-Tree otimizaria
+    cpfs_ordenados = sorted(dados_clientes.keys())
+    
+    # Monta a lista ordenada para o template
+    lista_final = []
+    for cpf in cpfs_ordenados:
+        lista_final.append( (cpf, dados_clientes[cpf]) )
+        
+    return render_template('clientes.html', clientes_ordenados=lista_final)
 if __name__ == '__main__':
     app.run(debug=True)
