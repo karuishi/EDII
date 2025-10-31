@@ -1,10 +1,11 @@
-{% extends "base.html" %}
+{% extends "tela_inicial/base.html" %}
 {% block title %}Gestão de Clientes{% endblock %}
 {% block content %}
     <h1>Gestão de Clientes</h1>
-    <a href="{{ url_for('adicionar_cliente') }}">Adicionar Novo Cliente</a>
-    <a href="{{ url_for('listar_clientes_cpf') }}" style="margin-left: 20px;">Ordenar por CPF (B-Tree)</a>
-    <a href="{{ url_for('listar_clientes') }}" style="margin-left: 20px;">Ordenar por Nome</a>
+    <a href="{{ url_for('adicionar_cliente') }}" class="btn">Adicionar Novo Cliente</a>
+    <a href="{{ url_for('listar_reservas') }}" class="btn">Ver todas as reservas</a>
+    <a href="{{ url_for('listar_clientes_cpf') }}" class="btn">Ordenar por CPF</a>
+    <a href="{{ url_for('listar_clientes') }}" class="btn">Ordenar por Nome</a>
     <br><br>
     <table>
         <thead>
@@ -34,5 +35,5 @@
         </tbody>
     </table>
     <br>
-    <a href="{{ url_for('listar_voos') }}">Voltar para Gestão de Voos</a>
+    <a href="{{ url_for('listar_voos') }}" class="btn">Voltar para Gestão de Voos</a>
 {% endblock %}

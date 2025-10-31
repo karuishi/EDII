@@ -2,12 +2,75 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    <title>{% block title %}{% endblock %} - Linhas Aéreas ED-II</title>
+    <title>{% block title %}{% endblock %} - Linhas Aéreas SOL</title>
 </head>
 <body>
-    <div class="content">
+    <header class="navbar">
+        <div class="container">
+            <a href="{{ url_for('listar_clientes') }}" class="logo">Linhas Aéreas SOL</a>
+            <ul class="nav-links">
+                <li><a href="{{ url_for('listar_clientes') }}">Clientes</a></li>
+                <li><a href="{{ url_for('listar_voos') }}">Voos</a></li>
+                <li><a href="{{ url_for('listar_reservas') }}">Reservas</a></li>
+                <li><a href="{{ url_for('login') }}">Logout</a></li>
+                <li>
+                    <button id="darkModeToggle">Alternar Modo</button>
+                </li>
+            </ul>
+        </div>
+    </header>
+
+    <main class="container">
         {% block content %}{% endblock %}
-    </div>
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2025 Linhas Aéreas SOL. Todos os direitos reservados.</p>
+    </footer>
+
+    <script>
+        (function() {
+            const toggleButton = document.getElementById('darkModeToggle');
+            const body = document.body;
+            const toggleTextLight = 'Modo Claro';
+            const toggleTextDark = 'Modo Escuro';
+
+            // Função para aplicar o modo
+            function applyTheme(theme) {
+                if (theme === 'dark') {
+                    body.classList.add('dark-mode');
+                    toggleButton.textContent = toggleTextLight;
+                } else {
+                    body.classList.remove('dark-mode');
+                    toggleButton.textContent = toggleTextDark;
+                }
+            }
+
+            // Verifica o tema salvo no localStorage
+            let currentTheme = localStorage.getItem('theme');
+            if (currentTheme) {
+                applyTheme(currentTheme);
+            } else {
+                // Se não houver tema salvo, aplica o modo claro por padrão
+                applyTheme('light'); 
+            }
+
+            // Adiciona o evento de clique ao botão
+            toggleButton.addEventListener('click', function() {
+                // Verifica se o corpo JÁ TEM a classe 'dark-mode'
+                if (body.classList.contains('dark-mode')) {
+                    // Se sim, remove (muda para light)
+                    localStorage.setItem('theme', 'light');
+                    applyTheme('light');
+                } else {
+                    // Se não, adiciona (muda para dark)
+                    localStorage.setItem('theme', 'dark');
+                    applyTheme('dark');
+                }
+            });
+        })();
+    </script>
 </body>
 </html>

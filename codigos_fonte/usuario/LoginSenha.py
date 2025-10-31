@@ -3,8 +3,8 @@ def verificar_login():
     senha_digitada = input("Informe a sua senha: ")
 
     login_senha = {
-        "admin" : "Farcry34!",
-        "gerente" : "12345"
+        "Admin" : "Farcry34!",
+        "Gerente" : "12345"
     }  
 
     if login_digitado in login_senha: 

@@ -1,16 +1,33 @@
-{% extends "base.html" %}
+{% extends "tela_inicial/base.html" %}
 {% block title %}Adicionar Voo{% endblock %}
 {% block content %}
     <h1>Adicionar Novo Voo</h1>
+    
     <form method="post">
-        Código: <input type="text" name="codigo" required><br>
-        Origem: <input type="text" name="origem" required><br>
-        Destino: <input type="text" name="destino" required><br>
-        Preço Ida: <input type="text" name="preco_ida" required><br>
-        Preço Volta: <input type="text" name="preco_volta" required><br>
-        Milhas: <input type="text" name="milhas" required><br>
-        Aeronave: <input type="text" name="aeronave" required><br>
-        Total de Assentos: <input type="text" name="total_assentos" required><br>
+        <label for="codigo">Código:</label>
+        <input type="text" name="codigo" id="codigo" required>
+
+        <label for="origem">Origem:</label>
+        <input type="text" name="origem" id="origem" required>
+
+        <label for="destino">Destino:</label>
+        <input type="text" name="destino" id="destino" required>
+
+        <label for="precoIda">Preço Ida:</label>
+        <input type="text" name="precoIda" id="precoIda" required>
+
+        <label for="precoVolta">Preço Volta:</label>
+        <input type="text" name="precoVolta" id="precoVolta" required>
+
+        <label for="milhas">Milhas:</label>
+        <input type="text" name="milhas" id="milhas" required>
+
+        <label for="aeronave">Aeronave:</label>
+        <input type="text" name="aeronave" id="aeronave" required>
+
+        <label for="total_assentos">Total de Assentos:</label>
+        <input type="text" name="total_assentos" id="total_assentos" required>
+
         <input type="submit" value="Adicionar Voo">
     </form>
 {% endblock %}

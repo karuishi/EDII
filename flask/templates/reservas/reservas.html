@@ -1,0 +1,31 @@
+{% extends "tela_inicial/base.html" %}
+{% block title %}Lista de Reservas{% endblock %}
+{% block content %}
+    <h1>Reservas Efetuadas</h1>
+    <a href="{{ url_for('fazer_reserva') }}" class="btn">Fazer Nova Reserva</a>
+    <br><br>
+    <table>
+        <thead>
+            <tr>
+                <th>Código Reserva</th>
+                <th>Cliente</th>
+                <th>CPF</th>
+                <th>Voos</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for codigo, detalhes in reservas.items() %}
+            <tr>
+                <td>{{ codigo }}</td>
+                <td>{{ detalhes.Cliente }}</td>
+                <td>{{ detalhes.CPF }}</td>
+                <td>
+                    {{ detalhes.Voos | join(', ') }}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <br>
+    <a href="{{ url_for('listar_voos') }}" class="btn">Voltar para Gestão de Voos</a>
+{% endblock %}

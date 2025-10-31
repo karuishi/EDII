@@ -15,13 +15,13 @@ def adicionar_voo(voos):
     tipo_aeronave = input("Informe o tipo da aeronave: ")
 
     voos[codigo_voo] = {
-        "origem" : origem_voo,
-        "destino" : destino_voo,
-        "preco_ida" : preco_passagem_ida,
-        "preco_volta" : preco_passagem_volta,
-        "milhas" : milhas_voo,
-        "aeronave" : tipo_aeronave,
-        "total_assentos" : total_assentos
+        "Origem" : origem_voo,
+        "Destino" : destino_voo,
+        "Preco_ida" : preco_passagem_ida,
+        "Preco_volta" : preco_passagem_volta,
+        "Milhas" : milhas_voo,
+        "Aeronave" : tipo_aeronave,
+        "Total_assentos" : total_assentos
     }
     print(f"\nVoo {codigo_voo} adicionado com sucesso!")
 
@@ -47,9 +47,9 @@ def editar_voo(voos):
     if dado_atualizado in voos[codigo_voo_digitado]:
         novo_valor = input(f"Informe o novo valor para '{dado_atualizado}': ")
         try:
-            if dado_atualizado in ["preco_ida", "preco_volta"]:
+            if dado_atualizado in ["Preco_ida", "Preco_volta"]:
                 voos[codigo_voo_digitado][dado_atualizado] = float(novo_valor)
-            elif dado_atualizado in ["milhas", "total_assentos"]:
+            elif dado_atualizado in ["Milhas", "Total_assentos"]:
                 voos[codigo_voo_digitado][dado_atualizado] = int(novo_valor)
             else:
                 voos[codigo_voo_digitado][dado_atualizado] = novo_valor 

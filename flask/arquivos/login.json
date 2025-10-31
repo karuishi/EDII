@@ -1,4 +1,14 @@
 {
-    "Admin" : "Farcry34!",
-    "Gerente" : "12345"
+    "Admin": {
+        "senha": "Farcry34!",
+        "role": "admin"
+    },
+    "Gerente": {
+        "senha": "12345",
+        "role" : "admin"
+    },
+    "karuishi": {
+        "senha": "Nelsu1208!",
+        "role": "cliente"
+    }
 }

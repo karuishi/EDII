@@ -1,0 +1,23 @@
+{
+    "RES1": {
+        "Cliente": "Pedro Lucas de Jesus Santos",
+        "CPF": 6409426526,
+        "Voos": [
+            "ED-001"
+        ]
+    },
+    "RES2": {
+        "Cliente": "Pedro Lucas de Jesus Santos",
+        "CPF": 6409426526,
+        "Voos": [
+            "ED-002"
+        ]
+    },
+    "RES3": {
+        "Cliente": "Pedro Lucas de Jesus Santos",
+        "CPF": 6409426526,
+        "Voos": [
+            "ED-001"
+        ]
+    }
+}

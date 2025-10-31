@@ -1,7 +1,11 @@
 {
     "6409426526": {
         "Nome": "Pedro Lucas de Jesus Santos",
-        "Reservas": [],
+        "Reservas": [
+            "RES1",
+            "RES2",
+            "RES3"
+        ],
         "Data_viagem": "27/12/2026",
         "Milhas": "70000"
     }

@@ -5,7 +5,7 @@ reservas = {
     "RES01" : {
         "Cliente" : "Ana",
         "CPF" : "123.456.789-00",
-        "voos" : ["ED-001"]
+        "Voos" : ["ED-001"]
     }
 }
 
@@ -31,7 +31,7 @@ def efetuar_reserva(reservas, voos):
             break
         
         if codigo_voo in voos:
-            if voos[codigo_voo]['total_assentos'] > 0:
+            if voos[codigo_voo]['Total_assentos'] > 0:
                 lista_voos.append(codigo_voo)
                 print(f"Voo {codigo_voo} adicionado à reserva!")
             else:
@@ -41,7 +41,7 @@ def efetuar_reserva(reservas, voos):
             print("Código de voo inválido. Tente novamente.")
         
     for voo_confirmado in lista_voos:
-        voos[voo_confirmado]['total_assentos'] -= 1
+        voos[voo_confirmado]['Total_assentos'] -= 1
     
     reservas[codigo_reserva] = {
         "Cliente" : nome_cliente,
@@ -50,4 +50,5 @@ def efetuar_reserva(reservas, voos):
     }
 
     print(f"\nReserva {codigo_reserva} criada com sucesso para {nome_cliente}!")
-    Arquivos.salvar_reserva_arquivo(codigo_reserva, reservas)
+    # Passando o ID da reserva e seus respectivos dados
+    Arquivos.salvar_reserva_arquivo(codigo_reserva, reservas[codigo_reserva]) 

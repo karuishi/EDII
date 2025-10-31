@@ -1,13 +1,21 @@
-{% extends "base.html" %}
+{% extends "tela_inicial/base.html" %}
 {% block title %}Adicionar Cliente{% endblock %}
 {% block content %}
     <h1>Adicionar Novo Cliente</h1>
     <form method="post">
-        CPF (só números): <input type="text" name="cpf" required><br>
-        Nome: <input type="text" name="nome" required><br>
-        Data Viagem (DD/MM/AAAA): <input type="text" name="data_viagem" required><br>
-        Milhas: <input type="text" name="milhas" required><br>
+        <label for="cpf">CPF (só números):</label>
+        <input type="text" name="cpf" id="cpf" required>
+
+        <label for="nome">Nome:</label>
+        <input type="text" name="nome" id="nome" required>
+
+        <label for="data_viagem">Data da Viagem(DD/MM/AAAA):</label>
+        <input type="text" name="data_viagem" id="data_viagem" required>
+        
+        <label for="milhas">Milhas:</label>
+        <input type="text" name="milhas" id="milhas" required>
+        
         <input type="submit" value="Adicionar Cliente">
     </form>
-    <a href="{{ url_for('listar_clientes') }}">Cancelar</a>
+    <a href="{{ url_for('listar_clientes') }}"class="btn">Cancelar</a>
 {% endblock %}
