@@ -2,20 +2,30 @@
 {% block title %}Adicionar Cliente{% endblock %}
 {% block content %}
     <h1>Adicionar Novo Cliente</h1>
-    <form method="post">
-        <label for="cpf">CPF (só números):</label>
-        <input type="text" name="cpf" id="cpf" required>
-
-        <label for="nome">Nome:</label>
-        <input type="text" name="nome" id="nome" required>
-
-        <label for="data_viagem">Data da Viagem(DD/MM/AAAA):</label>
-        <input type="text" name="data_viagem" id="data_viagem" required>
-        
-        <label for="milhas">Milhas:</label>
-        <input type="text" name="milhas" id="milhas" required>
-        
-        <input type="submit" value="Adicionar Cliente">
-    </form>
-    <a href="{{ url_for('listar_clientes') }}"class="btn">Cancelar</a>
+    
+    <div class="card">
+        <div class="card-body">
+            <form method="post">
+                <div class="mb-3">
+                    <label for="cpf" class="form-label">CPF (só números):</label>
+                    <input type="text" name="cpf" id="cpf" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label for="nome" class="form-label">Nome:</label>
+                    <input type="text" name="nome" id="nome" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label for="data_viagem" class="form-label">Data da Viagem (DD/MM/AAAA):</label>
+                    <input type="text" name="data_viagem" id="data_viagem" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label for="milhas" class="form-label">Milhas:</label>
+                    <input type="text" name="milhas" id="milhas" class="form-control" required>
+                </div>
+                
+                <button type="submit" class="btn btn-primary mt-3">Adicionar Cliente</button>
+                <a href="{{ url_for('listar_clientes') }}" class="btn btn-secondary mt-3">Cancelar</a>
+            </form>
+        </div>
+    </div>
 {% endblock %}

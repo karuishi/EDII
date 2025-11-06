@@ -2,31 +2,52 @@
 {% block title %}Editar Voo{% endblock %}
 {% block content %}
     <h1>Editar Voo: {{ codigo_voo }}</h1>
-    <form method="post">
-        <label for="codigo">Código:</label>
-        <input type="text" name="codigo" id="codigo" required>
-
-        <label for="origem">Origem:</label>
-        <input type="text" name="origem" id="origem" required>
-
-        <label for="destino">Destino:</label>
-        <input type="text" name="destino" id="destino" required>
-
-        <label for="precoIda">Preço Ida:</label>
-        <input type="text" name="precoIda" id="precoIda" required>
-
-        <label for="precoVolta">Preço Volta:</label>
-        <input type="text" name="precoVolta" id="precoVolta" required>
-
-        <label for="milhas">Milhas:</label>
-        <input type="text" name="milhas" id="milhas" required>
-
-        <label for="aeronave">Aeronave:</label>
-        <input type="text" name="aeronave" id="aeronave" required>
-
-        <label for="total_assentos">Total de Assentos:</label>
-        <input type="text" name="total_assentos" id="total_assentos" required>
+    
+    <form method="post" class="mt-4 p-4 border rounded shadow-sm">
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label for="codigo" class="form-label">Código:</label>
+                <input type="text" name="codigo" id="codigo" class="form-control" value="{{ codigo_voo }}" disabled>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="aeronave" class="form-label">Aeronave:</label>
+                <input type="text" name="aeronave" id="aeronave" class="form-control" value="{{ voo.Aeronave }}" required>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label for="origem" class="form-label">Origem:</label>
+                <input type="text" name="origem" id="origem" class="form-control" value="{{ voo.Origem }}" required>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="destino" class="form-label">Destino:</label>
+                <input type="text" name="destino" id="destino" class="form-control" value="{{ voo.Destino }}" required>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label for="preco_ida" class="form-label">Preço Ida:</label>
+                <input type="number" step="0.01" name="preco_ida" id="preco_ida" class="form-control" value="{{ voo.Preco_ida }}" required>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="preco_volta" class="form-label">Preço Volta:</label>
+                <input type="number" step="0.01" name="preco_volta" id="preco_volta" class="form-control" value="{{ voo.Preco_volta }}" required>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label for="milhas" class="form-label">Milhas:</label>
+                <input type="number" name="milhas" id="milhas" class="form-control" value="{{ voo.Milhas }}" required>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="total_assentos" class="form-label">Total de Assentos:</label>
+                <input type="number" name="total_assentos" id="total_assentos" class="form-control" value="{{ voo.Total_assentos }}" required>
+            </div>
+        </div>
         
-        <input type="submit" value="Salvar Alterações">
+        <div class="mt-3">
+            <button type="submit" class="btn btn-primary">Salvar Alterações</button>
+            <a href="{{ url_for('listar_voos') }}" class="btn btn-secondary">Cancelar</a>
+        </div>
     </form>
 {% endblock %}

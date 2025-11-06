@@ -1,39 +1,46 @@
 {% extends "tela_inicial/base.html" %}
 {% block title %}Gestão de Clientes{% endblock %}
 {% block content %}
-    <h1>Gestão de Clientes</h1>
-    <a href="{{ url_for('adicionar_cliente') }}" class="btn">Adicionar Novo Cliente</a>
-    <a href="{{ url_for('listar_reservas') }}" class="btn">Ver todas as reservas</a>
-    <a href="{{ url_for('listar_clientes_cpf') }}" class="btn">Ordenar por CPF</a>
-    <a href="{{ url_for('listar_clientes') }}" class="btn">Ordenar por Nome</a>
-    <br><br>
-    <table>
-        <thead>
-            <tr>
-                <th>CPF</th>
-                <th>Nome</th>
-                <th>Data Viagem</th>
-                <th>Milhas</th>
-                <th>Reservas</th>
-                <th>Ações</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for cpf, dados in clientes_ordenados %}
-            <tr>
-                <td>{{ cpf }}</td>
-                <td>{{ dados.Nome }}</td>
-                <td>{{ dados.Data_viagem }}</td>
-                <td>{{ dados.Milhas }}</td>
-                <td>{{ dados.Reservas | length }}</td>
-                <td>
-                    <a href="#">Editar</a> |
-                    <a href="#">Excluir</a>
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>Gestão de Clientes</h1>
+        <a href="{{ url_for('adicionar_cliente') }}" class="btn btn-primary">Adicionar Novo Cliente</a>
+    </div>
+
+    <div class="mb-3">
+        <a href="{{ url_for('listar_clientes') }}" class="btn btn-sm btn-outline-secondary">Ordenar por Nome</a>
+        <a href="{{ url_for('listar_clientes_cpf') }}" class="btn btn-sm btn-outline-secondary">Ordenar por CPF</a>
+        <a href="{{ url_for('listar_reservas') }}" class="btn btn-sm btn-outline-info">Ver Todas as Reservas</a>
+    </div>
+    
+    <div class="table-responsive">
+        <table class="table table-striped table-hover align-middle">
+            <thead class="table-dark" style="background-color: var(--azul-primary);">
+                <tr>
+                    <th>CPF</th>
+                    <th>Nome</th>
+                    <th>Data Viagem</th>
+                    <th>Milhas</th>
+                    <th>Reservas</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for cpf, dados in clientes_ordenados %}
+                <tr>
+                    <td>{{ cpf }}</td>
+                    <td>{{ dados.Nome }}</td>
+                    <td>{{ dados.Data_viagem }}</td>
+                    <td>{{ dados.Milhas }}</td>
+                    <td>{{ dados.Reservas | length }}</td>
+                    <td>
+                        <a href="#" class="btn btn-sm btn-outline-primary">Editar</a>
+                        <a href="#" class="btn btn-sm btn-outline-danger">Excluir</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
     <br>
-    <a href="{{ url_for('listar_voos') }}" class="btn">Voltar para Gestão de Voos</a>
+    <a href="{{ url_for('listar_voos') }}" class="btn btn-secondary">Ir para Gestão de Voos</a>
 {% endblock %}

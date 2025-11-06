@@ -1,31 +1,35 @@
 {% extends "tela_inicial/base.html" %}
 {% block title %}Lista de Reservas{% endblock %}
 {% block content %}
-    <h1>Reservas Efetuadas</h1>
-    <a href="{{ url_for('fazer_reserva') }}" class="btn">Fazer Nova Reserva</a>
-    <br><br>
-    <table>
-        <thead>
-            <tr>
-                <th>Código Reserva</th>
-                <th>Cliente</th>
-                <th>CPF</th>
-                <th>Voos</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for codigo, detalhes in reservas.items() %}
-            <tr>
-                <td>{{ codigo }}</td>
-                <td>{{ detalhes.Cliente }}</td>
-                <td>{{ detalhes.CPF }}</td>
-                <td>
-                    {{ detalhes.Voos | join(', ') }}
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>Reservas Efetuadas</h1>
+        <a href="{{ url_for('fazer_reserva') }}" class="btn btn-primary">Fazer Nova Reserva</a>
+    </div>
+    
+    <div class="table-responsive">
+        <table class="table table-striped table-hover align-middle">
+            <thead class="table-dark" style="background-color: var(--azul-primary);">
+                <tr>
+                    <th>Código Reserva</th>
+                    <th>Cliente</th>
+                    <th>CPF</th>
+                    <th>Voos</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for codigo, detalhes in reservas.items() %}
+                <tr>
+                    <td>{{ codigo }}</td>
+                    <td>{{ detalhes.Cliente }}</td>
+                    <td>{{ detalhes.CPF }}</td>
+                    <td>
+                        {{ detalhes.Voos | join(', ') }}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
     <br>
-    <a href="{{ url_for('listar_voos') }}" class="btn">Voltar para Gestão de Voos</a>
+    <a href="{{ url_for('listar_voos') }}" class="btn btn-secondary">Voltar para Gestão de Voos</a>
 {% endblock %}

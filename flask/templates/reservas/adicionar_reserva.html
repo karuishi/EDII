@@ -2,34 +2,40 @@
 {% block title %}Fazer Reserva{% endblock %}
 {% block content %}
     <h1>Fazer Nova Reserva</h1>
-    <form method="post">
-        
-        <label for="cpf_cliente">Cliente (por CPF):</label>
-        <select name="cpf_cliente" id="cpf_cliente" required>
-            <option value="">-- Selecione um Cliente --</option>
-            {% for cpf, dados in clientes.items() %}
-                <option value="{{ cpf }}">{{ dados.Nome }} (CPF: {{ cpf }})</option>
-            {% endfor %}
-        </select>
-        <br><br>
+    
+    <div class="card">
+        <div class="card-body">
+            <form method="post">
+                <div class="mb-3">
+                    <label for="cpf_cliente" class="form-label">Cliente (por CPF):</label>
+                    <select name="cpf_cliente" id="cpf_cliente" class="form-select" required>
+                        <option value="">-- Selecione um Cliente --</option>
+                        {% for cpf, dados in clientes.items() %}
+                            <option value="{{ cpf }}">{{ dados.Nome }} (CPF: {{ cpf }})</option>
+                        {% endfor %}
+                    </select>
+                </div>
 
-        <label for="voos_selecionados">Voos (Segure Ctrl/Cmd para selecionar vários):</label>
-        <select name="voos_selecionados" id="voos_selecionados" multiple required size="5">
-            {% for codigo, dados in voos.items() %}
-                {% if dados.Total_assentos > 0 %}
-                    <option value="{{ codigo }}">
-                        {{ codigo }}: {{ dados.Origem }} -> {{ dados.Destino }} (Assentos: {{ dados.Total_assentos }})
-                    </option>
-                {% else %}
-                    <option value="{{ codigo }}" disabled>
-                        {{ codigo }}: {{ dados.Origem }} -> {{ dados.Destino }} (ESGOTADO)
-                    </option>
-                {% endif %}
-            {% endfor %}
-        </select>
-        <br><br>
-
-        <input type="submit" value="Confirmar Reserva">
-    </form>
-    <a href="{{ url_for('listar_reservas') }}" class="btn btn-secondary" style="margin-left: 10px;">Cancelar</a>
+                <div class="mb-3">
+                    <label for="voos_selecionados" class="form-label">Voos (Segure Ctrl/Cmd para selecionar vários):</label>
+                    <select name="voos_selecionados" id="voos_selecionados" class="form-select" multiple required size="8">
+                        {% for codigo, dados in voos.items() %}
+                            {% if dados.Total_assentos > 0 %}
+                                <option value="{{ codigo }}">
+                                    {{ codigo }}: {{ dados.Origem }} -> {{ dados.Destino }} (Assentos: {{ dados.Total_assentos }})
+                                </option>
+                            {% else %}
+                                <option value="{{ codigo }}" disabled>
+                                    {{ codigo }}: {{ dados.Origem }} -> {{ dados.Destino }} (ESGOTADO)
+                                </option>
+                            {% endif %}
+                        {% endfor %}
+                    </select>
+                </div>
+                
+                <button type="submit" class="btn btn-primary mt-3">Confirmar Reserva</button>
+                <a href="{{ url_for('listar_reservas') }}" class="btn btn-secondary mt-3">Cancelar</a>
+            </form>
+        </div>
+    </div>
 {% endblock %}

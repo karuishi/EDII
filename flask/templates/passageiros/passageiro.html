@@ -1,33 +1,35 @@
 {% extends "tela_inicial/base.html" %}
 {% block title %}Pesquisar Voos{% endblock %}
 {% block content %}
-    <h1>Voos Disponíveis</h1>
-    <p>Bem-vindo! Consulte os nossos voos disponíveis abaixo.</p>
-    <br>
-    <table>
-        <thead>
-            <tr>
-                <th>Código</th>
-                <th>Origem</th>
-                <th>Destino</th>
-                <th>Preço Ida</th>
-                <th>Preço Volta</th>
-                <th>Milhas</th>
-                <th>Assentos</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for codigo, detalhes in voos.items() %}
-            <tr>
-                <td>{{ codigo }}</td>
-                <td>{{ detalhes.Origem }}</td>
-                <td>{{ detalhes.Destino }}</td>
-                <td>R$ {{ "%.2f"|format(detalhes.Preco_ida) }}</td>
-                <td>R$ {{ "%.2f"|format(detalhes.Preco_volta) }}</td>
-                <td>{{ detalhes.Milhas }}</td>
-                <td>{{ detalhes.Total_assentos }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+    <h1 class="mb-4">Voos Disponíveis</h1>
+    <p class="lead">Bem-vindo! Consulte os nossos voos disponíveis abaixo.</p>
+    
+    <div class="table-responsive">
+        <table class="table table-striped table-hover align-middle">
+            <thead class="table-dark" style="background-color: var(--azul-primary);">
+                <tr>
+                    <th>Código</th>
+                    <th>Origem</th>
+                    <th>Destino</th>
+                    <th>Preço Ida</th>
+                    <th>Preço Volta</th>
+                    <th>Milhas</th>
+                    <th>Assentos</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for codigo, detalhes in voos.items() %}
+                <tr>
+                    <td>{{ codigo }}</td>
+                    <td>{{ detalhes.Origem }}</td>
+                    <td>{{ detalhes.Destino }}</td>
+                    <td>R$ {{ "%.2f"|format(detalhes.Preco_ida) }}</td>
+                    <td>R$ {{ "%.2f"|format(detalhes.Preco_volta) }}</td>
+                    <td>{{ detalhes.Milhas }}</td>
+                    <td>{{ detalhes.Total_assentos }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 {% endblock %}

@@ -1,270 +1,49 @@
-/* :root define as variáveis de cor para o modo claro (padrão) */
+
+/* ========================================================= */
+/* --- CÓDIGO MOVIDO DO BASE.HTML (ESTILOS BOOTSTRAP) --- */
+/* ========================================================= */
 :root {
-    --cor-fundo: #f8f9fa;
-    --cor-fundo-container: #ffffff;
-    --cor-texto: #333;
-    --cor-borda: #ddd;
-    --cor-borda-form: #ccc;
-    --cor-linha-tabela-hover: #f1f1f1;
-    --cor-linha-tabela-alternada: #f8f9fa;
-    --cor-cabecalho-tabela-fundo: #003366;
-    --cor-cabecalho-tabela-texto: white;
-    --cor-navbar-fundo: #003366;
-    --cor-navbar-texto: #0056b3;
-    --cor-titulo: #003366;
-    --cor-link: #0056b3;
-    --cor-link-hover: #003366;
-    --cor-botao-fundo: #0056b3;
-    --cor-botao-texto: white;
-    --cor-botao-hover: #003366;
-    --cor-botao-sec-fundo: #6c757d;
-    --cor-botao-sec-hover: #5a6268;
-    --cor-login-sombra: rgba(0,0,0,0.1);
+    --azul-primary: #007bff;
+    --azul-dark: #0056b3;
+}
+/* Ajustes para o modo escuro nativo do Bootstrap */
+[data-bs-theme="dark"] .navbar-brand {
+    color: #90b8ff !important;
+}
+[data-bs-theme="dark"] .table {
+    --bs-table-color: #e0e0e0;
+    --bs-table-bg: #1e1e1e;
+    --bs-table-striped-bg: #2a2a2a;
+    --bs-table-hover-bg: #333;
+}
+[data-bs-theme="dark"] thead {
+    background-color: #1a1a1a !important;
 }
 
-/* body.dark-mode define as variáveis para o modo escuro */
-body.dark-mode {
-    --cor-fundo: #121212; /* Fundo escuro principal */
-    --cor-fundo-container: #1e1e1e; /* Fundo do "container" */
-    --cor-texto: #e0e0e0; /* Texto claro */
-    --cor-borda: #444;
-    --cor-borda-form: #555;
-    --cor-linha-tabela-hover: #333;
-    --cor-linha-tabela-alternada: #2a2a2a;
-    --cor-cabecalho-tabela-fundo: #1a1a1a;
-    --cor-cabecalho-tabela-texto: #e0e0e0;
-    --cor-navbar-fundo: #1e1e1e;
-    --cor-navbar-texto: white;
-    --cor-titulo: #90b8ff; /* Azul claro para títulos */
-    --cor-link: #90b8ff;
-    --cor-link-hover: #a9c7ff;
-    --cor-botao-fundo: #007bff; /* Azul mais brilhante */
-    --cor-botao-texto: white;
-    --cor-botao-hover: #0056b3;
-    --cor-botao-sec-fundo: #5a6268;
-    --cor-botao-sec-hover: #495057;
-    --cor-login-sombra: rgba(255,255,255,0.1);
-}
-
-/* --- Estilos Gerais (agora usando variáveis) --- */
-body {
-    font-family: 'Helvetica Neue', Arial, sans-serif;
-    background-color: var(--cor-fundo);
-    color: var(--cor-texto);
-    margin: 0;
-    padding: 0;
-    transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-/* --- Barra de Navegação (Navbar) --- */
 .navbar {
-    width: 100%;
-    background-color: var(--cor-navbar-fundo);
-    padding: 15px 0;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
 }
-
-.navbar .container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 20px;
-}
-
-.navbar .logo {
-    font-size: 24px;
+.navbar-brand {
+    color: var(--azul-primary) !important;
     font-weight: bold;
-    color: var(--cor-navbar-texto);
-    text-decoration: none;
 }
-
-.navbar .nav-links {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    align-items: center; /* Alinha o botão verticalmente */
+.btn-primary {
+    background-color: var(--azul-primary);
+    border-color: var(--azul-primary);
 }
-
-.navbar .nav-links li {
-    margin-left: 20px;
+.btn-primary:hover {
+    background-color: var(--azul-dark);
+    border-color: var(--azul-dark);
 }
-
-.navbar .nav-links a {
-    color: var(--cor-navbar-texto);
-    text-decoration: none;
-    font-size: 16px;
-    padding-bottom: 5px;
-    border-bottom: 2px solid transparent;
-    transition: border-bottom 0.3s ease;
+.btn-outline-primary {
+    color: var(--azul-primary);
+    border-color: var(--azul-primary);
 }
-
-.navbar .nav-links a:hover {
-    border-bottom: 2px solid var(--cor-navbar-texto);
+.btn-outline-primary:hover {
+    background-color: var(--azul-primary);
+    color: white;
 }
-
-/* Estilo para o botão de modo escuro */
-#darkModeToggle {
-    background: none;
-    border: 1px solid var(--cor-navbar-texto);
-    color: var(--cor-navbar-texto);
-    padding: 5px 10px;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 14px;
-    transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-#darkModeToggle:hover {
-    background-color: var(--cor-navbar-texto);
-    color: var(--cor-navbar-fundo); /* Inverte as cores no hover */
-}
-
-/* --- Conteúdo Principal --- */
-.container {
-    max-width: 1200px;
-    margin: 30px auto;
-    padding: 20px;
-    background-color: var(--cor-fundo-container);
-    border-radius: 8px;
-    box-shadow: 0 0 15px rgba(0,0,0,0.05);
-}
-
-h1 {
-    color: var(--cor-titulo);
-    border-bottom: 2px solid var(--cor-borda);
-    padding-bottom: 10px;
-}
-
-/* --- Tabela --- */
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 25px;
-}
-
-th, td {
-    padding: 15px;
-    border-bottom: 1px solid var(--cor-borda);
-    text-align: left;
-}
-
-thead {
-    background-color: var(--cor-cabecalho-tabela-fundo);
-    color: var(--cor-cabecalho-tabela-texto);
-}
-
-tr:nth-child(even) {
-    background-color: var(--cor-linha-tabela-alternada);
-}
-
-tr:hover {
-    background-color: var(--cor-linha-tabela-hover);
-}
-
-/* --- Formulários --- */
-form {
-    background: var(--cor-fundo-container);
-    padding: 25px;
-    border-radius: 8px;
-    border: 1px solid var(--cor-borda);
-    margin-top: 20px;
-}
-
-form label {
-    display: block;
-    margin-bottom: 8px;
-    font-weight: bold;
-    color: var(--cor-texto);
-}
-
-input[type="text"], 
-input[type="password"],
-input[type="number"],
-select {
-    width: 100%;
-    padding: 12px;
-    margin-bottom: 20px;
-    box-sizing: border-box;
-    border: 1px solid var(--cor-borda-form);
-    border-radius: 4px;
-    font-size: 16px;
-    background-color: var(--cor-fundo); /* Fundo do input */
-    color: var(--cor-texto); /* Texto do input */
-}
-
-/* --- Links e Botões --- */
-a {
-    color: var(--cor-link);
-    text-decoration: none;
-}
-
-a:hover {
-    text-decoration: underline;
-    color: var(--cor-link-hover);
-}
-
-input[type="submit"],
-.btn {
-    display: inline-block;
-    background-color: var(--cor-botao-fundo);
-    color: var(--cor-botao-texto);
-    padding: 12px 20px;
-    margin-top: 10px;
+.card {
     border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 16px;
-    font-weight: bold;
-    text-decoration: none;
-    text-align: center;
-    transition: background-color 0.3s ease;
-}
-
-input[type="submit"]:hover,
-.btn:hover {
-    background-color: var(--cor-botao-hover);
-    text-decoration: none;
-}
-
-.btn-secondary {
-    background-color: var(--cor-botao-sec-fundo);
-}
-.btn-secondary:hover {
-    background-color: var(--cor-botao-sec-hover);
-}
-
-td a {
-    color: var(--cor-link);
-    font-weight: bold;
-}
-td a:hover {
-    color: var(--cor-link-hover);
-}
-
-/* --- Login --- */
-.login-container {
-    max-width: 450px;
-    margin: 50px auto;
-    padding: 30px;
-    background: var(--cor-fundo-container);
-    border-radius: 8px;
-    box-shadow: 0 4px 10px var(--cor-login-sombra);
-}
-
-.login-container h1 {
-    text-align: center;
-    margin-bottom: 25px;
-}
-
-/* --- Rodapé --- */
-.footer {
-    text-align: center;
-    padding: 20px;
-    margin-top: 30px;
-    color: var(--cor-texto);
-    font-size: 14px;
-    border-top: 1px solid var(--cor-borda);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
 }
