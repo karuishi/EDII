@@ -1,95 +1,15 @@
 from flask import Flask, render_template, request, redirect, url_for
-from BTree import BTree
 import json
 import os
+from BTree import BTree 
+from data_manager import *
 
-# --- 1. INICIALIZAÇÃO E CONSTANTES ---
 app = Flask(__name__, template_folder='../templates', static_folder='../static')
-
-ARQUIVO_VOOS = '../arquivos/voos.json'
-ARQUIVO_CLIENTES = '../arquivos/clientes.json'
-ARQUIVO_RESERVAS = '../arquivos/reservas.json'
-ARQUIVO_LOGIN = '../arquivos/login.json'
-
-# --- 2. FUNÇÕES AUXILIARES (CARREGAR/SALVAR) ---
-
-# --- Funções de Login ---
-def carregar_login():
-    if os.path.exists(ARQUIVO_LOGIN):
-        with open(ARQUIVO_LOGIN, 'r') as f:
-            return json.load(f)
-
-def salvar_login(login):
-    with open(ARQUIVO_LOGIN, 'w') as f:
-        json.dump(login, f, indent=4)
-
-# --- Funções de Voos ---
-def carregar_voos():
-    if os.path.exists(ARQUIVO_VOOS):
-        with open(ARQUIVO_VOOS, 'r') as f:
-            return json.load(f)
-
-def salvar_voos(voos):
-    with open(ARQUIVO_VOOS, 'w') as f:
-        json.dump(voos, f, indent=4)
-
-# --- Funções de Clientes ---
-def carregar_clientes():
-    dados_clientes = {}
-    clientes_btree = BTree(t=3) # Cria uma nova Árvore B vazia
-
-    if os.path.exists(ARQUIVO_CLIENTES):
-        try:
-            with open(ARQUIVO_CLIENTES, 'r') as f:
-                dados_do_json = json.load(f)
-            
-            # Reconstrói o dicionário com chaves INT
-            dados_clientes = {int(cpf): dados for cpf, dados in dados_do_json.items()}
-
-            # Reconstrói o índice da Árvore B
-            print("A reconstruir o índice da Árvore B...")
-            for cpf in dados_clientes.keys():
-                clientes_btree.insert(cpf)
-            print("Índice B-Tree pronto.")
-        
-        except json.JSONDecodeError:
-            print(f"Aviso: {ARQUIVO_CLIENTES} está vazio ou corrompido. A começar do zero.")
-            
-    return dados_clientes, clientes_btree
-
-def salvar_clientes(dados_clientes):
-    with open(ARQUIVO_CLIENTES, 'w') as f:
-        # Guarda as chaves (CPFs) como strings no JSON
-        dados_para_salvar = {str(cpf): dados for cpf, dados in dados_clientes.items()}
-        json.dump(dados_para_salvar, f, indent=4)
-
-# --- Funções de Reservas ---
-def carregar_reservas():
-    if os.path.exists(ARQUIVO_RESERVAS):
-        try:
-            with open(ARQUIVO_RESERVAS, 'r') as f:
-                return json.load(f)
-        except json.JSONDecodeError:
-            return {} # Retorna vazio se o ficheiro estiver corrompido ou vazio
-    return {}
-
-def salvar_reservas(reservas):
-    with open(ARQUIVO_RESERVAS, 'w') as f:
-        json.dump(reservas, f, indent=4)
-
-def gerar_codigo_reserva(reservas):
-    prox_codigo = len(reservas) + 1
-    return f"RES{prox_codigo}"
-
-# --- 3. CARREGAMENTO DOS DADOS GLOBAIS ---
-# (Isto só pode ser feito DEPOIS de as funções acima serem definidas)
 
 voos = carregar_voos()
 dados_clientes, clientes_btree_cpf = carregar_clientes()
 reservas = carregar_reservas()
 login_senha = carregar_login()
-
-# --- 4. ROTAS DA APLICAÇÃO ---
 
 # --- Rotas de Login ---
 @app.route('/', methods=['GET', 'POST'])
@@ -99,7 +19,6 @@ def login():
         senha = request.form['senha']
         if login in login_senha and login_senha[login]["senha"] == senha:
             role = login_senha[login]["role"]
-            # Envia o utilizador para a página de clientes após o login
             if role == "admin":
                 return redirect(url_for('listar_voos')) 
             else :
@@ -117,12 +36,14 @@ def criar_conta():
     if request.method == 'POST':
         novo_login = request.form['login']
         nova_senha = request.form['senha']
+        nova_role = request.form.get('role', 'cliente') # .get() evita erro se o campo faltar
 
         if novo_login in login_senha:
             return "Erro: Login já existe!"
         
         login_senha[novo_login] = {
             "senha" : nova_senha,
+            "role" : nova_role
         }
         salvar_login(login_senha)
         return redirect(url_for('login'))
@@ -224,8 +145,6 @@ def listar_clientes_cpf():
         
     return render_template('clientes/clientes.html', clientes_ordenados=lista_final)
 
-# (Faltam as rotas de editar e excluir cliente, que você pode adicionar aqui)
-
 # --- Rotas de Gestão de Reservas ---
 @app.route('/reservas')
 def listar_reservas():
@@ -273,6 +192,5 @@ def fazer_reserva():
 
         return redirect(url_for('listar_reservas'))
 
-# --- 5. EXECUÇÃO DA APLICAÇÃO ---
 if __name__ == '__main__':
     app.run(debug=True)
