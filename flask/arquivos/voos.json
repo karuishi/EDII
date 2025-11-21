@@ -1,20 +1,29 @@
 {
     "ED-001": {
-        "Origem": "Salvador",
-        "Destino": "S\u00e3o Paulo",
+        "Origem": "Salvador - BA",
+        "Destino": "S\u00e3o Paulo - SP",
         "Preco_ida": 1200.0,
         "Preco_volta": 1150.0,
         "Milhas": 1500,
         "Aeronave": "Boeing 737",
-        "Total_assentos": 5
+        "Total_assentos": 3
     },
     "ED-002": {
-        "Origem": "Rio de janeiro",
-        "Destino": "Bras\u00edlia",
+        "Origem": "Rio de janeiro - RJ",
+        "Destino": "Bras\u00edlia - DF",
         "Preco_ida": 950.0,
         "Preco_volta": 900.0,
         "Milhas": 1000,
         "Aeronave": "Airbus A320",
         "Total_assentos": 0
+    },
+    "ED-003": {
+        "Origem": "Salvador - BA",
+        "Destino": "Bel\u00e9m - PA",
+        "Preco_ida": 1250.0,
+        "Preco_volta": 1350.0,
+        "Milhas": 10000,
+        "Aeronave": "Boing 777",
+        "Total_assentos": 43
     }
 }

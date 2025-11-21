@@ -23,8 +23,13 @@
     },
     "12345678910": {
         "Nome": "Kim Sunoo da Silva",
-        "Reservas": [],
+        "Reservas": [
+            "RES9",
+            "RES10",
+            "RES11",
+            "RES12"
+        ],
         "Data_viagem": "",
-        "Milhas": 0
+        "Milhas": 23000
     }
 }

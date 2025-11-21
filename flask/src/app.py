@@ -101,7 +101,20 @@ def pagina_passageiro():
     dados_do_clientes = dados_clientes.get(cpf_atual)
     if not dados_clientes:
         return "Erro: Dados do cliente não encontrados."
+    
+    origem_filtro = request.args.get('origem')
+    destino_filtro = request.args.get('destino')
+    data_filtro = request.args.get('data')
 
+    voos_exibicao = {}
+
+    if origem_filtro and destino_filtro:
+        for codigo, dados in voos.items():
+            if (dados['Origem'].lower == origem_filtro.lower and dados['Destino'].lower() == destino_filtro.lower()):
+                voos_exibicao[codigo] = dados
+    else:
+        voos_exibicao = voos
+        
     minhas_reservas = {}
     for codigo, reserva in reservas.items():
         if int(reserva['CPF']) == cpf_atual:
@@ -109,11 +122,45 @@ def pagina_passageiro():
 
     return render_template(
         'passageiros/dashboard.html', 
-        voos = voos,
+        voos = voos_exibicao,
         reservas = minhas_reservas,
-        cliente = dados_do_clientes
+        cliente = dados_do_clientes,
+        filtros = {'origem': origem_filtro, 'destino': destino_filtro}
         )
 
+@app.route('/passageiro/reservar/<codigo_voo>')
+def reservar_passagem(codigo_voo):
+    if 'usuario' not in session or 'cpf' not in session:
+        return redirect(url_for('login'))
+
+    cpf_cliente = int(session['cpf'])
+
+    # Verifica se o voo existe e tem assentos
+    if codigo_voo not in voos:
+        return "Erro: Voo não encontrado."
+    
+    if voos[codigo_voo]['Total_assentos'] <= 0:
+        return "Erro: Voo lotado!"
+    
+    voos[codigo_voo]['Total_assentos'] -= 1
+    salvar_voos(voos)
+
+    novo_codigo_reserva = gerar_codigo_reserva(reservas)
+    reservas[novo_codigo_reserva] = {
+        "Cliente": dados_clientes[cpf_cliente]['Nome'],
+        "CPF": cpf_cliente,
+        "Voos": [codigo_voo]
+    }
+    salvar_reservas(reservas)
+
+    # Atualiza o cliente
+    dados_clientes[cpf_cliente]['Reservas'].append(novo_codigo_reserva)
+    milhas_ganhas = voos[codigo_voo]['Milhas']
+    milhas_atuais = int(dados_clientes[cpf_cliente]['Milhas'])
+    dados_clientes[cpf_cliente]['Milhas'] = milhas_atuais + milhas_ganhas
+    salvar_clientes(dados_clientes)
+
+    return redirect(url_for('pagina_passageiro'))
 # --- Rotas de Gestão de Voos ---
 @app.route('/voos')
 def listar_voos():

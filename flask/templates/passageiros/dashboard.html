@@ -43,22 +43,23 @@
             <div class="tab-pane fade show active" id="comprar" role="tabpanel">
                 <h4 class="mb-3">Para onde você quer ir?</h4>
                 
-                <form action="#" method="GET" class="row g-3 align-items-end">
+                <form action="{{ url_for('pagina_passageiro') }}" method="GET" class="row g-3 align-items-end">
                     <div class="col-md-4">
                         <label class="form-label text-muted">Saindo de</label>
-                        <select class="form-select form-select-lg">
-                            <option selected>Selecione a origem...</option>
+                        <select name="origem" class="form-select form-select-lg">
+                            <option value ="" selected>Selecione...</option> 
                             {% for codigo, voo in voos.items() %}
-                                <option>{{ voo.Origem }}</option>
+                                <option value="{{ voo.Origem}}">{{ voo.Origem }}</option>
                             {% endfor %}
                         </select>
                     </div>
+
                     <div class="col-md-4">
                         <label class="form-label text-muted">Indo para</label>
-                        <select class="form-select form-select-lg">
-                            <option selected>Selecione o destino...</option>
+                        <select name="destino" class="form-select form-select-lg">
+                            <option value="" selected>Selecione...</option>
                             {% for codigo, voo in voos.items() %}
-                                <option>{{ voo.Destino }}</option>
+                                <option value="{{ voo.Destino}}">{{ voo.Destino }}</option>
                             {% endfor %}
                         </select>
                     </div>
@@ -67,7 +68,7 @@
                         <input type="date" class="form-control form-control-lg">
                     </div>
                     <div class="col-md-2">
-                        <button type="button" class="btn btn-primary btn-lg w-100" style="background-color: #0056b3; border:none;">Buscar</button>
+                        <button type="submit" class="btn btn-primary btn-lg w-100" style="background-color: #0056b3; border:none;">Buscar</button>
                     </div>
                 </form>
 
@@ -86,7 +87,7 @@
                                 </div>
                                 <p class="small text-muted mb-1">{{ dados.Aeronave }}</p>
                                 <h4 class="text-primary">R$ {{ "%.2f"|format(dados.Preco_ida) }}</h4>
-                                <a href="#" class="btn btn-outline-primary btn-sm w-100 mt-2">Selecionar</a>
+                                <a href="{{ url_for('reservar_passagem', codigo_voo=codigo) }}" class="btn btn-outline-primary btn-sm w-100 mt-2">Selecionar</a>
                             </div>
                         </div>
                     </div>
