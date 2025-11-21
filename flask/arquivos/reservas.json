@@ -47,5 +47,12 @@
         "Voos": [
             "ED-002"
         ]
+    },
+    "RES8": {
+        "Cliente": "Caroline Lesnioski Parodi Araujo",
+        "CPF": 7177733186,
+        "Voos": [
+            "ED-001"
+        ]
     }
 }

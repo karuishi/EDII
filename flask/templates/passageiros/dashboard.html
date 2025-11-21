@@ -1,0 +1,141 @@
+{% extends "tela_inicial/base.html" %}
+{% block title %}Painel do Passageiro{% endblock %}
+
+{% block content %}
+<div class="row mb-4 align-items-center">
+    <div class="col-md-8">
+        <h2 style="color: var(--azul-primary);">Olá, {{ cliente.Nome.split()[0] }}!</h2>
+        <p class="text-muted">Bem-vindo ao seu painel de viagem.</p>
+    </div>
+    <div class="col-md-4 text-end">
+        <div class="card border-primary">
+            <div class="card-body py-2">
+                <small class="text-uppercase text-muted">Saldo de Milhas</small>
+                <h3 class="m-0 text-primary font-weight-bold">{{ cliente.Milhas }}</h3>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card shadow-sm" style="border-top: 4px solid #0056b3;"> <div class="card-header bg-white">
+        <ul class="nav nav-tabs card-header-tabs" id="myTab" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="comprar-tab" data-bs-toggle="tab" data-bs-target="#comprar" type="button" role="tab">
+                    ✈️ Comprar Passagem
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="reservas-tab" data-bs-toggle="tab" data-bs-target="#reservas" type="button" role="tab">
+                    📅 Minhas Viagens
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="checkin-tab" data-bs-toggle="tab" data-bs-target="#checkin" type="button" role="tab">
+                    🎫 Check-in
+                </button>
+            </li>
+        </ul>
+    </div>
+    
+    <div class="card-body p-4">
+        <div class="tab-content" id="myTabContent">
+            
+            <div class="tab-pane fade show active" id="comprar" role="tabpanel">
+                <h4 class="mb-3">Para onde você quer ir?</h4>
+                
+                <form action="#" method="GET" class="row g-3 align-items-end">
+                    <div class="col-md-4">
+                        <label class="form-label text-muted">Saindo de</label>
+                        <select class="form-select form-select-lg">
+                            <option selected>Selecione a origem...</option>
+                            {% for codigo, voo in voos.items() %}
+                                <option>{{ voo.Origem }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label text-muted">Indo para</label>
+                        <select class="form-select form-select-lg">
+                            <option selected>Selecione o destino...</option>
+                            {% for codigo, voo in voos.items() %}
+                                <option>{{ voo.Destino }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label text-muted">Data Ida</label>
+                        <input type="date" class="form-control form-control-lg">
+                    </div>
+                    <div class="col-md-2">
+                        <button type="button" class="btn btn-primary btn-lg w-100" style="background-color: #0056b3; border:none;">Buscar</button>
+                    </div>
+                </form>
+
+                <hr class="my-5">
+
+                <h5 class="text-primary mb-3">Voos Disponíveis </h5>
+                <div class="row">
+                    {% for codigo, dados in voos.items() %}
+                    <div class="col-md-4 mb-3">
+                        <div class="card h-100 border-0 shadow-sm" style="background-color: #333;">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between">
+                                    <h5 class="card-title">{{ dados.Origem }}</h5>
+                                    <span class="text-muted">➔</span>
+                                    <h5 class="card-title">{{ dados.Destino }}</h5>
+                                </div>
+                                <p class="small text-muted mb-1">{{ dados.Aeronave }}</p>
+                                <h4 class="text-primary">R$ {{ "%.2f"|format(dados.Preco_ida) }}</h4>
+                                <a href="#" class="btn btn-outline-primary btn-sm w-100 mt-2">Selecionar</a>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="tab-pane fade" id="reservas" role="tabpanel">
+                <h4 class="mb-3">Suas Próximas Viagens</h4>
+                
+                {% if reservas %}
+                    <div class="list-group">
+                    {% for codigo, detalhes in reservas.items() %}
+                        <div class="list-group-item list-group-item-action flex-column align-items-start">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h5 class="mb-1 text-primary">Reserva: {{ codigo }}</h5>
+                                <small class="text-muted">Confirmado</small>
+                            </div>
+                            <p class="mb-1">
+                                <strong>Passageiro:</strong> {{ detalhes.Cliente }} <br>
+                                <strong>Voos:</strong> {{ detalhes.Voos | join(' ➔ ') }}
+                            </p>
+                            <small>CPF: {{ detalhes.CPF }}</small>
+                        </div>
+                    {% endfor %}
+                    </div>
+                {% else %}
+                    <div class="alert alert-info">
+                        Você ainda não tem reservas. Use a aba "Comprar Passagem" para viajar!
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="tab-pane fade" id="checkin" role="tabpanel">
+                <div class="text-center py-5">
+                    <h4 class="text-muted">Check-in disponível 48h antes do voo.</h4>
+                    <p>Insira seu código de reserva para buscar.</p>
+                    <div class="row justify-content-center">
+                        <div class="col-md-4">
+                            <input type="text" class="form-control" placeholder="Código da Reserva">
+                        </div>
+                        <div class="col-md-2">
+                            <button class="btn btn-secondary w-100">Buscar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}

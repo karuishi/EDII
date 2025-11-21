@@ -5,10 +5,15 @@
     },
     "Gerente": {
         "senha": "12345",
-        "role" : "admin"
+        "role": "admin"
     },
     "karuishi": {
         "senha": "Nelsu1208!",
         "role": "cliente"
+    },
+    "Sunoo": {
+        "senha": "Sunghoonvida",
+        "role": "cliente",
+        "cpf": "12345678910"
     }
 }
