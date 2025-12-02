@@ -130,7 +130,7 @@ class BTree:
         """
         Função para "dividir" um nó filho que está cheio.
         'parent_node' é o nó pai.
-        'child_index' é o índice do filho que está cheio (e que vamos dividir).
+        'child_index' é o índice do filho que está cheio.
         """
         t = self.t
         
@@ -159,35 +159,26 @@ class BTree:
             child_node.children = child_node.children[:t]
 
     # ----------------------------------------------
-    # FUNÇÃO 3: PERCORRER (TRAVERSE) - PARA ORDENAÇÃO
+    # FUNÇÃO 3: PERCORRER - PARA ORDENAÇÃO
     # ----------------------------------------------
-    def traverse(self, dados_clientes):
+    def in_order_list(self):
         """
-        Função principal para imprimir todas as chaves da árvore
-        em ordem crescente.
-        Isto substitui a sua 'consulta_OrdenadaCPF' e é muito mais rápido.
+        Retorna uma lista com todos os CPFs ordenados, percorrendo a árvore.
         """
-        self._traverse_node(self.root, dados_clientes)
-
-    def _traverse_node(self, node, dados_clientes):
+        result = []
+        self._in_order_list_node(self.root, result)
+        return result
+    
+    def _in_order_list_node(self, node, result):
         """
-        Função auxiliar recursiva.
+        Função auxiliar recursiva para preencher a lista.
         """
         for i in range(len(node.keys)):
-            # 1. Passa os 'dados_clientes' na chamada recursiva (para o filho da esquerda)
+            # 1. Visita o filho à esquerda da chave atual (se existir)
             if not node.leaf:
-                self._traverse_node(node.children[i], dados_clientes)
-            
-            # 2. Pega o CPF (a chave) que está no nó da árvore
-            cpf_atual = node.keys[i]
-            
-            # 3. Usa esse CPF para ir buscar os dados ao dicionário
-            #    (ex: "Nome", "Milhas")
-            dados_atuais = dados_clientes[cpf_atual]
-            
-            # 4. Imprime a informação completa
-            print(f"CPF: {cpf_atual} | Nome: {dados_atuais['Nome']} | Milhas: {dados_atuais['Milhas']}")
-
-            # 5. Passa os 'dados_clientes' na chamada recursiva (para o filho da direita)
-            if i == len(node.keys) - 1 and not node.leaf:
-                self._traverse_node(node.children[i + 1], dados_clientes)
+                self._in_order_list_node(node.children[i], result)
+            # 2. Adiciona a chave (CPF) à nossa lista de resultados
+            result.append(node.keys[i])
+        # 3. Visita o último filho (à direita da última chave)
+        if not node.leaf:
+            self._in_order_list_node(node.children[len(node.keys)], result)
