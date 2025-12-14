@@ -2,136 +2,262 @@
 {% block title %}Painel do Passageiro{% endblock %}
 
 {% block content %}
-<div class="row mb-4 align-items-center">
-    <div class="col-md-8">
-        <h2 style="color: var(--azul-primary);">Olá, {{ cliente.Nome.split()[0] }}!</h2>
-        <p class="text-muted">Bem-vindo ao seu painel de viagem.</p>
-    </div>
-    <div class="col-md-4 text-end">
-        <div class="card border-primary">
-            <div class="card-body py-2">
-                <small class="text-uppercase text-muted">Saldo de Milhas</small>
-                <h3 class="m-0 text-primary font-weight-bold">{{ cliente.Milhas }}</h3>
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        <div class="container mb-4">
+        {% for category, message in messages %}
+            <div class="alert alert-{{ category }} alert-dismissible fade show shadow-sm border-0" role="alert">
+                <i class="bi bi-info-circle me-2"></i> {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endfor %}
+        </div>
+    {% endif %}
+{% endwith %}
+
+<div class="card bg-primary text-white border-0 shadow mb-5 overflow-hidden position-relative">
+    <div class="position-absolute top-0 start-0 w-100 h-100 opacity-10" 
+         style="background: radial-gradient(circle at 90% 50%, rgba(255,255,255,0.4) 0%, transparent 50%); pointer-events: none;"></div>
+
+    <div class="card-body p-4 p-lg-5 position-relative z-1">
+        <div class="row align-items-center">
+            <div class="col-md-8">
+                <h6 class="text-uppercase text-white-50 fw-bold ls-1 mb-2">Programa de Fidelidade SOL</h6>
+                <h1 class="display-5 fw-bold mb-1">Olá, {{ cliente.Nome.split()[0] }}!</h1>
+                <p class="lead mb-0 opacity-75">Pronto para sua próxima aventura?</p>
+            </div>
+            <div class="col-md-4 text-md-end mt-4 mt-md-0">
+                <div class="d-inline-block bg-white bg-opacity-10 rounded-4 p-3 pe-5 border border-white border-opacity-25">
+                    <small class="d-block text-white-50 text-uppercase fw-bold mb-1">Saldo de Milhas</small>
+                    <div class="d-flex align-items-center">
+                        <span class="display-4 fw-bold lh-1">{{ cliente.Milhas }}</span>
+                        <span class="ms-2 fs-5 opacity-75">pts</span>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </div>
 
-<div class="card shadow-sm" style="border-top: 4px solid #0056b3;"> <div class="card-header bg-white">
-        <ul class="nav nav-tabs card-header-tabs" id="myTab" role="tablist">
+<div class="card border-0 shadow-sm rounded-4">
+    <div class="card-header bg-transparent border-0 pt-4 px-4 pb-0">
+        <ul class="nav nav-pills nav-fill gap-2 p-1 bg-body-tertiary rounded-pill" id="dashboardTab" role="tablist">
             <li class="nav-item" role="presentation">
-                <button class="nav-link active" id="comprar-tab" data-bs-toggle="tab" data-bs-target="#comprar" type="button" role="tab">
+                <button class="nav-link active rounded-pill fw-bold py-2" id="comprar-tab" data-bs-toggle="pill" data-bs-target="#comprar" type="button" role="tab">
                     ✈️ Comprar Passagem
                 </button>
             </li>
             <li class="nav-item" role="presentation">
-                <button class="nav-link" id="reservas-tab" data-bs-toggle="tab" data-bs-target="#reservas" type="button" role="tab">
+                <button class="nav-link rounded-pill fw-bold py-2" id="reservas-tab" data-bs-toggle="pill" data-bs-target="#reservas" type="button" role="tab">
                     📅 Minhas Viagens
                 </button>
             </li>
             <li class="nav-item" role="presentation">
-                <button class="nav-link" id="checkin-tab" data-bs-toggle="tab" data-bs-target="#checkin" type="button" role="tab">
+                <button class="nav-link rounded-pill fw-bold py-2" id="checkin-tab" data-bs-toggle="pill" data-bs-target="#checkin" type="button" role="tab">
                     🎫 Check-in
                 </button>
             </li>
         </ul>
     </div>
     
-    <div class="card-body p-4">
-        <div class="tab-content" id="myTabContent">
+    <div class="card-body p-4 p-lg-5">
+        <div class="tab-content" id="dashboardTabContent">
             
             <div class="tab-pane fade show active" id="comprar" role="tabpanel">
-                <h4 class="mb-3">Para onde você quer ir?</h4>
+                <div class="text-center mb-5">
+                    <h3 class="fw-bold text-body-emphasis">Encontre seu próximo destino</h3>
+                    <p class="text-muted">Utilize os filtros abaixo para buscar voos disponíveis.</p>
+                </div>
                 
-                <form action="{{ url_for('pagina_passageiro') }}" method="GET" class="row g-3 align-items-end">
-                    <div class="col-md-4">
-                        <label class="form-label text-muted">Saindo de</label>
-                        <select name="origem" class="form-select form-select-lg">
-                            <option value ="" selected>Selecione...</option> 
-                            {% for codigo, voo in voos.items() %}
-                                <option value="{{ voo.Origem}}">{{ voo.Origem }}</option>
-                            {% endfor %}
-                        </select>
+                <form action="{{ url_for('pagina_passageiro') }}" method="GET" class="row g-3 mb-5 p-4 bg-body-tertiary rounded-4 border">
+                    <div class="col-md-3">
+                        <div class="form-floating">
+                            <select name="origem" class="form-select border-0 shadow-sm" id="origemSelect">
+                                <option value ="" selected>Qualquer lugar</option> 
+                                {% for codigo, voo in voos.items() %}
+                                    <option value="{{ voo.Origem}}" {% if filtros.origem == voo.Origem %}selected{% endif %}>{{ voo.Origem }}</option>
+                                {% endfor %}
+                            </select>
+                            <label for="origemSelect" class="text-muted fw-bold">🛫 Saindo de</label>
+                        </div>
                     </div>
 
-                    <div class="col-md-4">
-                        <label class="form-label text-muted">Indo para</label>
-                        <select name="destino" class="form-select form-select-lg">
-                            <option value="" selected>Selecione...</option>
-                            {% for codigo, voo in voos.items() %}
-                                <option value="{{ voo.Destino}}">{{ voo.Destino }}</option>
-                            {% endfor %}
-                        </select>
+                    <div class="col-md-3">
+                        <div class="form-floating">
+                            <select name="destino" class="form-select border-0 shadow-sm" id="destinoSelect">
+                                <option value="" selected>Qualquer lugar</option>
+                                {% for codigo, voo in voos.items() %}
+                                    <option value="{{ voo.Destino}}" {% if filtros.destino == voo.Destino %}selected{% endif %}>{{ voo.Destino }}</option>
+                                {% endfor %}
+                            </select>
+                            <label for="destinoSelect" class="text-muted fw-bold">🛬 Indo para</label>
+                        </div>
                     </div>
+
                     <div class="col-md-2">
-                        <label class="form-label text-muted">Data Ida</label>
-                        <input type="date" class="form-control form-control-lg">
+                        <div class="form-floating">
+                            <input type="date" name="data_ida" class="form-control border-0 shadow-sm" id="dataInput">
+                            <label for="dataInput" class="text-muted fw-bold">📅 Data Ida</label>
+                        </div>
                     </div>
+
                     <div class="col-md-2">
-                        <button type="submit" class="btn btn-primary btn-lg w-100" style="background-color: #0056b3; border:none;">Buscar</button>
+                        <div class="form-floating">
+                            <input type="date" name="data_volta" class="form-control border-0 shadow-sm" id="dataVoltaInput">
+                            <label for="dataVoltaInput" class="text-muted fw-bold">📅 Data Volta</label>
+                        </div>
+                    </div>
+
+                    <div class="col-md-2">
+                        <button type="submit" class="btn btn-primary w-100 h-100 rounded-3 fw-bold shadow-sm">
+                            Buscar
+                        </button>
                     </div>
                 </form>
 
-                <hr class="my-5">
+                <hr class="border-secondary opacity-10 my-5">
 
-                <h5 class="text-primary mb-3">Voos Disponíveis </h5>
-                <div class="row">
+                <div class="d-flex align-items-center justify-content-between mb-4">
+                    <h4 class="fw-bold m-0 text-body-emphasis">Voos Disponíveis</h4>
+                    <span class="badge bg-primary-subtle text-primary-emphasis border border-primary-subtle rounded-pill px-3">
+                        {{ voos|length }} opções encontradas
+                    </span>
+                </div>
+
+                <div class="row g-4">
                     {% for codigo, dados in voos.items() %}
-                    <div class="col-md-4 mb-3">
-                        <div class="card h-100 border-0 shadow-sm" style="background-color: #333;">
-                            <div class="card-body">
-                                <div class="d-flex justify-content-between">
-                                    <h5 class="card-title">{{ dados.Origem }}</h5>
-                                    <span class="text-muted">➔</span>
-                                    <h5 class="card-title">{{ dados.Destino }}</h5>
+                    <div class="col-lg-4 col-md-6">
+                        <div class="card h-100 border-0 shadow-sm hover-up transition-all">
+                            <div class="card-body position-relative">
+                                <div class="position-absolute top-0 start-50 translate-middle-x bg-primary rounded-bottom" style="width: 40px; height: 4px;"></div>
+
+                                <div class="d-flex justify-content-between align-items-start mb-3">
+                                    <span class="badge bg-primary-subtle text-primary-emphasis border border-primary-subtle rounded-pill">
+                                        {{ dados.Aeronave }}
+                                    </span>
+                                    <div class="text-end">
+                                        <small class="text-muted d-block" style="font-size: 0.75rem;">A partir de</small>
+                                        <span class="h5 fw-bold text-success m-0">R$ {{ "%.2f"|format(dados.Preco_ida) }}</span>
+                                    </div>
                                 </div>
-                                <p class="small text-muted mb-1">{{ dados.Aeronave }}</p>
-                                <h4 class="text-primary">R$ {{ "%.2f"|format(dados.Preco_ida) }}</h4>
-                                <a href="{{ url_for('reservar_passagem', codigo_voo=codigo) }}" class="btn btn-outline-primary btn-sm w-100 mt-2">Selecionar</a>
+
+                                <div class="d-flex align-items-center justify-content-between my-4 text-center">
+                                    <div class="w-100">
+                                        <div class="h5 fw-bold mb-0 text-truncate text-body-emphasis">{{ dados.Origem.split('-')[0] }}</div>
+                                        <small class="text-muted">{{ dados.Origem.split('-')[-1] }}</small>
+                                    </div>
+                                    <div class="px-2 text-muted opacity-50">✈️</div>
+                                    <div class="w-100">
+                                        <div class="h5 fw-bold mb-0 text-truncate text-body-emphasis">{{ dados.Destino.split('-')[0] }}</div>
+                                        <small class="text-muted">{{ dados.Destino.split('-')[-1] }}</small>
+                                    </div>
+                                </div>
+                                
+                                <div class="d-grid gap-2">
+                                    <a href="{{ url_for('reservar_passagem', codigo_voo=codigo) }}" class="btn btn-outline-primary fw-bold border-2 rounded-3">
+                                        Selecionar Voo
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="card-footer bg-body-tertiary border-top-0 text-center py-2">
+                                <small class="text-muted">+ {{ dados.Milhas }} milhas acumuladas</small>
                             </div>
                         </div>
+                    </div>
+                    {% else %}
+                    <div class="col-12 text-center py-5">
+                        <div class="text-muted display-1 mb-3">🛫</div>
+                        <h4>Nenhum voo encontrado.</h4>
+                        <p class="text-muted">Tente alterar os filtros de busca.</p>
+                        <a href="{{ url_for('pagina_passageiro') }}" class="btn btn-secondary mt-2">Limpar Filtros</a>
                     </div>
                     {% endfor %}
                 </div>
             </div>
 
             <div class="tab-pane fade" id="reservas" role="tabpanel">
-                <h4 class="mb-3">Suas Próximas Viagens</h4>
+                <h4 class="fw-bold mb-4 text-body-emphasis">Próximos Embarques</h4>
                 
                 {% if reservas %}
-                    <div class="list-group">
+                    <div class="row g-3">
                     {% for codigo, detalhes in reservas.items() %}
-                        <div class="list-group-item list-group-item-action flex-column align-items-start">
-                            <div class="d-flex w-100 justify-content-between">
-                                <h5 class="mb-1 text-primary">Reserva: {{ codigo }}</h5>
-                                <small class="text-muted">Confirmado</small>
+                        <div class="col-12">
+                            <div class="card border-0 shadow-sm overflow-hidden">
+                                <div class="card-body p-0">
+                                    <div class="d-flex flex-column flex-md-row">
+                                        <div class="bg-success text-white p-3 d-flex flex-column align-items-center justify-content-center text-center" style="min-width: 140px;">
+                                            <div class="display-6 mb-1"><i class="bi bi-check-circle"></i> ✓</div>
+                                            <small class="fw-bold text-uppercase ls-1">Confirmado</small>
+                                        </div>
+                                        
+                                        <div class="p-4 flex-grow-1 bg-body-tertiary">
+                                            <div class="d-flex justify-content-between align-items-start mb-3">
+                                                <h5 class="fw-bold text-primary mb-0 d-flex align-items-center gap-2">
+                                                    Reserva #{{ codigo }}
+                                                </h5>
+                                                <span class="badge bg-dark text-white border border-secondary bg-opacity-75 shadow-sm py-2 px-3">
+                                                    CPF: {{ detalhes.CPF }}
+                                                </span>
+                                            </div>
+                                            
+                                            <div class="row align-items-center mt-2">
+                                                <div class="col-md-6 mb-3 mb-md-0">
+                                                    <small class="text-primary text-uppercase fw-bold mb-1 d-block opacity-75" style="font-size: 0.75rem;">Passageiro</small>
+                                                    <div class="fs-5 fw-bold text-body-emphasis">{{ detalhes.Cliente }}</div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <small class="text-primary text-uppercase fw-bold mb-1 d-block opacity-75" style="font-size: 0.75rem;">Itinerário</small>
+                                                    <div class="d-flex align-items-center gap-2">
+                                                        {% for voo in detalhes.Voos %}
+                                                            <span class="badge bg-body-secondary text-body-emphasis border border-secondary-subtle px-3 py-2 rounded-pill">
+                                                                ✈ {{ voo }}
+                                                            </span>
+                                                        {% endfor %}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="bg-body-tertiary p-3 d-flex align-items-center justify-content-center border-start border-secondary-subtle" style="min-width: 120px;">
+                                            <button class="btn btn-outline-primary fw-bold w-100 shadow-sm">
+                                                Detalhes
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            <p class="mb-1">
-                                <strong>Passageiro:</strong> {{ detalhes.Cliente }} <br>
-                                <strong>Voos:</strong> {{ detalhes.Voos | join(' ➔ ') }}
-                            </p>
-                            <small>CPF: {{ detalhes.CPF }}</small>
                         </div>
                     {% endfor %}
                     </div>
                 {% else %}
-                    <div class="alert alert-info">
-                        Você ainda não tem reservas. Use a aba "Comprar Passagem" para viajar!
+                    <div class="text-center py-5 border rounded-4 bg-body-tertiary dashed-border">
+                        <div class="display-6 mb-3">🎫</div>
+                        <h5>Você ainda não tem viagens agendadas.</h5>
+                        <p class="text-muted">Que tal planejar sua próxima aventura agora?</p>
+                        <button class="btn btn-primary mt-2" onclick="document.getElementById('comprar-tab').click()">Ver Voos</button>
                     </div>
                 {% endif %}
             </div>
 
             <div class="tab-pane fade" id="checkin" role="tabpanel">
-                <div class="text-center py-5">
-                    <h4 class="text-muted">Check-in disponível 48h antes do voo.</h4>
-                    <p>Insira seu código de reserva para buscar.</p>
-                    <div class="row justify-content-center">
-                        <div class="col-md-4">
-                            <input type="text" class="form-control" placeholder="Código da Reserva">
+                <div class="row justify-content-center py-5">
+                    <div class="col-md-8 col-lg-6 text-center">
+                        <div class="mb-4 text-primary">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" fill="currentColor" class="bi bi-qr-code-scan" viewBox="0 0 16 16">
+                              <path d="M0 .5A.5.5 0 0 1 .5 0h1a.5.5 0 0 1 .5.5V1h1v2.5a1 1 0 0 1-1 1h-1a1 1 0 0 1-1-1V.5Zm1 3v1h1v-1H1Zm1 1v-1h1v1H2ZM0 6h1.5A1.5 1.5 0 0 1 3 4.5V6H0Zm0 1v2h1.5A1.5 1.5 0 0 0 3 7.5V7H0Zm0 1a.5.5 0 0 1 .5.5V10h1v-1H0Zm3 0v1h1v-1H3Zm1 1v-1h1v1H4ZM0 12h1.5a1.5 1.5 0 0 0 1.5-1.5V10h-1v1a.5.5 0 0 1-.5.5H0V12Zm0 1v2h1.5a1.5 1.5 0 0 0 1.5-1.5V13H0Zm0 1a.5.5 0 0 1 .5.5V16h1v-1H0Zm3 0v1h1v-1H3Zm1 1v-1h1v1H4ZM6 6h1v1H6V6Zm1 1v1h1V7H7Zm4-1h1v1h-1V6Zm1 1v1h1V7h-1Zm4-1h1v1h-1V6Zm1 1v1h1V7h-1Zm-5 6h1v1h-1v-1Zm1 1v1h1v-1h-1Zm4-1h1v1h-1v-1Zm1 1v1h1v-1h-1Z"/>
+                            </svg>
                         </div>
-                        <div class="col-md-2">
-                            <button class="btn btn-secondary w-100">Buscar</button>
+                        <h3 class="fw-bold mb-3 text-body-emphasis">Check-in Online</h3>
+                        <p class="text-muted mb-4">
+                            O check-in abre 48 horas antes do seu voo. Digite o código da reserva para começar.
+                        </p>
+                        
+                        <div class="input-group input-group-lg mb-3 shadow-sm">
+                            <input type="text" class="form-control border-end-0" placeholder="Código da Reserva (ex: RES123)" aria-label="Código da Reserva">
+                            <button class="btn btn-primary px-4 fw-bold" type="button">Buscar</button>
                         </div>
+                        <small class="text-muted">Problemas com o check-in? <a href="#">Fale com o suporte</a>.</small>
                     </div>
                 </div>
             </div>
@@ -139,4 +265,30 @@
         </div>
     </div>
 </div>
+
+<style>
+    /* Estilos utilitários extras */
+    .hover-up:hover {
+        transform: translateY(-5px);
+    }
+    .transition-all {
+        transition: all 0.3s ease;
+    }
+    .ls-1 {
+        letter-spacing: 1px;
+    }
+    .dashed-border {
+        border-style: dashed !important;
+    }
+    /* Corrige cantos arredondados no input group do checkin */
+    .input-group-lg > .form-control {
+        border-top-left-radius: 0.5rem;
+        border-bottom-left-radius: 0.5rem;
+    }
+    .input-group-lg > .btn {
+        border-top-right-radius: 0.5rem;
+        border-bottom-right-radius: 0.5rem;
+    }
+</style>
+
 {% endblock %}

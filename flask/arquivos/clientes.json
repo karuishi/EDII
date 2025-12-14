@@ -27,9 +27,22 @@
             "RES9",
             "RES10",
             "RES11",
-            "RES12"
+            "RES12",
+            "RES13",
+            "RES14",
+            "RES15",
+            "RES16",
+            "RES18"
         ],
         "Data_viagem": "",
-        "Milhas": 23000
+        "Milhas": 47000
+    },
+    "12345678911": {
+        "Nome": "Bla Bla",
+        "Reservas": [
+            "RES17"
+        ],
+        "Data_viagem": "",
+        "Milhas": 10000
     }
 }

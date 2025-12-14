@@ -6,7 +6,7 @@
         "Preco_volta": 1150.0,
         "Milhas": 1500,
         "Aeronave": "Boeing 737",
-        "Total_assentos": 3
+        "Total_assentos": 1
     },
     "ED-002": {
         "Origem": "Rio de janeiro - RJ",
@@ -24,6 +24,6 @@
         "Preco_volta": 1350.0,
         "Milhas": 10000,
         "Aeronave": "Boing 777",
-        "Total_assentos": 43
+        "Total_assentos": 40
     }
 }

@@ -1,0 +1,192 @@
+{% extends "tela_inicial/base.html" %}
+{% block title %}Bem-vindo à SOL{% endblock %}
+
+{% block content %}
+
+<div class="position-relative w-100 d-flex align-items-center justify-content-center" 
+     style="height: 500px; background-image: url('https://images.unsplash.com/photo-1436491865332-7a61a109cc05?q=80&w=1920&auto=format&fit=crop'); background-size: cover; background-position: center 65%; margin-top: -1.5rem;">
+    
+    <div class="position-absolute top-0 start-0 w-100 h-100 bg-dark opacity-50"></div>
+
+    <div class="position-relative text-center text-white z-1 px-3">
+        <h1 class="display-4 fw-bold text-shadow">Voe para o seu próximo destino</h1>
+        <p class="lead fw-normal">As melhores ofertas para você voar mais.</p>
+    </div>
+</div>
+
+<div class="container mt-n5 position-relative z-2" style="margin-top: -5rem;">
+    <div class="card border-0 shadow-lg rounded-4 overflow-hidden">
+        
+        <div class="card-header bg-light border-bottom-0 p-2">
+            <ul class="nav nav-pills nav-fill gap-2" id="pills-tab" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active fw-bold rounded-pill" id="pills-comprar-tab" data-bs-toggle="pill" data-bs-target="#pills-comprar" type="button">
+                        ✈️ Comprar Passagens
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link fw-bold rounded-pill text-secondary" type="button" onclick="window.location.href='{{ url_for('pagina_passageiro') }}#checkin'">
+                        🎫 Check-in
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link fw-bold rounded-pill text-secondary" type="button" onclick="window.location.href='{{ url_for('pagina_passageiro') }}#reservas'">
+                        📅 Minhas Viagens
+                    </button>
+                </li>
+            </ul>
+        </div>
+
+        <div class="card-body p-4 bg-body">
+            <div class="tab-content" id="pills-tabContent">
+                <div class="tab-pane fade show active" id="pills-comprar" role="tabpanel">
+                    
+                    <div class="d-flex gap-4 mb-4">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="tipoViagem" id="idaVolta" checked>
+                            <label class="form-check-label fw-semibold" for="idaVolta">Ida e Volta</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="tipoViagem" id="soIda">
+                            <label class="form-check-label fw-semibold" for="soIda">Só Ida</label>
+                        </div>
+                    </div>
+
+                    <form action="{{ url_for('pagina_passageiro') }}" method="GET" class="row g-2">
+                        
+                        <div class="col-lg-3 col-md-6">
+                            <div class="form-floating">
+                                <select name="origem" class="form-select border-secondary-subtle fw-bold" id="floatingOrigem">
+                                    <option value="" selected>Selecione</option>
+                                    {% for codigo, voo in voos.items() %}
+                                        <option value="{{ voo.Origem }}">{{ voo.Origem }}</option>
+                                    {% endfor %}
+                                </select>
+                                <label for="floatingOrigem">🛫 De onde?</label>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-3 col-md-6">
+                            <div class="form-floating">
+                                <select name="destino" class="form-select border-secondary-subtle fw-bold" id="floatingDestino">
+                                    <option value="" selected>Selecione</option>
+                                    {% for codigo, voo in voos.items() %}
+                                        <option value="{{ voo.Destino }}">{{ voo.Destino }}</option>
+                                    {% endfor %}
+                                </select>
+                                <label for="floatingDestino">🛬 Para onde?</label>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-2 col-md-4">
+                            <div class="form-floating">
+                                <input type="date" name="data_ida" class="form-control border-secondary-subtle fw-bold" id="floatingDataIda">
+                                <label for="floatingDataIda">📅 Ida</label>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-2 col-md-4">
+                            <div class="form-floating">
+                                <input type="date" name="data_volta" class="form-control border-secondary-subtle fw-bold" id="floatingDataVolta">
+                                <label for="floatingDataVolta">📅 Volta</label>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-2 col-md-4">
+                            <button type="submit" class="btn btn-primary text-white w-100 h-100 fw-bold shadow-sm rounded-3">
+                                BUSCAR
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container my-5 py-4">
+    <div class="d-flex align-items-center mb-4">
+        <h3 class="fw-light m-0 text-primary">Destinos em <span class="fw-bold">Destaque</span></h3>
+        <hr class="flex-grow-1 ms-3 opacity-25">
+    </div>
+
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        <div class="col">
+            <div class="card h-100 border-0 shadow-sm hover-shadow transition-all">
+                <img src="https://images.unsplash.com/photo-1483729558449-99ef09a8c325?q=80&w=800&auto=format&fit=crop" class="card-img-top" style="height: 200px; object-fit: cover;" alt="Rio">
+                <div class="card-body">
+                    <h5 class="card-title fw-bold">Rio de Janeiro</h5>
+                    <p class="card-text text-muted small">Praias, Cristo Redentor e muito mais.</p>
+                </div>
+                <div class="card-footer bg-transparent border-top-0 d-flex justify-content-between align-items-center pb-3">
+                    <small class="text-muted">A partir de</small>
+                    <span class="fs-4 fw-bold text-primary">R$ 950,00</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="card h-100 border-0 shadow-sm hover-shadow transition-all">
+                <img src="https://images.unsplash.com/photo-1708397440521-e28f1ac020a0?q=80&w=735&auto=format&fit=crop" class="card-img-top" style="height: 200px; object-fit: cover;" alt="Salvador">
+                <div class="card-body">
+                    <h5 class="card-title fw-bold">Salvador</h5>
+                    <p class="card-text text-muted small">O melhor carnaval e história do Brasil.</p>
+                </div>
+                <div class="card-footer bg-transparent border-top-0 d-flex justify-content-between align-items-center pb-3">
+                    <small class="text-muted">A partir de</small>
+                    <span class="fs-4 fw-bold text-primary">R$ 1.200,00</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="card h-100 border-0 shadow-sm hover-shadow transition-all">
+                <img src="https://images.unsplash.com/photo-1629984557791-110bca02b88b?q=80&w=687&auto=format&fit=crop" class="card-img-top" style="height: 200px; object-fit: cover;" alt="SP">
+                <div class="card-body">
+                    <h5 class="card-title fw-bold">São Paulo</h5>
+                    <p class="card-text text-muted small">Negócios, gastronomia e cultura.</p>
+                </div>
+                <div class="card-footer bg-transparent border-top-0 d-flex justify-content-between align-items-center pb-3">
+                    <small class="text-muted">A partir de</small>
+                    <span class="fs-4 fw-bold text-primary">R$ 1.150,00</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="bg-body-tertiary py-5">
+    <div class="container text-center">
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="p-3">
+                    <div class="display-6 mb-2">💺</div>
+                    <h5 class="fw-bold">Marcacão de Assento</h5>
+                    <p class="text-muted small">Escolha seu lugar favorito na janela ou corredor.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="p-3">
+                    <div class="display-6 mb-2">🧳</div>
+                    <h5 class="fw-bold">Bagagem Despachada</h5>
+                    <p class="text-muted small">Compre sua bagagem extra com desconto online.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="p-3">
+                    <div class="display-6 mb-2">📱</div>
+                    <h5 class="fw-bold">Check-in Digital</h5>
+                    <p class="text-muted small">Praticidade na palma da sua mão.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .text-shadow { text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
+    .hover-shadow:hover { transform: translateY(-5px); box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important; }
+    .transition-all { transition: all 0.3s ease; }
+</style>
+
+{% endblock %}

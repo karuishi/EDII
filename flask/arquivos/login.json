@@ -15,5 +15,10 @@
         "senha": "Sunghoonvida",
         "role": "cliente",
         "cpf": "12345678910"
+    },
+    "blabla": {
+        "senha": "blabla",
+        "role": "cliente",
+        "cpf": "12345678911"
     }
 }

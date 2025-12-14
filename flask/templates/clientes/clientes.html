@@ -6,10 +6,24 @@
         <a href="{{ url_for('adicionar_cliente') }}" class="btn btn-primary">Adicionar Novo Cliente</a>
     </div>
 
-    <div class="mb-3">
-        <a href="{{ url_for('listar_clientes') }}" class="btn btn-sm btn-outline-secondary">Ordenar por Nome</a>
-        <a href="{{ url_for('listar_clientes_cpf') }}" class="btn btn-sm btn-outline-secondary">Ordenar por CPF</a>
-        <a href="{{ url_for('listar_reservas') }}" class="btn btn-sm btn-outline-info">Ver Todas as Reservas</a>
+    <div class="card mb-4 border-0 shadow-sm" style="background-color: transparent;"> <div class="card-body p-0"> <form method="GET" action="{{ url_for('listar_clientes') }}" class="row g-3 align-items-center bg-body-tertiary p-3 rounded border"> <div class="col-md-4">
+                    <input type="text" name="busca_nome" class="form-control" placeholder="Buscar por Nome específico...">
+                </div>
+                <div class="col-md-2">
+                    <input type="text" name="busca_inicial" class="form-control" placeholder="Inicial (ex: A)" maxlength="1">
+                </div>
+                <div class="col-md-2">
+                    <button type="submit" class="btn btn-primary w-100">Buscar</button>
+                </div>
+                <div class="col-md-4 text-end">
+                    <div class="btn-group" role="group">
+                        <a href="{{ url_for('listar_clientes') }}" class="btn btn-outline-secondary">Limpar Busca</a>
+                        <a href="{{ url_for('listar_clientes') }}" class="btn btn-outline-secondary active">Ordenar por Nome</a>
+                        <a href="{{ url_for('listar_clientes_cpf') }}" class="btn btn-outline-secondary">Ordenar por CPF </a>
+                    </div>
+                </div>
+            </form>
+        </div>
     </div>
     
     <div class="table-responsive">
@@ -20,8 +34,7 @@
                     <th>Nome</th>
                     <th>Data Viagem</th>
                     <th>Milhas</th>
-                    <th>Reservas</th>
-                    <th>Ações</th>
+                    <th>Reservas (Códigos)</th> <th>Ações</th>
                 </tr>
             </thead>
             <tbody>
@@ -31,11 +44,23 @@
                     <td>{{ dados.Nome }}</td>
                     <td>{{ dados.Data_viagem }}</td>
                     <td>{{ dados.Milhas }}</td>
-                    <td>{{ dados.Reservas | length }}</td>
+                    <td>
+                        {% if dados.Reservas %}
+                            {% for res in dados.Reservas %}
+                                <span class="badge bg-info text-dark">{{ res }}</span>
+                            {% endfor %}
+                        {% else %}
+                            <span class="text-muted small">Nenhuma</span>
+                        {% endif %}
+                    </td>
                     <td>
                         <a href="#" class="btn btn-sm btn-outline-primary">Editar</a>
                         <a href="#" class="btn btn-sm btn-outline-danger">Excluir</a>
                     </td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="6" class="text-center py-4">Nenhum cliente encontrado.</td>
                 </tr>
                 {% endfor %}
             </tbody>
