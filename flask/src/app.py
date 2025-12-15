@@ -1,8 +1,10 @@
+import folium
 from flask import Flask, render_template, request, redirect, url_for, session, flash
 import json
 import os
 from BTree import BTree 
 from data_manager import *
+from grafo import Graph
 import random
 
 app = Flask(__name__, template_folder='../templates', static_folder='../static')
@@ -12,6 +14,9 @@ voos = carregar_voos()
 dados_clientes, clientes_btree_cpf = carregar_clientes()
 reservas = carregar_reservas()
 login_senha = carregar_login()
+grafos_voos = Graph()
+for codigo, dados in voos.items():
+    grafos_voos.add_edge(dados['Origem'], dados['Destino'], codigo, dados['Preco'])
 
 # --- Rota da Paǵina Inicial ---
 @app.route('/')
@@ -157,8 +162,35 @@ def pagina_passageiro():
             if corresponde:
                 voos_exibicao[codigo] = dados
     else:
-        voos_exibicao = voos
-    
+        voos_exibicao = voos.copy()
+
+    if origem_filtro and destino_filtro and not voos_exibicao:
+        grafos_atualizado = Graph()
+        for cod, dados in voos.items():
+            grafos_atualizado.add_edge(dados['Origem'], dados['Destino'], cod, dados['Preco'])
+
+        resultado_grafo = grafos_atualizado.dijkstra(origem_filtro, destino_filtro)
+        
+        if resultado_grafo:
+            custo_total, caminho_codigos = resultado_grafo
+            
+            # Se o caminho tem mais de 1 voo (é uma conexão)
+            if len(caminho_codigos) > 1:
+                # Cria um "Voo Virtual" para exibir no card
+                codigo_combo = "CONEXAO-" + "_".join(caminho_codigos)
+                primeiro_voo = voos[caminho_codigos[0]]
+                
+                voos_exibicao[codigo_combo] = {
+                    "Origem": origem_filtro,
+                    "Destino": destino_filtro,
+                    "Preco": custo_total,
+                    "Aeronave": f"Voo com {len(caminho_codigos)-1} Escala(s)",
+                    "Milhas": sum(voos[c]['Milhas'] for c in caminho_codigos),
+                    "Datas": primeiro_voo.get('Datas', []),
+                    "Total_assentos": min(voos[c]['Total_assentos'] for c in caminho_codigos),
+                    "Eh_Conexao": True
+                }
+                
     # Filtrar reservas do cliente logado
     minhas_reservas = {}
     if role != 'admin':
@@ -176,48 +208,61 @@ def pagina_passageiro():
 
 @app.route('/passageiro/reservar/<codigo_voo>')
 def reservar_passagem(codigo_voo):
-    if 'usuario' not in session:
-        return redirect(url_for('login'))
+    if 'usuario' not in session: return redirect(url_for('login'))
+    if session.get('role') == 'admin': return redirect(url_for('pagina_passageiro'))
     
-    if session.get('role') == 'admin':
-        flash('Admins devem usar o painel administrativo para criar reservas.', 'warning')
-        return redirect(url_for('pagina_passageiro'))
-    
-    if 'cpf' not in session:
-        return redirect(url_for('login'))
-
     cpf_cliente = int(session['cpf'])
 
-    # Verifica se o voo existe e tem assentos
-    if codigo_voo not in voos:
-        flash("Voo não encontrado.", 'danger')
-        return redirect(url_for('pagina_passageiro'))
+    # --- LÓGICA PARA CONEXÕES (CORRIGIDA) ---
+    lista_voos_para_reservar = []
     
-    if voos[codigo_voo]['Total_assentos'] <= 0:
-        flash("Voo lotado!", 'danger')
-        return redirect(url_for('pagina_passageiro'))
-    
-    # Realiza a reserva
-    voos[codigo_voo]['Total_assentos'] -= 1
+    if codigo_voo.startswith("CONEXAO-"):
+        # Remove o prefixo e separa por "_" (underscore)
+        # Ex: "CONEXAO-ED-001_ED-006" vira ["ED-001", "ED-006"]
+        trecho_codigos = codigo_voo.replace("CONEXAO-", "")
+        lista_voos_para_reservar = trecho_codigos.split("_")
+    else:
+        # É um voo direto normal
+        lista_voos_para_reservar = [codigo_voo]
+
+    # 1. Validação: Todos os voos existem e têm vaga?
+    total_milhas_ganhas = 0
+    primeira_data = ""
+
+    for cod in lista_voos_para_reservar:
+        if cod not in voos:
+            flash(f"Erro: O voo '{cod}' não está disponível.", 'danger')
+            return redirect(url_for('pagina_passageiro'))
+        if voos[cod]['Total_assentos'] <= 0:
+            flash(f"O voo {cod} está lotado!", 'danger')
+            return redirect(url_for('pagina_passageiro'))
+        
+        total_milhas_ganhas += voos[cod]['Milhas']
+        if not primeira_data:
+            datas = voos[cod].get('Datas', [])
+            if datas: primeira_data = datas[0]
+
+    # 2. Efetiva a Compra (Debita assentos)
+    for cod in lista_voos_para_reservar:
+        voos[cod]['Total_assentos'] -= 1
     salvar_voos(voos)
 
+    # 3. Cria a Reserva Unificada
     novo_codigo_reserva = gerar_codigo_reserva(reservas)
     reservas[novo_codigo_reserva] = {
         "Cliente": dados_clientes[cpf_cliente]['Nome'],
         "CPF": cpf_cliente,
-        "Voos": [codigo_voo]
+        "Voos": lista_voos_para_reservar
     }
     salvar_reservas(reservas)
 
-    # Atualiza o cliente
+    # 4. Atualiza Cliente
     dados_clientes[cpf_cliente]['Reservas'].append(novo_codigo_reserva)
-    milhas_ganhas = voos[codigo_voo]['Milhas']
     milhas_atuais = int(dados_clientes[cpf_cliente].get('Milhas', 0))
-    dados_clientes[cpf_cliente]['Milhas'] = milhas_atuais + milhas_ganhas
-
-    datas_do_voo = voos[codigo_voo].get('Datas', [])
-    if datas_do_voo:
-        dados_clientes[cpf_cliente]['Data_viagem'] = datas_do_voo[0]
+    dados_clientes[cpf_cliente]['Milhas'] = milhas_atuais + total_milhas_ganhas
+    
+    if primeira_data:
+        dados_clientes[cpf_cliente]['Data_viagem'] = primeira_data
 
     salvar_clientes(dados_clientes)
 
@@ -596,6 +641,75 @@ def realizar_checkin():
             })
 
     return render_template('passageiros/cartao_embarque.html', reserva=reserva, voos=dados_voos, codigo=codigo_reserva)
+
+# --- Rota para o Mapa de Voos (Folium) ---
+@app.route('/mapa')
+def mapa_voos():
+    # 1. Detecta o tema (padrão é light)
+    theme = request.args.get('theme', 'light')
+    
+    # 2. Configurações visuais baseadas no tema
+    if theme == 'dark':
+        tiles = 'CartoDB dark_matter'  # Mapa Escuro
+        line_color = '#0d6efd'         # Azul Neon
+        marker_color = '#ffc107'       # Amarelo (Destaque no escuro)
+    else:
+        tiles = 'CartoDB positron'     # Mapa Claro (Clean)
+        line_color = '#0d6efd'         # Azul Primário
+        marker_color = '#0d6efd'       # Azul (Destaque no branco)
+
+    # 3. Coordenadas
+    coordenadas = {
+        "Salvador": [-12.9704, -38.5124],
+        "São Paulo": [-23.5505, -46.6333],
+        "Rio de Janeiro": [-22.9068, -43.1729],
+        "Brasília": [-15.7801, -47.9292],
+        "Belém": [-1.4558, -48.4902],
+        "Fortaleza": [-3.7172, -38.5434],
+        "Recife": [-8.0476, -34.8770],
+        "Curitiba": [-25.4284, -49.2733],
+        "Porto Alegre": [-30.0346, -51.2177],
+        "Manaus": [-3.1190, -60.0217]
+    }
+
+    # 4. Gera o Mapa
+    m = folium.Map(location=[-15.7801, -47.9292], zoom_start=4, tiles=tiles)
+
+    cidades_adicionadas = set()
+
+    for codigo, dados in voos.items():
+        origem_nome = dados['Origem'].split(' - ')[0]
+        destino_nome = dados['Destino'].split(' - ')[0]
+
+        coord_origem = coordenadas.get(origem_nome)
+        coord_destino = coordenadas.get(destino_nome)
+
+        if coord_origem and coord_destino:
+            # Linha da Rota
+            folium.PolyLine(
+                locations=[coord_origem, coord_destino],
+                color=line_color,
+                weight=2,
+                opacity=0.7,
+                tooltip=f"Voo {codigo}"
+            ).add_to(m)
+
+            # Marcadores (Origem e Destino)
+            for nome, coord in [(origem_nome, coord_origem), (destino_nome, coord_destino)]:
+                if nome not in cidades_adicionadas:
+                    folium.CircleMarker(
+                        location=coord,
+                        radius=6,
+                        color=marker_color,
+                        fill=True,
+                        fill_color=marker_color,
+                        fill_opacity=1, # Cor sólida para cobrir as linhas
+                        popup=nome,
+                        tooltip=nome
+                    ).add_to(m)
+                    cidades_adicionadas.add(nome)
+
+    return m._repr_html_()
 
 if __name__ == '__main__':
     app.run(debug=True)

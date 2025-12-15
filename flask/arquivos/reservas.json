@@ -27,5 +27,18 @@
             "ED-004": "17F"
         },
         "Status_Checkin": true
+    },
+    "RES6": {
+        "Cliente": "Kim Sunoo da Silva",
+        "CPF": 12345678910,
+        "Voos": [
+            "ED-001",
+            "ED-006"
+        ],
+        "Assentos": {
+            "ED-001": "8D",
+            "ED-006": "21C"
+        },
+        "Status_Checkin": true
     }
 }

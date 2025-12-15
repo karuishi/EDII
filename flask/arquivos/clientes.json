@@ -15,10 +15,11 @@
         "Nome": "Kim Sunoo da Silva",
         "Reservas": [
             "RES1",
-            "RES5"
+            "RES5",
+            "RES6"
         ],
-        "Data_viagem": "2026-02-15",
-        "Milhas": 2500
+        "Data_viagem": "2025-12-31",
+        "Milhas": 5000
     },
     "12345678911": {
         "Nome": "Bla Bla",

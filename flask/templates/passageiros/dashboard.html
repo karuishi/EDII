@@ -58,6 +58,11 @@
                     🎫 Check-in
                 </button>
             </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link rounded-pill fw-bold py-2" id="mapa-tab" data-bs-toggle="pill" data-bs-target="#mapa" type="button" role="tab">
+                    🗺️ Mapa de Rotas
+                </button>
+            </li>
         </ul>
     </div>
     
@@ -287,6 +292,61 @@
                 </div>
             </div>
 
+            <div class="tab-pane fade" id="mapa" role="tabpanel">
+                <div class="text-center mb-4">
+                    <h3 class="fw-bold text-body-emphasis">Nossa Malha Aérea</h3>
+                    <p class="text-muted">Explore todos os destinos operados pela SOL Airlines.</p>
+                </div>
+                
+                <div class="card border-0 shadow overflow-hidden rounded-4 position-relative">
+                    <div id="mapLoader" class="position-absolute top-50 start-50 translate-middle text-primary" style="z-index: 0;">
+                        <div class="spinner-border" role="status"></div>
+                    </div>
+
+                    <iframe id="mapaFrame" src="" width="100%" height="500px" style="border:none; z-index: 1; position: relative;" onload="document.getElementById('mapLoader').style.display='none';"></iframe>
+                </div>
+                
+                <script>
+                    document.addEventListener("DOMContentLoaded", function() {
+                        const iframe = document.getElementById('mapaFrame');
+                        const loader = document.getElementById('mapLoader');
+                        const htmlElement = document.documentElement;
+                        
+                        // Função que define a URL do mapa baseada no tema atual
+                        function updateMapTheme() {
+                            // Mostra loader ao trocar
+                            loader.style.display = 'block';
+                            
+                            // Pega o tema (dark ou light)
+                            const currentTheme = htmlElement.getAttribute('data-bs-theme');
+                            
+                            // Define a nova URL
+                            const newSrc = "{{ url_for('mapa_voos') }}?theme=" + currentTheme;
+                            
+                            // Só atualiza se for diferente para evitar loop
+                            if (iframe.src.indexOf("theme=" + currentTheme) === -1) {
+                                iframe.src = newSrc;
+                            }
+                        }
+
+                        // 1. Carrega na inicialização
+                        updateMapTheme();
+
+                        // 2. Cria um observador para detectar quando você clica no botão de tema
+                        const observer = new MutationObserver((mutations) => {
+                            mutations.forEach((mutation) => {
+                                if (mutation.type === 'attributes' && mutation.attributeName === 'data-bs-theme') {
+                                    updateMapTheme();
+                                }
+                            });
+                        });
+
+                        // Começa a observar a tag <html>
+                        observer.observe(htmlElement, { attributes: true });
+                    });
+                </script>
+            </div>
+
         </div>
     </div>
 </div>
@@ -331,5 +391,20 @@
         border-bottom-right-radius: 0.5rem;
     }
 </style>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var hash = window.location.hash;
+        
+        if (hash) {
+            var triggerEl = document.querySelector('button[data-bs-target="' + hash + '"]');
+            
+            if (triggerEl) {
+                var tab = new bootstrap.Tab(triggerEl);
+                tab.show();
+            }
+        }
+    });
+</script>
 
 {% endblock %}
