@@ -16,10 +16,11 @@
         "Reservas": [
             "RES1",
             "RES5",
-            "RES6"
+            "RES6",
+            "RES7"
         ],
-        "Data_viagem": "2025-12-31",
-        "Milhas": 5000
+        "Data_viagem": "2026-01-20",
+        "Milhas": 6500
     },
     "12345678911": {
         "Nome": "Bla Bla",

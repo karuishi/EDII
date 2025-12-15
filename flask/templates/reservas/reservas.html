@@ -9,7 +9,7 @@
             <h1 class="h3 fw-bold text-body-emphasis mb-1">Reservas Efetuadas</h1>
             <p class="text-muted mb-0">Monitore as vendas de passagens e histórico de passageiros.</p>
         </div>
-        <a href="{{ url_for('fazer_reserva') }}" class="btn btn-primary rounded-pill px-4 fw-bold shadow-sm">
+        <a href="{{ url_for('admin.fazer_reserva') }}" class="btn btn-primary rounded-pill px-4 fw-bold shadow-sm">
             <i class="bi bi-calendar-plus me-2"></i> Nova Reserva
         </a>
     </div>
@@ -64,11 +64,11 @@
                             
                             <td class="pe-4 text-end">
                                 <div class="btn-group">
-                                    <a href="{{ url_for('detalhes_reserva', codigo_reserva=codigo) }}" class="btn btn-sm btn-outline-secondary border-0" title="Ver Detalhes" data-bs-toggle="tooltip">
+                                    <a href="{{ url_for('admin.detalhes_reserva', codigo_reserva=codigo) }}" class="btn btn-sm btn-outline-secondary border-0" title="Ver Detalhes" data-bs-toggle="tooltip">
                                         <i class="bi bi-eye"></i>
                                     </a>
                                     
-                                    <a href="{{ url_for('excluir_reserva', codigo_reserva=codigo) }}" 
+                                    <a href="{{ url_for('admin.excluir_reserva', codigo_reserva=codigo) }}" 
                                     class="btn btn-sm btn-outline-secondary border-0 text-danger" 
                                     title="Cancelar Reserva" 
                                     onclick="return confirm('Tem certeza que deseja cancelar a reserva {{ codigo }}? Esta ação liberará os assentos e estornará as milhas.');">
@@ -96,7 +96,7 @@
         <div class="card-footer bg-transparent border-top-0 py-3">
             <div class="d-flex justify-content-between align-items-center">
                 <small class="text-muted">Total de reservas: <strong>{{ reservas|length }}</strong></small>
-                <a href="{{ url_for('listar_voos') }}" class="btn btn-sm btn-link text-decoration-none">Ver Voos Disponíveis &rarr;</a>
+                <a href="{{ url_for('admin.listar_voos') }}" class="btn btn-sm btn-link text-decoration-none">Ver Voos Disponíveis &rarr;</a>
             </div>
         </div>
     </div>

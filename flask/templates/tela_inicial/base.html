@@ -12,39 +12,14 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     
     <style>
-        /* Ajuste para o conteúdo não ficar escondido atrás da navbar fixa */
-        body {
-            padding-top: 76px; /* Altura aproximada da navbar */
-        }
-        
-        /* Transição suave de cores ao trocar o tema */
-        body, .navbar, .card, .dropdown-menu {
-            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
-        }
-
-        /* Destaque no link ativo */
-        .nav-link.active {
-            font-weight: 700;
-            color: var(--bs-primary) !important;
-        }
-
-        /* Ajustes Mobile */
+        body { padding-top: 76px; }
+        body, .navbar, .card, .dropdown-menu { transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease; }
+        .nav-link.active { font-weight: 700; color: var(--bs-primary) !important; }
         @media (max-width: 991.98px) {
-            .navbar-nav {
-                padding-top: 1rem;
-            }
-            .nav-item {
-                border-bottom: 1px solid var(--bs-border-color-translucent);
-                padding: 0.5rem 0;
-            }
-            .nav-item:last-child {
-                border-bottom: none;
-            }
-            #darkModeToggle {
-                width: 100%;
-                margin-top: 1rem;
-                justify-content: center;
-            }
+            .navbar-nav { padding-top: 1rem; }
+            .nav-item { border-bottom: 1px solid var(--bs-border-color-translucent); padding: 0.5rem 0; }
+            .nav-item:last-child { border-bottom: none; }
+            #darkModeToggle { width: 100%; margin-top: 1rem; justify-content: center; }
         }
     </style>
 </head>
@@ -65,15 +40,15 @@
                 <ul class="navbar-nav ms-auto align-items-lg-center">
                     
                     {% if session.get('role') == 'admin' %}
-                        <li class="nav-item"><a class="nav-link" href="{{ url_for('listar_clientes') }}">Clientes</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{{ url_for('listar_voos') }}">Voos</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{{ url_for('listar_reservas') }}">Reservas</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('admin.listar_clientes') }}">Clientes</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('admin.listar_voos') }}">Voos</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('admin.listar_reservas') }}">Reservas</a></li>
                         <li class="nav-item d-none d-lg-block mx-2 border-start" style="height: 24px;"></li>
                     {% endif %}
                     
                     {% if session.get('usuario') %}
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ url_for('pagina_passageiro') }}">
+                            <a class="nav-link" href="{{ url_for('passageiro.pagina_passageiro') }}">
                                 <i class="bi bi-search"></i> Buscar Voos
                             </a>
                         </li>
@@ -82,15 +57,15 @@
                                 <i class="bi bi-person-circle"></i> Olá, {{ session.get('usuario') }}
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0 mt-2">
-                                <li><a class="dropdown-item" href="{{ url_for('pagina_passageiro') }}#reservas">Minhas Viagens</a></li>
-                                <li><a class="dropdown-item" href="{{ url_for('pagina_passageiro') }}#checkin">Check-in</a></li>
+                                <li><a class="dropdown-item" href="{{ url_for('passageiro.pagina_passageiro') }}#reservas">Minhas Viagens</a></li>
+                                <li><a class="dropdown-item" href="{{ url_for('passageiro.pagina_passageiro') }}#checkin">Check-in</a></li>
                                 <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item text-danger" href="{{ url_for('logout') }}">Sair</a></li>
+                                <li><a class="dropdown-item text-danger" href="{{ url_for('auth.logout') }}">Sair</a></li>
                             </ul>
                         </li>
                     {% else %}
                         <li class="nav-item">
-                            <a class="btn btn-primary rounded-pill px-4 fw-bold shadow-sm ms-lg-3" href="{{ url_for('login') }}">
+                            <a class="btn btn-primary rounded-pill px-4 fw-bold shadow-sm ms-lg-3" href="{{ url_for('auth.login') }}">
                                 Entrar
                             </a>
                         </li>
@@ -124,29 +99,22 @@
             const htmlElement = document.documentElement;
             const toggleButton = document.getElementById('darkModeToggle');
             const icon = toggleButton.querySelector('i');
-            
-            // Ícones
             const iconMoon = 'bi-moon-stars-fill';
             const iconSun = 'bi-sun-fill';
 
             function applyTheme(theme) {
                 htmlElement.setAttribute('data-bs-theme', theme);
                 localStorage.setItem('theme', theme);
-                
                 if (theme === 'dark') {
-                    icon.classList.remove(iconMoon);
-                    icon.classList.add(iconSun);
+                    icon.classList.remove(iconMoon); icon.classList.add(iconSun);
                 } else {
-                    icon.classList.remove(iconSun);
-                    icon.classList.add(iconMoon);
+                    icon.classList.remove(iconSun); icon.classList.add(iconMoon);
                 }
             }
 
-            // Carrega tema salvo ou padrão
             let currentTheme = localStorage.getItem('theme') || 'light';
             applyTheme(currentTheme);
 
-            // Evento de clique
             toggleButton.addEventListener('click', function() {
                 const newTheme = htmlElement.getAttribute('data-bs-theme') === 'dark' ? 'light' : 'dark';
                 applyTheme(newTheme);

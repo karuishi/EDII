@@ -75,7 +75,7 @@
                     <p class="text-muted">Utilize os filtros abaixo para buscar voos disponíveis.</p>
                 </div>
                 
-                <form action="{{ url_for('pagina_passageiro') }}" method="GET" class="row g-3 mb-5 p-4 bg-body-tertiary rounded-4 border">
+                <form action="{{ url_for('passageiro.pagina_passageiro') }}" method="GET" class="row g-3 mb-5 p-4 bg-body-tertiary rounded-4 border">
                     <div class="col-md-3">
                         <div class="form-floating">
                             <select name="origem" class="form-select border-0 shadow-sm" id="origemSelect">
@@ -180,7 +180,7 @@
                                 </div>
                                 
                                 <div class="d-grid gap-2">
-                                    <a href="{{ url_for('reservar_passagem', codigo_voo=codigo) }}" class="btn btn-outline-primary fw-bold border-2 rounded-3">
+                                    <a href="{{ url_for('passageiro.reservar_passagem', codigo_voo=codigo) }}" class="btn btn-outline-primary fw-bold border-2 rounded-3">
                                         Selecionar Voo
                                     </a>
                                 </div>
@@ -196,7 +196,7 @@
                         <div class="text-muted display-1 mb-3">🛫</div>
                         <h4>Nenhum voo encontrado.</h4>
                         <p class="text-muted">Tente alterar os filtros de busca.</p>
-                        <a href="{{ url_for('pagina_passageiro') }}" class="btn btn-secondary mt-2">Limpar Filtros</a>
+                        <a href="{{ url_for('passageiro.pagina_passageiro') }}" class="btn btn-secondary mt-2">Limpar Filtros</a>
                     </div>
                     {% endfor %}
                 </div>
@@ -246,7 +246,7 @@
                                         </div>
                                         
                                         <div class="bg-body-tertiary p-3 d-flex align-items-center justify-content-center border-start border-secondary-subtle" style="min-width: 120px;">
-                                            <a href="{{ url_for('detalhes_reserva', codigo_reserva=codigo) }}" class="btn btn-outline-primary fw-bold w-100 shadow-sm">
+                                            <a href="{{ url_for('admin.detalhes_reserva', codigo_reserva=codigo) }}" class="btn btn-outline-primary fw-bold w-100 shadow-sm">
                                                 Detalhes
                                             </a>
                                         </div>
@@ -279,7 +279,7 @@
                             O check-in abre 48 horas antes do seu voo. Digite o código da reserva para começar.
                         </p>
                         
-                        <form action="{{ url_for('realizar_checkin') }}" method="POST" class="w-100">
+                        <form action="{{ url_for('passageiro.realizar_checkin') }}" method="POST" class="w-100">
                             <div class="input-group input-group-lg mb-3 shadow-sm">
                                 <input type="text" name="codigo_reserva" class="form-control border-end" border-end-0" placeholder="Código da Reserva (ex: RES1)" aria-label="Código da Reserva" required style="text-transform: uppercase;">
                                 <button class="btn btn-primary px-4 fw-bold" type="submit">
@@ -321,7 +321,7 @@
                             const currentTheme = htmlElement.getAttribute('data-bs-theme');
                             
                             // Define a nova URL
-                            const newSrc = "{{ url_for('mapa_voos') }}?theme=" + currentTheme;
+                            const newSrc = "{{ url_for('passageiro.mapa_voos') }}?theme=" + currentTheme;
                             
                             // Só atualiza se for diferente para evitar loop
                             if (iframe.src.indexOf("theme=" + currentTheme) === -1) {

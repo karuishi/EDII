@@ -20,17 +20,17 @@
         <div class="card-header bg-light border-bottom-0 p-2">
             <ul class="nav nav-pills nav-fill gap-2" id="pills-tab" role="tablist">
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link fw-bold rounded-pill text-secondary" type="button" onclick="window.location.href='{{ url_for('pagina_passageiro') }}#comprar'">
+                    <button class="nav-link fw-bold rounded-pill text-secondary" type="button" onclick="window.location.href='{{ url_for('passageiro.pagina_passageiro') }}#comprar'">
                         ✈️ Comprar Passagens
                     </button>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link fw-bold rounded-pill text-secondary" type="button" onclick="window.location.href='{{ url_for('pagina_passageiro') }}#checkin'">
+                    <button class="nav-link fw-bold rounded-pill text-secondary" type="button" onclick="window.location.href='{{ url_for('passageiro.pagina_passageiro') }}#checkin'">
                         🎫 Check-in
                     </button>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link fw-bold rounded-pill text-secondary" type="button" onclick="window.location.href='{{ url_for('pagina_passageiro') }}#reservas'">
+                    <button class="nav-link fw-bold rounded-pill text-secondary" type="button" onclick="window.location.href='{{ url_for('passageiro.pagina_passageiro') }}#reservas'">
                         📅 Minhas Viagens
                     </button>
                 </li>
@@ -52,7 +52,7 @@
                         </div>
                     </div>
 
-                    <form action="{{ url_for('pagina_passageiro') }}" method="GET" class="row g-2">
+                    <form action="{{ url_for('passageiro.pagina_passageiro') }}" method="GET" class="row g-2">
                         
                         <div class="col-lg-3 col-md-6">
                             <div class="form-floating">

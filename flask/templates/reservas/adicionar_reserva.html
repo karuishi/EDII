@@ -54,7 +54,7 @@
                                 <label for="cpf_cliente" class="text-muted fw-bold">Cliente</label>
                             </div>
                             <div class="form-text ms-2 mt-1">
-                                <i class="bi bi-plus-circle"></i> Não encontrou? <a href="{{ url_for('adicionar_cliente') }}" class="text-decoration-none fw-bold">Cadastrar novo cliente</a>
+                                <i class="bi bi-plus-circle"></i> Não encontrou? <a href="{{ url_for('admin.adicionar_cliente') }}" class="text-decoration-none fw-bold">Cadastrar novo cliente</a>
                             </div>
                         </div>
 
@@ -89,7 +89,7 @@
                             <button type="submit" class="btn btn-primary btn-lg rounded-pill fw-bold px-5 shadow-sm flex-grow-1">
                                 <i class="bi bi-check2-circle me-2"></i> Confirmar Reserva
                             </button>
-                            <a href="{{ url_for('listar_reservas') }}" class="btn btn-outline-secondary btn-lg rounded-pill fw-bold px-4 border-0 bg-white shadow-sm">
+                            <a href="{{ url_for('admin.listar_reservas') }}" class="btn btn-outline-secondary btn-lg rounded-pill fw-bold px-4 border-0 bg-white shadow-sm">
                                 Voltar à Lista
                             </a>
                         </div>
