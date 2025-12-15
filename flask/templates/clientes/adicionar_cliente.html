@@ -1,31 +1,87 @@
 {% extends "tela_inicial/base.html" %}
-{% block title %}Adicionar Cliente{% endblock %}
+{% block title %}Novo Cliente{% endblock %}
+
 {% block content %}
-    <h1>Adicionar Novo Cliente</h1>
-    
-    <div class="card">
-        <div class="card-body">
-            <form method="post">
-                <div class="mb-3">
-                    <label for="cpf" class="form-label">CPF (só números):</label>
-                    <input type="text" name="cpf" id="cpf" class="form-control" required>
-                </div>
-                <div class="mb-3">
-                    <label for="nome" class="form-label">Nome:</label>
-                    <input type="text" name="nome" id="nome" class="form-control" required>
-                </div>
-                <div class="mb-3">
-                    <label for="data_viagem" class="form-label">Data da Viagem (DD/MM/AAAA):</label>
-                    <input type="text" name="data_viagem" id="data_viagem" class="form-control" required>
-                </div>
-                <div class="mb-3">
-                    <label for="milhas" class="form-label">Milhas:</label>
-                    <input type="text" name="milhas" id="milhas" class="form-control" required>
-                </div>
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8 col-md-10">
+            
+            <div class="card border-0 shadow-lg rounded-4 overflow-hidden">
                 
-                <button type="submit" class="btn btn-primary mt-3">Adicionar Cliente</button>
-                <a href="{{ url_for('listar_clientes') }}" class="btn btn-secondary mt-3">Cancelar</a>
-            </form>
+                <div class="card-header bg-primary text-white p-4 p-md-5 text-center position-relative overflow-hidden">
+                    <div class="position-absolute top-0 start-0 w-100 h-100 opacity-10" 
+                         style="background: radial-gradient(circle at 20% 50%, rgba(255,255,255,0.4) 0%, transparent 50%); pointer-events: none;"></div>
+                    
+                    <div class="position-relative z-1">
+                        <div class="d-inline-flex align-items-center justify-content-center bg-white text-primary rounded-circle mb-3 shadow-sm" style="width: 64px; height: 64px;">
+                            <i class="bi bi-person-plus-fill fs-3"></i>
+                        </div>
+                        <h2 class="fw-bold mb-1">Cadastrar Cliente</h2>
+                        <p class="text-white-50 mb-0">Insira os dados do passageiro para registro no sistema.</p>
+                    </div>
+                </div>
+
+                <div class="card-body p-4 p-md-5 bg-body-tertiary">
+                    <form method="post" class="row g-4">
+                        
+                        <div class="col-12">
+                            <h6 class="text-uppercase text-muted fw-bold small mb-2">
+                                <i class="bi bi-person-vcard me-1"></i> Informações Pessoais
+                            </h6>
+                            <hr class="mt-0 opacity-25">
+                        </div>
+
+                        <div class="col-md-7">
+                            <div class="form-floating">
+                                <input type="text" name="nome" id="nome" class="form-control rounded-3 border-0 shadow-sm" placeholder="Nome Completo" required oninput="this.value = this.value.replace(/[^a-zA-Z\u00C0-\u00FF ]/g, '')">
+                                <label for="nome" class="text-muted fw-bold">Nome Completo</label>
+                            </div>
+                        </div>
+
+                        <div class="col-md-5">
+                            <div class="form-floating">
+                                <input type="text" name="cpf" id="cpf" class="form-control rounded-3 border-0 shadow-sm" placeholder="CPF" required maxlength="11" inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+                                <label for="cpf" class="text-muted fw-bold">CPF (Apenas números)</label>
+                            </div>
+                        </div>
+
+                        <div class="col-12 mt-4">
+                            <h6 class="text-uppercase text-muted fw-bold small mb-2">
+                                <i class="bi bi-airplane me-1"></i> Detalhes da Conta
+                            </h6>
+                            <hr class="mt-0 opacity-25">
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-floating">
+                                <input type="text" name="data_viagem" id="data_viagem" class="form-control rounded-3 border-0 shadow-sm" placeholder="DD/MM/AAAA" required>
+                                <label for="data_viagem" class="text-muted fw-bold">Próxima Viagem (DD/MM/AAAA)</label>
+                            </div>
+                            <div class="form-text ms-2 mt-1 small text-muted">
+                                <i class="bi bi-info-circle me-1"></i> Use o formato dia/mês/ano.
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-floating">
+                                <input type="number" name="milhas" id="milhas" class="form-control rounded-3 border-0 shadow-sm" placeholder="0" required>
+                                <label for="milhas" class="text-muted fw-bold">Saldo de Milhas Inicial</label>
+                            </div>
+                        </div>
+
+                        <div class="col-12 mt-5 d-flex flex-column flex-md-row gap-3">
+                            <button type="submit" class="btn btn-primary btn-lg rounded-pill fw-bold px-5 shadow-sm flex-grow-1">
+                                <i class="bi bi-check-lg me-2"></i> Salvar Cliente
+                            </button>
+                            <a href="{{ url_for('listar_clientes') }}" class="btn btn-outline-secondary btn-lg rounded-pill fw-bold px-4 border-0 bg-white shadow-sm">
+                                Cancelar
+                            </a>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
+</div>
 {% endblock %}

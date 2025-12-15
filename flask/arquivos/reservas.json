@@ -124,5 +124,33 @@
         "Voos": [
             "ED-002"
         ]
+    },
+    "RES19": {
+        "Cliente": "Gerard Way da Silva",
+        "CPF": 11111111111,
+        "Voos": [
+            "ED-003"
+        ]
+    },
+    "RES20": {
+        "Cliente": "Gerard Way da Silva",
+        "CPF": 11111111111,
+        "Voos": [
+            "ED-003"
+        ]
+    },
+    "RES21": {
+        "Cliente": "Pedro Lucas de Jesus Santos",
+        "CPF": 6409426526,
+        "Voos": [
+            "ED-001"
+        ]
+    },
+    "RES22": {
+        "Cliente": "Caroline Lesnioski Parodi Araujo",
+        "CPF": 7177733186,
+        "Voos": [
+            "ED-003"
+        ]
     }
 }

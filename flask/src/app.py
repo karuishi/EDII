@@ -373,7 +373,8 @@ def fazer_reserva():
 
         for codigo_voo in voos_selecionados:
             if voos[codigo_voo]['Total_assentos'] <= 0:
-                return f"Erro: Não há assentos disponíveis para o voo {codigo_voo}!"
+                flash(f'Reserva não concluída: O voo {codigo_voo} está esgotado!', 'danger')
+                return redirect(url_for('fazer_reserva'))
 
         for codigo_voo in voos_selecionados:
             voos[codigo_voo]['Total_assentos'] -= 1
@@ -392,7 +393,8 @@ def fazer_reserva():
         dados_clientes[cpf_cliente]['Reservas'].append(novo_codigo)
         salvar_clientes(dados_clientes)
 
-        return redirect(url_for('listar_reservas'))
+        flash(f'Reserva {novo_codigo} realizada com sucesso para {nome_cliente}!', 'success')
+        return redirect(url_for('fazer_reserva'))
 
 if __name__ == '__main__':
     app.run(debug=True)

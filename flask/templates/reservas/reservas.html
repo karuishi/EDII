@@ -1,35 +1,100 @@
 {% extends "tela_inicial/base.html" %}
-{% block title %}Lista de Reservas{% endblock %}
+{% block title %}Gestão de Reservas{% endblock %}
+
 {% block content %}
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1>Reservas Efetuadas</h1>
-        <a href="{{ url_for('fazer_reserva') }}" class="btn btn-primary">Fazer Nova Reserva</a>
-    </div>
+<div class="container py-4">
     
-    <div class="table-responsive">
-        <table class="table table-striped table-hover align-middle">
-            <thead class="table-dark" style="background-color: var(--azul-primary);">
-                <tr>
-                    <th>Código Reserva</th>
-                    <th>Cliente</th>
-                    <th>CPF</th>
-                    <th>Voos</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for codigo, detalhes in reservas.items() %}
-                <tr>
-                    <td>{{ codigo }}</td>
-                    <td>{{ detalhes.Cliente }}</td>
-                    <td>{{ detalhes.CPF }}</td>
-                    <td>
-                        {{ detalhes.Voos | join(', ') }}
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mb-4 gap-3">
+        <div>
+            <h1 class="h3 fw-bold text-body-emphasis mb-1">Reservas Efetuadas</h1>
+            <p class="text-muted mb-0">Monitore as vendas de passagens e histórico de passageiros.</p>
+        </div>
+        <a href="{{ url_for('fazer_reserva') }}" class="btn btn-primary rounded-pill px-4 fw-bold shadow-sm">
+            <i class="bi bi-calendar-plus me-2"></i> Nova Reserva
+        </a>
     </div>
-    <br>
-    <a href="{{ url_for('listar_voos') }}" class="btn btn-secondary">Voltar para Gestão de Voos</a>
+
+    <div class="card border-0 shadow-lg rounded-4 overflow-hidden">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="bg-body-secondary border-bottom">
+                        <tr>
+                            <th class="ps-4 py-3 text-uppercase text-muted small fw-bold">Código</th>
+                            <th class="py-3 text-uppercase text-muted small fw-bold">Passageiro / CPF</th>
+                            <th class="py-3 text-uppercase text-muted small fw-bold">Itinerário (Voos)</th>
+                            <th class="py-3 text-uppercase text-muted small fw-bold">Status</th>
+                            <th class="pe-4 py-3 text-end text-uppercase text-muted small fw-bold">Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for codigo, detalhes in reservas.items() %}
+                        <tr>
+                            <td class="ps-4 py-3">
+                                <div class="d-flex align-items-center">
+                                    <div class="bg-success bg-opacity-10 text-success rounded-3 d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px;">
+                                        <i class="bi bi-ticket-perforated-fill fs-5"></i>
+                                    </div>
+                                    <span class="fw-bold text-body-emphasis font-monospace">{{ codigo }}</span>
+                                </div>
+                            </td>
+                            
+                            <td>
+                                <div>
+                                    <h6 class="mb-0 fw-semibold text-body-emphasis">{{ detalhes.Cliente }}</h6>
+                                    <span class="text-muted small font-monospace">CPF: {{ detalhes.CPF }}</span>
+                                </div>
+                            </td>
+                            
+                            <td>
+                                <div class="d-flex flex-wrap gap-1">
+                                    {% for voo in detalhes.Voos %}
+                                        <span class="badge bg-primary-subtle text-primary-emphasis border border-primary-subtle rounded-pill">
+                                            <i class="bi bi-airplane-fill me-1" style="font-size: 0.7rem;"></i> {{ voo }}
+                                        </span>
+                                    {% endfor %}
+                                </div>
+                            </td>
+
+                            <td>
+                                <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill px-3">
+                                    Confirmada
+                                </span>
+                            </td>
+                            
+                            <td class="pe-4 text-end">
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-sm btn-outline-secondary border-0" title="Ver Detalhes" data-bs-toggle="tooltip">
+                                        <i class="bi bi-eye"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-sm btn-outline-secondary border-0 text-danger" title="Cancelar Reserva" onclick="alert('Funcionalidade de cancelamento em desenvolvimento.');">
+                                        <i class="bi bi-x-circle"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td colspan="5" class="text-center py-5">
+                                <div class="text-muted opacity-50 mb-3">
+                                    <i class="bi bi-ticket-detailed display-4"></i>
+                                </div>
+                                <h5 class="fw-bold text-muted">Nenhuma reserva encontrada</h5>
+                                <p class="text-muted small">Clique em "Nova Reserva" para vender uma passagem.</p>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <div class="card-footer bg-transparent border-top-0 py-3">
+            <div class="d-flex justify-content-between align-items-center">
+                <small class="text-muted">Total de reservas: <strong>{{ reservas|length }}</strong></small>
+                <a href="{{ url_for('listar_voos') }}" class="btn btn-sm btn-link text-decoration-none">Ver Voos Disponíveis &rarr;</a>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}

@@ -1,53 +1,116 @@
 {% extends "tela_inicial/base.html" %}
 {% block title %}Adicionar Voo{% endblock %}
+
 {% block content %}
-    <h1>Adicionar Novo Voo</h1>
-    
-    <form method="post" class="mt-4 p-4 border rounded shadow-sm">
-        <div class="row">
-            <div class="col-md-6 mb-3">
-                <label for="codigo" class="form-label">Código:</label>
-                <input type="text" name="codigo" id="codigo" class="form-control" required>
-            </div>
-            <div class="col-md-6 mb-3">
-                <label for="aeronave" class="form-label">Aeronave:</label>
-                <input type="text" name="aeronave" id="aeronave" class="form-control" required>
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8 col-md-10">
+            
+            <div class="card border-0 shadow-lg rounded-4 overflow-hidden">
+                
+                <div class="card-header bg-primary text-white p-4 p-md-5 text-center position-relative overflow-hidden">
+                    <div class="position-absolute top-0 start-0 w-100 h-100 opacity-10" 
+                         style="background: radial-gradient(circle at 80% 20%, rgba(255,255,255,0.4) 0%, transparent 50%); pointer-events: none;"></div>
+                    
+                    <div class="position-relative z-1">
+                        <div class="d-inline-flex align-items-center justify-content-center bg-white text-primary rounded-circle mb-3 shadow-sm" style="width: 64px; height: 64px;">
+                            <i class="bi bi-airplane-fill fs-3"></i>
+                        </div>
+                        <h2 class="fw-bold mb-1">Cadastrar Novo Voo</h2>
+                        <p class="text-white-50 mb-0">Defina a rota, aeronave e preços para adicionar ao sistema.</p>
+                    </div>
+                </div>
+
+                <div class="card-body p-4 p-md-5 bg-body-tertiary">
+                    <form method="post" class="row g-4">
+                        
+                        <div class="col-12">
+                            <h6 class="text-uppercase text-muted fw-bold small mb-2">
+                                <i class="bi bi-geo-alt me-1"></i> Rota e Aeronave
+                            </h6>
+                            <hr class="mt-0 opacity-25">
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="form-floating">
+                                <input type="text" name="codigo" id="codigo" class="form-control rounded-3 border-0 shadow-sm" placeholder="Ex: ED-001" required oninput="this.value = this.value.toUpperCase()">
+                                <label for="codigo" class="text-muted fw-bold">Código (Ex: ED-001)</label>
+                            </div>
+                        </div>
+
+                        <div class="col-md-8">
+                            <div class="form-floating">
+                                <input type="text" name="aeronave" id="aeronave" class="form-control rounded-3 border-0 shadow-sm" placeholder="Aeronave" required>
+                                <label for="aeronave" class="text-muted fw-bold">Modelo da Aeronave</label>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-floating">
+                                <input type="text" name="origem" id="origem" class="form-control rounded-3 border-0 shadow-sm" placeholder="Origem" required>
+                                <label for="origem" class="text-muted fw-bold">Aeroporto de Origem</label>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-floating">
+                                <input type="text" name="destino" id="destino" class="form-control rounded-3 border-0 shadow-sm" placeholder="Destino" required>
+                                <label for="destino" class="text-muted fw-bold">Aeroporto de Destino</label>
+                            </div>
+                        </div>
+
+                        <div class="col-12 mt-4">
+                            <h6 class="text-uppercase text-muted fw-bold small mb-2">
+                                <i class="bi bi-currency-dollar me-1"></i> Tarifas e Capacidade
+                            </h6>
+                            <hr class="mt-0 opacity-25">
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-floating">
+                                <input type="number" step="0.01" name="preco_ida" id="preco_ida" class="form-control rounded-3 border-0 shadow-sm" placeholder="0.00" required 
+                                       oninput="this.value = this.value.replace(/[^0-9.,]/g, '')">
+                                <label for="preco_ida" class="text-muted fw-bold">Preço Ida (R$)</label>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-floating">
+                                <input type="number" step="0.01" name="preco_volta" id="preco_volta" class="form-control rounded-3 border-0 shadow-sm" placeholder="0.00" required 
+                                       oninput="this.value = this.value.replace(/[^0-9.,]/g, '').replace(/(\..*?)\..*/g, '$1');">
+                                <label for="preco_volta" class="text-muted fw-bold">Preço Volta (R$)</label>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-floating">
+                                <input type="number" name="milhas" id="milhas" class="form-control rounded-3 border-0 shadow-sm" placeholder="0" required inputmode="numeric"
+                                       oninput="this.value = this.value.replace(/[^0-9.,]/g, '')">
+                                <label for="milhas" class="text-muted fw-bold">Milhas Geradas</label>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-floating">
+                                <input type="number" name="total_assentos" id="total_assentos" class="form-control rounded-3 border-0 shadow-sm" placeholder="0" required inputmode="numeric"
+                                       oninput="this.value = this.value.replace(/[^0-9.,]/g, '')">
+                                <label for="total_assentos" class="text-muted fw-bold">Total de Assentos</label>
+                            </div>
+                        </div>
+
+                        <div class="col-12 mt-5 d-flex flex-column flex-md-row gap-3">
+                            <button type="submit" class="btn btn-primary btn-lg rounded-pill fw-bold px-5 shadow-sm flex-grow-1">
+                                <i class="bi bi-check-lg me-2"></i> Adicionar Voo
+                            </button>
+                            <a href="{{ url_for('listar_voos') }}" class="btn btn-outline-secondary btn-lg rounded-pill fw-bold px-4 border-0 bg-white shadow-sm">
+                                Cancelar
+                            </a>
+                        </div>
+
+                    </form>
+                </div>
             </div>
         </div>
-        <div class="row">
-            <div class="col-md-6 mb-3">
-                <label for="origem" class="form-label">Origem:</label>
-                <input type="text" name="origem" id="origem" class="form-control" required>
-            </div>
-            <div class="col-md-6 mb-3">
-                <label for="destino" class="form-label">Destino:</label>
-                <input type="text" name="destino" id="destino" class="form-control" required>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-6 mb-3">
-                <label for="preco_ida" class="form-label">Preço Ida:</label>
-                <input type="number" step="0.01" name="preco_ida" id="preco_ida" class="form-control" required>
-            </div>
-            <div class="col-md-6 mb-3">
-                <label for="preco_volta" class="form-label">Preço Volta:</label>
-                <input type="number" step="0.01" name="preco_volta" id="preco_volta" class="form-control" required>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-6 mb-3">
-                <label for="milhas" class="form-label">Milhas:</label>
-                <input type="number" name="milhas" id="milhas" class="form-control" required>
-            </div>
-            <div class="col-md-6 mb-3">
-                <label for="total_assentos" class="form-label">Total de Assentos:</label>
-                <input type="number" name="total_assentos" id="total_assentos" class="form-control" required>
-            </div>
-        </div>
-        
-        <div class="mt-3">
-            <button type="submit" class="btn btn-primary">Adicionar Voo</button>
-            <a href="{{ url_for('listar_voos') }}" class="btn btn-secondary">Cancelar</a>
-        </div>
-    </form>
+    </div>
+</div>
 {% endblock %}

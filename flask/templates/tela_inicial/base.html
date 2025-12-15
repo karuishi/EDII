@@ -3,56 +3,58 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock %} - Linhas Aéreas SOL</title>
+    
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     
-    <title>{% block title %}{% endblock %} - Linhas Aéreas SOL</title>
-    
     <style>
-        /* Ajustes finos para Mobile */
+        /* Ajuste para o conteúdo não ficar escondido atrás da navbar fixa */
+        body {
+            padding-top: 76px; /* Altura aproximada da navbar */
+        }
+        
+        /* Transição suave de cores ao trocar o tema */
+        body, .navbar, .card, .dropdown-menu {
+            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+        }
+
+        /* Destaque no link ativo */
+        .nav-link.active {
+            font-weight: 700;
+            color: var(--bs-primary) !important;
+        }
+
+        /* Ajustes Mobile */
         @media (max-width: 991.98px) {
-            .navbar-nav .nav-item {
-                padding-top: 10px;
-                padding-bottom: 10px;
-                border-bottom: 1px solid rgba(255,255,255,0.1); /* Linha sutil entre itens */
+            .navbar-nav {
+                padding-top: 1rem;
             }
-            .navbar-nav .nav-item:last-child {
+            .nav-item {
+                border-bottom: 1px solid var(--bs-border-color-translucent);
+                padding: 0.5rem 0;
+            }
+            .nav-item:last-child {
                 border-bottom: none;
             }
-            /* O botão de tema fica melhor centralizado ou full-width no mobile */
             #darkModeToggle {
                 width: 100%;
-                margin-top: 10px;
-                display: flex;
+                margin-top: 1rem;
                 justify-content: center;
-                align-items: center;
             }
-        }
-        
-        /* Efeito de hover nos links */
-        .nav-link {
-            transition: color 0.3s ease;
-        }
-        .nav-link:hover {
-            color: var(--bs-primary) !important; 
-        }
-        
-        /* Garante que o conteúdo não fique escondido atrás da navbar fixa */
-        body {
-            padding-top: 70px; 
         }
     </style>
 </head>
-<body class="bg-body-tertiary d-flex flex-column min-vh-100">
+<body class="d-flex flex-column min-vh-100 bg-body-secondary">
 
-    <header class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top shadow-sm z-3" style="min-height: 70px;">
+    <header class="navbar navbar-expand-lg fixed-top bg-body-tertiary shadow-sm z-3">
         <div class="container">
-            <a href="{{ url_for('home') }}" class="navbar-brand fw-bold d-flex align-items-center gap-2">
-                <i class="bi bi-airplane-engines-fill text-primary fs-4"></i>
-                <span style="letter-spacing: 1px;">SOL <span class="fw-light">Airlines</span></span>
+            <a href="{{ url_for('home') }}" class="navbar-brand d-flex align-items-center gap-2 fw-bold text-body-emphasis">
+                <i class="bi bi-airplane-engines text-primary fs-4"></i>
+                <span>SOL <span class="fw-light opacity-75">Airlines</span></span>
             </a>
 
             <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -63,42 +65,41 @@
                 <ul class="navbar-nav ms-auto align-items-lg-center">
                     
                     {% if session.get('role') == 'admin' %}
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ url_for('listar_clientes') }}">Clientes</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ url_for('listar_voos') }}">Voos</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ url_for('listar_reservas') }}">Reservas</a>
-                        </li>
-                        <li class="nav-item border-start mx-2 d-none d-lg-block border-secondary"></li> {% endif %}
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('listar_clientes') }}">Clientes</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('listar_voos') }}">Voos</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('listar_reservas') }}">Reservas</a></li>
+                        <li class="nav-item d-none d-lg-block mx-2 border-start" style="height: 24px;"></li>
+                    {% endif %}
                     
                     {% if session.get('usuario') %}
                         <li class="nav-item">
-                            <a class="nav-link active" href="{{ url_for('pagina_passageiro') }}">
-                                <i class="bi bi-search me-1"></i> Pesquisar Voos
+                            <a class="nav-link" href="{{ url_for('pagina_passageiro') }}">
+                                <i class="bi bi-search"></i> Buscar Voos
                             </a>
                         </li>
                         <li class="nav-item dropdown">
-                             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                <i class="bi bi-person-circle me-1"></i> Minha Conta
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="bi bi-person-circle"></i> Olá, {{ session.get('usuario') }}
                             </a>
-                            <ul class="dropdown-menu dropdown-menu-end shadow border-0">
+                            <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0 mt-2">
                                 <li><a class="dropdown-item" href="{{ url_for('pagina_passageiro') }}#reservas">Minhas Viagens</a></li>
+                                <li><a class="dropdown-item" href="{{ url_for('pagina_passageiro') }}#checkin">Check-in</a></li>
                                 <li><hr class="dropdown-divider"></li>
                                 <li><a class="dropdown-item text-danger" href="{{ url_for('logout') }}">Sair</a></li>
                             </ul>
                         </li>
                     {% else %}
                         <li class="nav-item">
-                            <a class="nav-link fw-bold" href="{{ url_for('login') }}">Entrar / Cadastrar</a>
+                            <a class="btn btn-primary rounded-pill px-4 fw-bold shadow-sm ms-lg-3" href="{{ url_for('login') }}">
+                                Entrar
+                            </a>
                         </li>
                     {% endif %}
 
-                    <li class="nav-item ms-lg-3">
-                        <button id="darkModeToggle" class="btn btn-outline-light btn-sm rounded-pill px-3">
-                            <i class="bi bi-moon-stars-fill"></i> <span class="d-lg-none ms-2">Alternar Tema</span>
+                    <li class="nav-item ms-lg-2">
+                        <button id="darkModeToggle" class="btn btn-link nav-link px-2 text-body-emphasis" title="Alternar Tema">
+                            <i class="bi bi-moon-stars-fill fs-5"></i>
+                            <span class="d-lg-none ms-2 fw-bold">Alterar Tema</span>
                         </button>
                     </li>
                 </ul>
@@ -110,13 +111,9 @@
         {% block content %}{% endblock %}
     </main>
 
-    <footer class="bg-dark text-white text-center py-4 mt-auto">
+    <footer class="bg-body-tertiary text-center py-4 mt-auto border-top">
         <div class="container">
-            <p class="mb-0 small">&copy; 2025 Linhas Aéreas SOL. Todos os direitos reservados.</p>
-            <div class="mt-2 text-white-50 small">
-                <a href="#" class="text-white-50 text-decoration-none me-3">Privacidade</a>
-                <a href="#" class="text-white-50 text-decoration-none">Termos de Uso</a>
-            </div>
+            <p class="mb-0 text-muted small">&copy; 2025 Linhas Aéreas SOL. Todos os direitos reservados.</p>
         </div>
     </footer>
 
@@ -128,7 +125,7 @@
             const toggleButton = document.getElementById('darkModeToggle');
             const icon = toggleButton.querySelector('i');
             
-            // Textos para acessibilidade/visual
+            // Ícones
             const iconMoon = 'bi-moon-stars-fill';
             const iconSun = 'bi-sun-fill';
 
@@ -136,21 +133,20 @@
                 htmlElement.setAttribute('data-bs-theme', theme);
                 localStorage.setItem('theme', theme);
                 
-                // Troca o ícone
                 if (theme === 'dark') {
                     icon.classList.remove(iconMoon);
                     icon.classList.add(iconSun);
-                    toggleButton.classList.replace('btn-outline-dark', 'btn-outline-light');
                 } else {
                     icon.classList.remove(iconSun);
                     icon.classList.add(iconMoon);
-                    // Mantém outline-light pois o header é bg-dark sempre
                 }
             }
 
+            // Carrega tema salvo ou padrão
             let currentTheme = localStorage.getItem('theme') || 'light';
             applyTheme(currentTheme);
 
+            // Evento de clique
             toggleButton.addEventListener('click', function() {
                 const newTheme = htmlElement.getAttribute('data-bs-theme') === 'dark' ? 'light' : 'dark';
                 applyTheme(newTheme);
