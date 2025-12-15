@@ -1,0 +1,187 @@
+{% extends "tela_inicial/base.html" %}
+{% block title %}Cartão de Embarque{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    
+    <div class="text-center mb-5 no-print">
+        <h2 class="fw-bold text-body-emphasis">Check-in Realizado com Sucesso! <i class="bi bi-patch-check-fill text-success"></i></h2>
+        <p class="text-muted">Aqui estão seus cartões de embarque. Boa viagem!</p>
+    </div>
+
+    <div class="row justify-content-center g-4">
+        {% for voo in voos %}
+        <div class="col-lg-8">
+            <div class="card border-0 shadow-lg overflow-hidden rounded-4 ticket-card ticket-print">
+                <div class="d-flex flex-column flex-md-row">
+                    
+                    <div class="flex-grow-1 p-4 bg-white text-dark position-relative ticket-main">
+                        <div class="d-flex justify-content-between align-items-center mb-4 border-bottom border-secondary border-opacity-25 pb-3">
+                            <div class="d-flex align-items-center gap-2">
+                                <i class="bi bi-airplane-engines-fill text-primary fs-3"></i>
+                                <span class="fw-bold fs-5 tracking-wide text-dark">SOL AIRLINES</span>
+                            </div>
+                            <span class="badge bg-dark text-white text-uppercase ls-1">Classe Econômica</span>
+                        </div>
+
+                        <div class="row g-4 mb-4">
+                            <div class="col-md-6">
+                                <small class="text-secondary text-uppercase fw-bold opacity-75" style="font-size: 0.7rem;">Passageiro</small>
+                                <h5 class="fw-bold m-0 text-dark">{{ reserva.Cliente }}</h5>
+                            </div>
+                            
+                            <div class="col-md-3">
+                                <small class="text-secondary text-uppercase fw-bold opacity-75" style="font-size: 0.7rem;">Voo</small>
+                                <h5 class="fw-bold m-0 text-dark">{{ voo.codigo }}</h5>
+                            </div>
+                            
+                            <div class="col-md-3">
+                                <small class="text-secondary text-uppercase fw-bold opacity-75" style="font-size: 0.7rem;">Data</small>
+                                <h5 class="fw-bold m-0 text-dark">
+                                    {% set partes_data = voo.data.split('-') %}
+                                    {{ partes_data[2] }}/{{ partes_data[1] }}/{{ partes_data[0] }}
+                                </h5>
+                            </div>
+                        </div>
+
+                        <div class="d-flex align-items-center justify-content-between bg-light border border-secondary border-opacity-10 rounded-3 p-3">
+                            <div class="text-center">
+                                <h3 class="fw-bold mb-0 text-primary">{{ voo.origem.split('-')[0] | trim | upper }}</h3>
+                                <small class="text-secondary fw-bold">{{ voo.origem.split('-')[1] }}</small>
+                            </div>
+                            <div class="mx-3 text-secondary opacity-50">
+                                <i class="bi bi-airplane fs-4"></i>
+                            </div>
+                            <div class="text-center">
+                                <h3 class="fw-bold mb-0 text-primary">{{ voo.destino.split('-')[0] | trim | upper }}</h3>
+                                <small class="text-secondary fw-bold">{{ voo.destino.split('-')[1] }}</small>
+                            </div>
+                        </div>
+                        
+                        <div class="ticket-rip-top"></div>
+                        <div class="ticket-rip-bottom"></div>
+                    </div>
+
+                    <div class="p-4 bg-primary text-white d-flex flex-column justify-content-center ticket-stub position-relative" style="min-width: 220px;">
+                        <div class="ticket-border-dashed"></div>
+                        
+                        <div class="row text-center g-3">
+                            <div class="col-6 col-md-12">
+                                <small class="text-white-50 text-uppercase fw-bold">Embarque</small>
+                                <h3 class="fw-bold mb-0">{{ voo.horario }}</h3>
+                            </div>
+                            <div class="col-6 col-md-12">
+                                <small class="text-white-50 text-uppercase fw-bold">Portão</small>
+                                <h3 class="fw-bold mb-0">{{ voo.portao }}</h3>
+                            </div>
+                            <div class="col-12">
+                                <div class="bg-white text-primary rounded-3 py-2 px-3 mt-2 shadow-sm">
+                                    <small class="text-uppercase fw-bold d-block opacity-75" style="font-size: 0.7rem;">Assento</small>
+                                    <h1 class="display-4 fw-bold mb-0 lh-1">{{ voo.assento }}</h1>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-4 text-center opacity-50">
+                            <i class="bi bi-qr-code-scan fs-1"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <div class="text-center mt-5 no-print">
+        <a href="{{ url_for('pagina_passageiro') }}" class="btn btn-outline-secondary rounded-pill px-4 fw-bold">
+            <i class="bi bi-arrow-left me-2"></i> Voltar ao Painel
+        </a>
+        <button onclick="window.print()" class="btn btn-primary rounded-pill px-4 fw-bold ms-2">
+            <i class="bi bi-printer me-2"></i> Imprimir / Salvar PDF
+        </button>
+    </div>
+</div>
+
+<style>
+    .ticket-card {
+        background: transparent;
+    }
+    
+    .ticket-main {
+        border-right: 2px dashed #ccc;
+    }
+
+    /* Picotes laterais */
+    .ticket-rip-top, .ticket-rip-bottom {
+        position: absolute;
+        right: -10px;
+        width: 20px;
+        height: 20px;
+        background-color: var(--bs-body-bg); /* Pega a cor do fundo do site */
+        border-radius: 50%;
+        z-index: 10;
+        /* Garante que na impressão o picote fique branco para não sair mancha cinza */
+        print-color-adjust: exact; 
+        -webkit-print-color-adjust: exact;
+    }
+    
+    @media print {
+        .ticket-rip-top, .ticket-rip-bottom {
+            background-color: #fff !important; /* Fundo branco no papel */
+        }
+    }
+
+    .ticket-rip-top { top: -10px; }
+    .ticket-rip-bottom { bottom: -10px; }
+
+    /* Responsividade */
+    @media (max-width: 767.98px) {
+        .ticket-main {
+            border-right: none;
+            border-bottom: 2px dashed #ccc;
+        }
+        .ticket-rip-top, .ticket-rip-bottom { display: none; }
+    }
+
+    /* === CONFIGURAÇÕES DE IMPRESSÃO (PDF) === */
+    @media print {
+        /* Esconde tudo que tiver a classe no-print (botões, cabeçalho, navbar, footer) */
+        .no-print, header, footer, .navbar {
+            display: none !important;
+        }
+        
+        /* Ajusta o corpo para impressão limpa */
+        body {
+            background-color: #fff !important;
+            padding-top: 0 !important;
+            visibility: hidden; /* Esconde tudo por padrão */
+        }
+
+        /* Mostra apenas os tickets */
+        .container, .row, .col-lg-8, .ticket-print, .ticket-print * {
+            visibility: visible;
+        }
+
+        /* Reposiciona o ticket no topo da folha */
+        .container {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Garante cores de fundo (azul do ticket) */
+        .ticket-print {
+            break-inside: avoid; /* Evita quebrar ticket no meio da página */
+            margin-bottom: 20px;
+            page-break-inside: avoid;
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+            box-shadow: none !important; /* Remove sombra no papel */
+            border: 1px solid #ddd !important; /* Borda fina para delimitar */
+        }
+    }
+</style>
+{% endblock %}

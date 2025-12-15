@@ -64,12 +64,16 @@
                             
                             <td class="pe-4 text-end">
                                 <div class="btn-group">
-                                    <button type="button" class="btn btn-sm btn-outline-secondary border-0" title="Ver Detalhes" data-bs-toggle="tooltip">
+                                    <a href="{{ url_for('detalhes_reserva', codigo_reserva=codigo) }}" class="btn btn-sm btn-outline-secondary border-0" title="Ver Detalhes" data-bs-toggle="tooltip">
                                         <i class="bi bi-eye"></i>
-                                    </button>
-                                    <button type="button" class="btn btn-sm btn-outline-secondary border-0 text-danger" title="Cancelar Reserva" onclick="alert('Funcionalidade de cancelamento em desenvolvimento.');">
+                                    </a>
+                                    
+                                    <a href="{{ url_for('excluir_reserva', codigo_reserva=codigo) }}" 
+                                    class="btn btn-sm btn-outline-secondary border-0 text-danger" 
+                                    title="Cancelar Reserva" 
+                                    onclick="return confirm('Tem certeza que deseja cancelar a reserva {{ codigo }}? Esta ação liberará os assentos e estornará as milhas.');">
                                         <i class="bi bi-x-circle"></i>
-                                    </button>
+                                    </a>
                                 </div>
                             </td>
                         </tr>

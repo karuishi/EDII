@@ -1,156 +1,31 @@
 {
     "RES1": {
-        "Cliente": "Pedro Lucas de Jesus Santos",
-        "CPF": 6409426526,
+        "Cliente": "Kim Sunoo da Silva",
+        "CPF": 12345678910,
         "Voos": [
             "ED-001"
-        ]
-    },
-    "RES2": {
-        "Cliente": "Pedro Lucas de Jesus Santos",
-        "CPF": 6409426526,
-        "Voos": [
-            "ED-002"
-        ]
-    },
-    "RES3": {
-        "Cliente": "Pedro Lucas de Jesus Santos",
-        "CPF": 6409426526,
-        "Voos": [
-            "ED-001"
-        ]
+        ],
+        "Assentos": {
+            "ED-001": "21E"
+        },
+        "Status_Checkin": true
     },
     "RES4": {
-        "Cliente": "Caroline Lesnioski Parodi Araujo",
-        "CPF": 7177733186,
-        "Voos": [
-            "ED-002"
-        ]
-    },
-    "RES5": {
-        "Cliente": "Pedro Lucas de Jesus Santos",
-        "CPF": 6409426526,
-        "Voos": [
-            "ED-002"
-        ]
-    },
-    "RES6": {
-        "Cliente": "Caroline Lesnioski Parodi Araujo",
-        "CPF": 7177733186,
-        "Voos": [
-            "ED-002"
-        ]
-    },
-    "RES7": {
-        "Cliente": "Caroline Lesnioski Parodi Araujo",
-        "CPF": 7177733186,
-        "Voos": [
-            "ED-002"
-        ]
-    },
-    "RES8": {
-        "Cliente": "Caroline Lesnioski Parodi Araujo",
-        "CPF": 7177733186,
-        "Voos": [
-            "ED-001"
-        ]
-    },
-    "RES9": {
-        "Cliente": "Kim Sunoo da Silva",
-        "CPF": 12345678910,
-        "Voos": [
-            "ED-001"
-        ]
-    },
-    "RES10": {
-        "Cliente": "Kim Sunoo da Silva",
-        "CPF": 12345678910,
-        "Voos": [
-            "ED-003"
-        ]
-    },
-    "RES11": {
-        "Cliente": "Kim Sunoo da Silva",
-        "CPF": 12345678910,
-        "Voos": [
-            "ED-001"
-        ]
-    },
-    "RES12": {
-        "Cliente": "Kim Sunoo da Silva",
-        "CPF": 12345678910,
-        "Voos": [
-            "ED-003"
-        ]
-    },
-    "RES13": {
-        "Cliente": "Kim Sunoo da Silva",
-        "CPF": 12345678910,
-        "Voos": [
-            "ED-001"
-        ]
-    },
-    "RES14": {
-        "Cliente": "Kim Sunoo da Silva",
-        "CPF": 12345678910,
-        "Voos": [
-            "ED-003"
-        ]
-    },
-    "RES15": {
-        "Cliente": "Kim Sunoo da Silva",
-        "CPF": 12345678910,
-        "Voos": [
-            "ED-001"
-        ]
-    },
-    "RES16": {
-        "Cliente": "Kim Sunoo da Silva",
-        "CPF": 12345678910,
-        "Voos": [
-            "ED-003"
-        ]
-    },
-    "RES17": {
         "Cliente": "Bla Bla",
         "CPF": 12345678911,
         "Voos": [
-            "ED-003"
-        ]
-    },
-    "RES18": {
-        "Cliente": "Kim Sunoo da Silva",
-        "CPF": 12345678910,
-        "Voos": [
-            "ED-002"
-        ]
-    },
-    "RES19": {
-        "Cliente": "Gerard Way da Silva",
-        "CPF": 11111111111,
-        "Voos": [
-            "ED-003"
-        ]
-    },
-    "RES20": {
-        "Cliente": "Gerard Way da Silva",
-        "CPF": 11111111111,
-        "Voos": [
-            "ED-003"
-        ]
-    },
-    "RES21": {
-        "Cliente": "Pedro Lucas de Jesus Santos",
-        "CPF": 6409426526,
-        "Voos": [
             "ED-001"
         ]
     },
-    "RES22": {
-        "Cliente": "Caroline Lesnioski Parodi Araujo",
-        "CPF": 7177733186,
+    "RES5": {
+        "Cliente": "Kim Sunoo da Silva",
+        "CPF": 12345678910,
         "Voos": [
-            "ED-003"
-        ]
+            "ED-004"
+        ],
+        "Assentos": {
+            "ED-004": "17F"
+        },
+        "Status_Checkin": true
     }
 }

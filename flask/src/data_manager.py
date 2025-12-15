@@ -72,5 +72,9 @@ def salvar_reservas(reservas):
         json.dump(reservas, f, indent=4)
 
 def gerar_codigo_reserva(reservas):
-    prox_codigo = len(reservas) + 1
+    if not reservas:
+        return "RES1"
+    
+    numeros = [int(cod.replace('RES', '')) for cod in reservas.keys()]
+    prox_codigo = max(numeros) + 1
     return f"RES{prox_codigo}"

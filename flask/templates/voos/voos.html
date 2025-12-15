@@ -22,9 +22,10 @@
                         <tr>
                             <th class="ps-4 py-3 text-uppercase text-muted small fw-bold">Voo / Aeronave</th>
                             <th class="py-3 text-uppercase text-muted small fw-bold">Rota</th>
-                            <th class="py-3 text-uppercase text-muted small fw-bold">Preço Ida</th>
-                            <th class="py-3 text-uppercase text-muted small fw-bold">Preço Volta</th> <th class="py-3 text-uppercase text-muted small fw-bold">Milhas</th>
-                            <th class="py-3 text-uppercase text-muted small fw-bold">Status / Assentos</th>
+                            <th class="py-3 text-uppercase text-muted small fw-bold">Data</th>
+                            <th class="py-3 text-uppercase text-muted small fw-bold">Preço</th>
+                            <th class="py-3 text-uppercase text-muted small fw-bold">Milhas</th>
+                            <th class="py-3 text-uppercase text-muted small fw-bold">Status</th>
                             <th class="pe-4 py-3 text-end text-uppercase text-muted small fw-bold">Ações</th>
                         </tr>
                     </thead>
@@ -50,14 +51,20 @@
                                     <span class="fw-semibold text-body-emphasis">{{ detalhes.Destino }}</span>
                                 </div>
                             </td>
-                            
-                            <td>
-                                <span class="fw-bold text-success fs-6">R$ {{ "%.2f"|format(detalhes.Preco_ida) }}</span>
-                            </td>
 
                             <td>
-                                <span class="fw-bold text-success fs-6">R$ {{ "%.2f"|format(detalhes.Preco_volta) }}</span>
+                                {% if detalhes.Datas %}
+                                    {% for data in detalhes.Datas %}
+                                        <span class="badge bg-body-secondary text-body-emphasis border border-secondary-subtle font-monospace">
+                                            <i class="bi bi-calendar3 me-1"></i> {{ data }}
+                                        </span>
+                                    {% endfor %}
+                                {% else %}
+                                    <span class="text-muted small fst-italic">--</span>
+                                {% endif %}
                             </td>
+                            
+                            <td><span class="fw-bold text-success fs-6">R$ {{ "%.2f"|format(detalhes.Preco) }}</span></td>
                             
                             <td>
                                 <span class="badge bg-warning-subtle text-warning-emphasis border border-warning-subtle rounded-pill">
@@ -67,18 +74,16 @@
                             
                             <td>
                                 {% if detalhes.Total_assentos == 0 %}
-                                    <span class="badge bg-danger-subtle text-danger border border-danger-subtle rounded-pill px-3 py-2">
-                                        ESGOTADO
-                                    </span>
+                                    <span class="badge bg-danger-subtle text-danger border border-danger-subtle rounded-pill px-3 py-2">ESGOTADO</span>
                                 {% elif detalhes.Total_assentos < 10 %}
                                     <div class="d-flex align-items-center text-danger fw-bold">
                                         <span class="badge bg-danger text-white me-2">{{ detalhes.Total_assentos }}</span>
-                                        <small>Últimos Lugares!</small>
+                                        <small>Últimos!</small>
                                     </div>
                                 {% else %}
                                     <div class="d-flex align-items-center text-success fw-bold">
                                         <span class="badge bg-success-subtle text-success-emphasis border border-success-subtle me-2">{{ detalhes.Total_assentos }}</span>
-                                        <small>Disponíveis</small>
+                                        <small>Livres</small>
                                     </div>
                                 {% endif %}
                             </td>
@@ -97,20 +102,13 @@
                         {% else %}
                         <tr>
                             <td colspan="7" class="text-center py-5">
-                                <div class="text-muted opacity-50 mb-3">
-                                    <i class="bi bi-airplane-engines display-4"></i>
-                                </div>
                                 <h5 class="fw-bold text-muted">Nenhum voo cadastrado</h5>
-                                <p class="text-muted small">Clique em "Adicionar Voo" para começar.</p>
                             </td>
                         </tr>
                         {% endfor %}
                     </tbody>
                 </table>
             </div>
-        </div>
-        <div class="card-footer bg-transparent border-top-0 py-3">
-            <small class="text-muted">Total de voos: <strong>{{ voos|length }}</strong></small>
         </div>
     </div>
 </div>

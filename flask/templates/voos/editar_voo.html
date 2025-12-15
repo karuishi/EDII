@@ -33,54 +33,37 @@
 
                         <div class="col-md-4">
                             <div class="form-floating">
-                                <input type="text" 
-                                       name="codigo" 
-                                       id="codigo" 
-                                       class="form-control rounded-3 border-0 shadow-sm bg-secondary-subtle" 
-                                       value="{{ codigo_voo }}" 
-                                       disabled>
+                                <input type="text" name="codigo" id="codigo" class="form-control rounded-3 border-0 shadow-sm bg-secondary-subtle" value="{{ codigo_voo }}" disabled>
                                 <label for="codigo" class="text-muted fw-bold">Código (Bloqueado)</label>
                             </div>
                         </div>
 
                         <div class="col-md-8">
                             <div class="form-floating">
-                                <input type="text" 
-                                       name="aeronave" 
-                                       id="aeronave" 
-                                       class="form-control rounded-3 border-0 shadow-sm" 
-                                       value="{{ voo.Aeronave }}" 
-                                       placeholder="Aeronave" 
-                                       required>
+                                <input type="text" name="aeronave" id="aeronave" class="form-control rounded-3 border-0 shadow-sm" value="{{ voo.Aeronave }}" required>
                                 <label for="aeronave" class="text-muted fw-bold">Modelo da Aeronave</label>
                             </div>
                         </div>
 
                         <div class="col-md-6">
                             <div class="form-floating">
-                                <input type="text" 
-                                       name="origem" 
-                                       id="origem" 
-                                       class="form-control rounded-3 border-0 shadow-sm" 
-                                       value="{{ voo.Origem }}" 
-                                       placeholder="Origem" 
-                                       required
-                                       oninput="this.value = this.value.replace(/[^a-zA-Z\u00C0-\u00FF ]/g, '')">
+                                <input type="text" name="origem" id="origem" class="form-control rounded-3 border-0 shadow-sm" value="{{ voo.Origem }}" required>
                                 <label for="origem" class="text-muted fw-bold">Aeroporto de Origem</label>
                             </div>
                         </div>
 
                         <div class="col-md-6">
                             <div class="form-floating">
-                                <input type="text" 
-                                       name="destino" 
-                                       id="destino" 
-                                       class="form-control rounded-3 border-0 shadow-sm" 
-                                       value="{{ voo.Destino }}" 
-                                       placeholder="Destino" 
-                                       required
-                                       oninput="this.value = this.value.replace(/[^a-zA-Z\u00C0-\u00FF ]/g, '')">
+                                <input type="text" name="destino" id="destino" class="form-control rounded-3 border-0 shadow-sm" value="{{ voo.Destino }}" required>
                                 <label for="destino" class="text-muted fw-bold">Aeroporto de Destino</label>
+                            </div>
+                        </div>
+
+                        <div class="col-12">
+                            <div class="form-floating">
+                                <input type="date" name="data" class="form-control rounded-3 border-0 shadow-sm" id="floatingData" 
+                                       value="{{ voo.Datas[0] if voo.Datas else '' }}">
+                                <label for="floatingData" class="text-muted fw-bold">📅 Data do Voo</label>
                             </div>
                         </div>
 
@@ -91,64 +74,26 @@
                             <hr class="mt-0 opacity-25">
                         </div>
 
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <div class="form-floating">
-                                <input type="number" 
-                                       step="0.01" 
-                                       name="preco_ida" 
-                                       id="preco_ida" 
-                                       class="form-control rounded-3 border-0 shadow-sm" 
-                                       value="{{ voo.Preco_ida }}" 
-                                       placeholder="0.00" 
-                                       required
-                                       inputmode="numeric"
+                                <input type="text" name="preco" id="preco" class="form-control rounded-3 border-0 shadow-sm" 
+                                       value="{{ voo.Preco }}" required
+                                       inputmode="decimal"
                                        oninput="this.value = this.value.replace(/[^0-9.,]/g, '')">
-                                <label for="preco_ida" class="text-muted fw-bold">Preço Ida (R$)</label>
+                                <label for="preco" class="text-muted fw-bold">Preço do Trecho (R$)</label>
                             </div>
                         </div>
 
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <div class="form-floating">
-                                <input type="number" 
-                                       step="0.01" 
-                                       name="preco_volta" 
-                                       id="preco_volta" 
-                                       class="form-control rounded-3 border-0 shadow-sm" 
-                                       value="{{ voo.Preco_volta }}" 
-                                       placeholder="0.00" 
-                                       required
-                                       inputmode="numeric"
-                                       oninput="this.value = this.value.replace(/[^0-9.,]/g, '')">
-                                <label for="preco_volta" class="text-muted fw-bold">Preço Volta (R$)</label>
-                            </div>
-                        </div>
-
-                        <div class="col-md-6">
-                            <div class="form-floating">
-                                <input type="number" 
-                                       name="milhas" 
-                                       id="milhas" 
-                                       class="form-control rounded-3 border-0 shadow-sm" 
-                                       value="{{ voo.Milhas }}" 
-                                       placeholder="0" 
-                                       required 
-                                       inputmode="numeric"
-                                       oninput="this.value = this.value.replace(/[^0-9.,]/g, '')">
+                                <input type="number" name="milhas" id="milhas" class="form-control rounded-3 border-0 shadow-sm" value="{{ voo.Milhas }}" required inputmode="numeric">
                                 <label for="milhas" class="text-muted fw-bold">Milhas Geradas</label>
                             </div>
                         </div>
 
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <div class="form-floating">
-                                <input type="number" 
-                                       name="total_assentos" 
-                                       id="total_assentos" 
-                                       class="form-control rounded-3 border-0 shadow-sm" 
-                                       value="{{ voo.Total_assentos }}" 
-                                       placeholder="0" 
-                                       required 
-                                       inputmode="numeric"
-                                       oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+                                <input type="number" name="total_assentos" id="total_assentos" class="form-control rounded-3 border-0 shadow-sm" value="{{ voo.Total_assentos }}" required inputmode="numeric">
                                 <label for="total_assentos" class="text-muted fw-bold">Total de Assentos</label>
                             </div>
                         </div>

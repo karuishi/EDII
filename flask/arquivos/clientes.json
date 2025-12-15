@@ -1,59 +1,37 @@
 {
     "6409426526": {
         "Nome": "Pedro Lucas de Jesus Santos",
-        "Reservas": [
-            "RES1",
-            "RES2",
-            "RES3",
-            "RES5",
-            "RES21"
-        ],
-        "Data_viagem": "27/12/2026",
-        "Milhas": "70000"
+        "Reservas": [],
+        "Data_viagem": "",
+        "Milhas": 0
     },
     "7177733186": {
         "Nome": "Caroline Lesnioski Parodi Araujo",
-        "Reservas": [
-            "RES4",
-            "RES6",
-            "RES7",
-            "RES8",
-            "RES22"
-        ],
-        "Data_viagem": "27/12/2026",
-        "Milhas": "88000000000000"
+        "Reservas": [],
+        "Data_viagem": "",
+        "Milhas": 0
     },
     "12345678910": {
         "Nome": "Kim Sunoo da Silva",
         "Reservas": [
-            "RES9",
-            "RES10",
-            "RES11",
-            "RES12",
-            "RES13",
-            "RES14",
-            "RES15",
-            "RES16",
-            "RES18"
+            "RES1",
+            "RES5"
         ],
-        "Data_viagem": "",
-        "Milhas": 47000
+        "Data_viagem": "2026-02-15",
+        "Milhas": 2500
     },
     "12345678911": {
         "Nome": "Bla Bla",
         "Reservas": [
-            "RES17"
+            "RES4"
         ],
-        "Data_viagem": "",
-        "Milhas": 10000
+        "Data_viagem": "2025-12-31",
+        "Milhas": 1500
     },
     "11111111111": {
         "Nome": "Gerard Way da Silva",
-        "Reservas": [
-            "RES19",
-            "RES20"
-        ],
-        "Data_viagem": "27/12/2026",
-        "Milhas": "500"
+        "Reservas": [],
+        "Data_viagem": "",
+        "Milhas": 0
     }
 }
