@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, request, redirect, url_for, session, flash
 from database import voos, reservas, dados_clientes, grafos_voos
 from data_manager import salvar_voos, salvar_reservas, salvar_clientes, gerar_codigo_reserva
-from grafo import Graph
+from grafo import GrafoRotas
 import folium
 import random
 
@@ -49,12 +49,12 @@ def pagina_passageiro():
 
     # 2. Busca Conexões (Grafo) se não achou direto
     if origem_filtro and destino_filtro and not voos_exibicao:
-        # Recria grafo para garantir dados frescos
-        grafo_atualizado = Graph()
+        # Recria grafo para garantir dados novos
+        grafo_atualizado = GrafoRotas()
         for cod, dados in voos.items():
-            grafo_atualizado.add_edge(dados['Origem'], dados['Destino'], cod, dados['Preco'])
+            grafo_atualizado.adicionar_rota(dados['Origem'], dados['Destino'], cod, dados['Preco'])
 
-        resultado_grafo = grafo_atualizado.dijkstra(origem_filtro, destino_filtro)
+        resultado_grafo = grafo_atualizado.buscar_melhor_rota(origem_filtro, destino_filtro)
         
         if resultado_grafo:
             custo_total, caminho_codigos = resultado_grafo
