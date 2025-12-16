@@ -107,11 +107,11 @@ def adicionar_cliente():
         except ValueError:
             return "Erro: CPF deve conter apenas números."
 
-        if clientes_btree_cpf.search(cpf):
+        if clientes_btree_cpf.buscar(cpf):
             return "Erro: Cliente com este CPF já cadastrado!"
         
         nome = request.form['nome']
-        clientes_btree_cpf.insert(cpf)
+        clientes_btree_cpf.inserir(cpf)
         dados_clientes[cpf] = {
             "Nome" : nome,
             "Reservas" : [],
@@ -127,7 +127,7 @@ def listar_clientes_cpf():
     if session.get('role') != 'admin':
         return redirect(url_for('passageiro.pagina_passageiro'))
     
-    cpfs_ordenados = clientes_btree_cpf.in_order_list()
+    cpfs_ordenados = clientes_btree_cpf.listar_cpfs()
     lista_final = []
     for cpf in cpfs_ordenados:
         if cpf in dados_clientes:

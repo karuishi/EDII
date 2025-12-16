@@ -1,6 +1,6 @@
 import json
 import os
-from BTree import BTree 
+from BTree import BTree
 
 ARQUIVO_VOOS = '../arquivos/voos.json'
 ARQUIVO_CLIENTES = '../arquivos/clientes.json'
@@ -33,7 +33,7 @@ def salvar_voos(voos):
 # --- Funções de Clientes ---
 def carregar_clientes():
     dados_clientes = {}
-    clientes_btree = BTree(t=3) 
+    clientes_btree = BTree(grau_min=3) 
 
     if os.path.exists(ARQUIVO_CLIENTES):
         try:
@@ -44,7 +44,7 @@ def carregar_clientes():
 
             print("A reconstruir o índice da Árvore B...")
             for cpf in dados_clientes.keys():
-                clientes_btree.insert(cpf)
+                clientes_btree.inserir(cpf)
             print("Índice B-Tree pronto.")
         
         except json.JSONDecodeError:

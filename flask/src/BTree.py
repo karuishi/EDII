@@ -1,184 +1,123 @@
 class BTreeNode:
-    """
-    Representa um Nó (ou Página) numa Árvore B.
-    """
-    def __init__(self, leaf=False):
-        # 'leaf' (folha) é True se este nó está na base da árvore (não tem filhos)
-        self.leaf = leaf
+    # Representa uma Página (Nó) da Árvore B de Clientes.
+    def __init__(self, eh_folha = False):
+        # True se este não tiver filhos
+        self.eh_folha = eh_folha
         
-        # 'keys' é a lista de chaves (os nossos CPFs) que este nó armazena.
-        # Esta lista estará sempre ordenada.
-        self.keys = []
-        
-        # 'children' é a lista de nós filhos (outras "gavetas" para onde este nó aponta)
-        self.children = []
+        # Lista ordenada dos CPFs armazenados 
+        self.cpfs = []
+
+        # Lista de referência para os nós filhos
+        self.filhos = []
 
 class BTree:
-    """
-    A implementação completa da Árvore B.
-    't' é o "grau mínimo" da árvore. É a regra mais importante.
-    Uma escolha comum é t=3, o que significa que cada nó deve ter:
-    - No mínimo (t-1) = 2 chaves
-    - No máximo (2t-1) = 5 chaves
-    Isto garante que a árvore se mantenha "balanceada" e rápida.
-    """
-    def __init__(self, t):
-        # A raiz da árvore começa como um nó folha vazio
-        self.root = BTreeNode(leaf=True)
-        # 't' é o grau mínimo
-        self.t = t
+    def __init__(self, grau_min):
+        # Cria a raiz inicial (vazia)
+        self.raiz = BTreeNode(eh_folha=True)
+        self.grau_min = grau_min
 
-    # ----------------------------------------------
-    # FUNÇÃO 1: PROCURAR (SEARCH)
-    # ----------------------------------------------
-    def search(self, key_to_find):
-        """
-        Procura por uma 'key_to_find' (um CPF) na árvore.
-        Retorna True se encontrar, False se não.
-        """
-        return self._search_in_node(self.root, key_to_find)
-
-    def _search_in_node(self, node, key_to_find):
-        """
-        Função auxiliar recursiva para procurar no nó 'node'.
-        """
+    def buscar(self, cpf_buscado):
+        # Verifica se o CPF existe
+        return self._buscar_na_pagina(self.raiz, cpf_buscado)
+    
+    def _buscar_na_pagina(self, pagina, cpf):
+        # Busca interna recursiva para navegar nas páginas
         i = 0
-        # 1. Encontra a primeira chave no nó que é >= 'key_to_find'
-        while i < len(node.keys) and key_to_find > node.keys[i]:
+        # 1. Procura o CPF dentro da página atual
+        while i < len(pagina.cpfs) and cpf > pagina.cpfs[i]:
+            i += 1
+        
+        # 2. Se achou o CPF exato
+        if i < len(pagina.cpfs) and cpf == pagina.cpfs[i]:
+            return True 
+        
+        # 3. Se chegou numa folha e não achou
+        if pagina.eh_folha:
+            return False
+        
+        # 4. Se não achou, desce para a página filha apropriada
+        return self._buscar_na_pagina(pagina.filhos[i], cpf)
+    
+    def inserir(self, novo_cpf):
+        # Adiciona um novo CPF ao índice.
+        raiz_atual = self.raiz
+        t = self.grau_min
+
+        # Se a raiz estiver cheia, a árvore precisa crescer em altura
+        if len(raiz_atual.cpfs) == (2 * t) - 1:
+            nova_raiz = BTreeNode()
+            self.raiz = nova_raiz
+
+            # A antiga raiz vira filha da nova
+            nova_raiz.filhos.insert(0, raiz_atual)
+
+            # Divide a antiga raiz ao meio
+            self._dividir_pagina(nova_raiz, 0)
+
+            # Inserir o CPF na nova estrutura
+            self._inserir_nao_cheio(nova_raiz, novo_cpf)
+        else:
+            self._inserir_nao_cheio(raiz_atual, novo_cpf)
+
+    def _inserir_nao_cheio(self, pagina, cpf):
+        # Insere o CPF em uma página que tem espaço
+
+        i = len(pagina.cpfs) - 1
+
+        if pagina.eh_folha:
+            # Se for folha, insere direto na posição correta
+            pagina.cpfs.append(0)
+            while i >= 0 and cpf < pagina.cpfs[i]:
+                pagina.cpfs[i + 1] = pagina.cpfs[i]
+                i -= 1
+            pagina.cpfs[i + 1] = cpf
+        else:
+            # Se não for folha, descobre para qual filho descer
+            while i >= 0 and cpf < pagina.cpfs[i]:
+                i -= 1
             i += 1
 
-        # 2. Verifica se encontrámos a chave
-        if i < len(node.keys) and key_to_find == node.keys[i]:
-            return True  # Encontrado!
-
-        # 3. Se este nó é uma folha, não temos para onde ir
-        if node.leaf:
-            return False # Não encontrado
-
-        # 4. Se não é uma folha, desce para o filho apropriado
-        #    (o filho à esquerda da chave que encontrámos)
-        return self._search_in_node(node.children[i], key_to_find)
-
-    # ----------------------------------------------
-    # FUNÇÃO 2: INSERIR (INSERT) - A PARTE MAIS COMPLEXA
-    # ----------------------------------------------
-    def insert(self, key_to_insert):
-        """
-        Função principal para inserir uma nova 'key_to_insert' (um CPF).
-        """
-        t = self.t
-        root = self.root
-
-        # Caso 1: A Raiz está "cheia" (atingiu o n.º máximo de chaves)
-        # Se a raiz está cheia, a árvore tem de crescer em altura.
-        if len(root.keys) == (2 * t) - 1:
-            # Cria uma nova raiz
-            new_root = BTreeNode()
-            self.root = new_root
-            
-            # A antiga raiz torna-se o primeiro filho da nova raiz
-            new_root.children.insert(0, root)
-            
-            # "Divide" a antiga raiz (que estava cheia)
-            self._split_child(new_root, 0)
-            
-            # Agora que a raiz tem espaço, insere a chave
-            self._insert_non_full(new_root, key_to_insert)
-        
-        # Caso 2: A Raiz não está cheia
-        # Simplesmente chama a função para inserir no nó
-        else:
-            self._insert_non_full(root, key_to_insert)
-
-    def _insert_non_full(self, node, key_to_insert):
-        """
-        Função auxiliar para inserir uma chave num nó que *não* está cheio.
-        """
-        t = self.t
-        i = len(node.keys) - 1
-
-        # A. Se o nó é uma folha (base da árvore)
-        if node.leaf:
-            # Adiciona um espaço temporário
-            node.keys.append(0) 
-            # Move todas as chaves maiores para a direita
-            while i >= 0 and key_to_insert < node.keys[i]:
-                node.keys[i + 1] = node.keys[i]
-                i -= 1
-            # Insere a chave na posição correta
-            node.keys[i + 1] = key_to_insert
-        
-        # B. Se o nó não é uma folha (é um nó interno)
-        else:
-            # Encontra o filho para onde temos de descer
-            while i >= 0 and key_to_insert < node.keys[i]:
-                i -= 1
-            i += 1 # O índice do filho correto
-
-            # B.1. Verifica se o filho para onde vamos descer está cheio
-            if len(node.children[i].keys) == (2 * t) - 1:
-                # Se o filho está cheio, "divide-o" ANTES de descer
-                self._split_child(node, i)
-                # Vê para qual dos dois novos filhos devemos descer
-                if key_to_insert > node.keys[i]:
+            # verifica se o filtro está cheio antes de entrar
+            if len(pagina.filhos[i].cpfs) == (2 * self.grau_min) - 1:
+                self._dividir_pagina(pagina, i)
+                if cpf > pagina.cpfs[i]:
                     i += 1
-            
-            # B.2. Desce recursivamente para o filho (que agora sabemos que não está cheio)
-            self._insert_non_full(node.children[i], key_to_insert)
-
-    def _split_child(self, parent_node, child_index):
-        """
-        Função para "dividir" um nó filho que está cheio.
-        'parent_node' é o nó pai.
-        'child_index' é o índice do filho que está cheio.
-        """
-        t = self.t
-        
-        # O nó filho que está cheio
-        child_node = parent_node.children[child_index]
-        
-        # O novo nó que será o "irmão" direito do 'child_node'
-        new_sibling = BTreeNode(leaf=child_node.leaf)
-
-        # A chave do "meio" do nó filho sobe para o nó pai
-        middle_key = child_node.keys[t - 1]
-        parent_node.keys.insert(child_index, middle_key)
-        
-        # O novo nó "irmão" é adicionado como filho do pai
-        parent_node.children.insert(child_index + 1, new_sibling)
-
-        # Copia a segunda metade das chaves do nó filho para o novo nó "irmão"
-        new_sibling.keys = child_node.keys[t:]
-        
-        # Apaga a segunda metade das chaves do nó filho (que agora estão no "irmão")
-        child_node.keys = child_node.keys[:t - 1]
-
-        # Se o nó filho não era uma folha, copia também os filhos
-        if not child_node.leaf:
-            new_sibling.children = child_node.children[t:]
-            child_node.children = child_node.children[:t]
-
-    # ----------------------------------------------
-    # FUNÇÃO 3: PERCORRER - PARA ORDENAÇÃO
-    # ----------------------------------------------
-    def in_order_list(self):
-        """
-        Retorna uma lista com todos os CPFs ordenados, percorrendo a árvore.
-        """
-        result = []
-        self._in_order_list_node(self.root, result)
-        return result
+            self._inserir_nao_cheio(pagina.filhos[i], cpf)
     
-    def _in_order_list_node(self, node, result):
-        """
-        Função auxiliar recursiva para preencher a lista.
-        """
-        for i in range(len(node.keys)):
-            # 1. Visita o filho à esquerda da chave atual (se existir)
-            if not node.leaf:
-                self._in_order_list_node(node.children[i], result)
-            # 2. Adiciona a chave (CPF) à nossa lista de resultados
-            result.append(node.keys[i])
-        # 3. Visita o último filho (à direita da última chave)
-        if not node.leaf:
-            self._in_order_list_node(node.children[len(node.keys)], result)
+    def _dividir_pagina(self, pagina_pai, indice_filho):
+        # Divide uma página cheia em duas e sobe o elemento mediano
+
+        t = self.grau_min
+        pagina_cheia = pagina_pai.filhos[indice_filho]
+        nova_pagina_irma = BTreeNode(eh_folha=pagina_cheia.eh_folha)
+
+        # O CPF do meio sobre para o pai
+        cpf_mediano = pagina_cheia.cpfs[t - 1]
+        pagina_pai.cpfs.insert(indice_filho, cpf_mediano)
+
+        # Conecta a nova irmã ao pai
+        pagina_pai.filhos.insert(indice_filho + 1, nova_pagina_irma)
+
+        # Move a metade direita dos CPFs para a nova página
+        nova_pagina_irma.cpfs = pagina_cheia.cpfs[t:]
+        pagina_cheia.cpfs = pagina_cheia.cpfs[:t - 1]
+
+        # Se tiver filhos, move eles também
+        if not pagina_cheia.eh_folha:
+            nova_pagina_irma.filhos = pagina_cheia.filhos[t:]
+            pagina_cheia.filhos = pagina_cheia.filhos[:t]
+    
+    def listar_cpfs(self):
+        # Retorna todos os CPFs em ordem crescente.
+        lista_resultado = []
+        self._percorrer_em_ordem(self.raiz, lista_resultado)
+        return lista_resultado
+    
+    def _percorrer_em_ordem(self, pagina, lista):
+        for i in range(len(pagina.cpfs)):
+            if not pagina.eh_folha:
+                self._percorrer_em_ordem(pagina.filhos[i], lista)
+            lista.append(pagina.cpfs[i])
+        
+        if not pagina.eh_folha:
+            self._percorrer_em_ordem(pagina.filhos[len(pagina.cpfs)], lista)

@@ -51,8 +51,8 @@ def criar_conta():
                  return redirect(url_for('auth.criar_conta'))
             try:
                 cpf_int = int(cpf_digitado)
-                if not clientes_btree_cpf.search(cpf_int):
-                    clientes_btree_cpf.insert(cpf_int)
+                if not clientes_btree_cpf.buscar(cpf_int):
+                    clientes_btree_cpf.inserir(cpf_int)
                     nome_cliente = request.form.get('nome','passageiro')
                     dados_clientes[cpf_int] = {
                         "Nome": nome_cliente,
