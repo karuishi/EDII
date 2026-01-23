@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, redirect, url_for, session, flash
-from database import login_senha, dados_clientes, clientes_btree_cpf
-from data_manager import salvar_login, salvar_clientes
+from src.database import login_senha, dados_clientes, clientes_btree_cpf
+from src.models.data_manager import salvar_login, salvar_clientes
 
 auth_bp = Blueprint('auth', __name__)
 

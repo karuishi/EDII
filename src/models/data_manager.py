@@ -1,11 +1,15 @@
 import json
 import os
-from BTree import BTree
+from .BTree import BTree
 
-ARQUIVO_VOOS = '../arquivos/voos.json'
-ARQUIVO_CLIENTES = '../arquivos/clientes.json'
-ARQUIVO_RESERVAS = '../arquivos/reservas.json'
-ARQUIVO_LOGIN = '../arquivos/login.json'
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+PROJECT_ROOT = os.path.dirname(os.path.dirname(BASE_DIR))
+DATA_DIR = os.path.join(PROJECT_ROOT, 'data')
+
+ARQUIVO_VOOS = os.path.join(DATA_DIR, 'voos.json')
+ARQUIVO_CLIENTES = os.path.join(DATA_DIR, 'clientes.json')
+ARQUIVO_RESERVAS = os.path.join(DATA_DIR, 'reservas.json')
+ARQUIVO_LOGIN = os.path.join(DATA_DIR, 'login.json')
 
 # --- Funções de Login ---
 def carregar_login():

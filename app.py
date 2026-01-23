@@ -1,12 +1,10 @@
 from flask import Flask, render_template
-from database import voos # Importamos voos apenas para a tela inicial
+from src.database import voos
+from src.routes.auth import auth_bp
+from src.routes.passageiro import passageiro_bp
+from src.routes.admin import admin_bp
 
-# Importar os Blueprints (módulos)
-from routes.auth import auth_bp
-from routes.passageiro import passageiro_bp
-from routes.admin import admin_bp
-
-app = Flask(__name__, template_folder='../templates', static_folder='../static')
+app = Flask(__name__, template_folder='templates', static_folder='static')
 app.secret_key = 'chave_secreta_ed2'
 
 # Registar os Blueprints no app principal

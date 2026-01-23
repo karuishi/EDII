@@ -5,7 +5,7 @@
         "Preco": 1200.9,
         "Milhas": 1500,
         "Aeronave": "Boing 777",
-        "Total_assentos": 145,
+        "Total_assentos": 143,
         "Datas": [
             "2025-12-31"
         ]
@@ -16,7 +16,7 @@
         "Preco": 1150.0,
         "Milhas": 1500,
         "Aeronave": "Boing 777",
-        "Total_assentos": 46,
+        "Total_assentos": 45,
         "Datas": [
             "2026-01-20"
         ]
@@ -27,7 +27,7 @@
         "Preco": 900.0,
         "Milhas": 1000,
         "Aeronave": "Airbus A320",
-        "Total_assentos": 6,
+        "Total_assentos": 4,
         "Datas": [
             "2026-02-15"
         ]
@@ -38,9 +38,31 @@
         "Preco": 1500.0,
         "Milhas": 1000,
         "Aeronave": "Airbus A320",
-        "Total_assentos": 149,
+        "Total_assentos": 147,
         "Datas": [
             "2026-02-12"
+        ]
+    },
+    "ED-007": {
+        "Origem": "Bras\u00edlia - DF",
+        "Destino": "Bel\u00e9m - PA",
+        "Preco": 900.5,
+        "Milhas": 1200,
+        "Aeronave": "Boing 737",
+        "Total_assentos": 148,
+        "Datas": [
+            "2025-12-31"
+        ]
+    },
+    "ED-008": {
+        "Origem": "Salvador - BA",
+        "Destino": "Bras\u00edlia - DF",
+        "Preco": 820.9,
+        "Milhas": 1400,
+        "Aeronave": "Boing 737",
+        "Total_assentos": 148,
+        "Datas": [
+            "2025-12-31"
         ]
     }
 }

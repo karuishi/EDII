@@ -20,5 +20,10 @@
         "senha": "blabla",
         "role": "cliente",
         "cpf": "12345678911"
+    },
+    "Gerard.way": {
+        "senha": "frank<#",
+        "role": "cliente",
+        "cpf": "11111111111"
     }
 }

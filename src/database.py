@@ -1,6 +1,6 @@
 # src/database.py
-from data_manager import carregar_voos, carregar_clientes, carregar_reservas, carregar_login
-from grafo import GrafoRotas
+from src.models.data_manager import carregar_voos, carregar_clientes, carregar_reservas, carregar_login
+from src.models.grafo import GrafoRotas
 
 # Carregamento de dados globais
 print("A carregar base de dados...")

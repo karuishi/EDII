@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, request, redirect, url_for, session, flash
-from database import voos, reservas, dados_clientes, grafos_voos
-from data_manager import salvar_voos, salvar_reservas, salvar_clientes, gerar_codigo_reserva
-from grafo import GrafoRotas
+from src.database import voos, reservas, dados_clientes, grafos_voos
+from src.models.data_manager import salvar_voos, salvar_reservas, salvar_clientes, gerar_codigo_reserva
+from src.models.grafo import GrafoRotas
 import folium
 import random
 

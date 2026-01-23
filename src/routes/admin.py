@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, redirect, url_for, session, flash
-from database import voos, dados_clientes, reservas, clientes_btree_cpf
-from data_manager import salvar_voos, salvar_clientes, salvar_reservas, gerar_codigo_reserva
+from src.database import voos, dados_clientes, reservas, clientes_btree_cpf
+from src.models.data_manager import salvar_voos, salvar_clientes, salvar_reservas, gerar_codigo_reserva
 
 admin_bp = Blueprint('admin', __name__)
 

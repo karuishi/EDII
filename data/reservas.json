@@ -1,0 +1,109 @@
+{
+    "RES1": {
+        "Cliente": "Kim Sunoo da Silva",
+        "CPF": 12345678910,
+        "Voos": [
+            "ED-001"
+        ],
+        "Assentos": {
+            "ED-001": "21E"
+        },
+        "Status_Checkin": true
+    },
+    "RES4": {
+        "Cliente": "Bla Bla",
+        "CPF": 12345678911,
+        "Voos": [
+            "ED-001"
+        ]
+    },
+    "RES5": {
+        "Cliente": "Kim Sunoo da Silva",
+        "CPF": 12345678910,
+        "Voos": [
+            "ED-004"
+        ],
+        "Assentos": {
+            "ED-004": "17F"
+        },
+        "Status_Checkin": true
+    },
+    "RES6": {
+        "Cliente": "Kim Sunoo da Silva",
+        "CPF": 12345678910,
+        "Voos": [
+            "ED-001",
+            "ED-006"
+        ],
+        "Assentos": {
+            "ED-001": "8D",
+            "ED-006": "21C"
+        },
+        "Status_Checkin": true
+    },
+    "RES7": {
+        "Cliente": "Kim Sunoo da Silva",
+        "CPF": 12345678910,
+        "Voos": [
+            "ED-002"
+        ]
+    },
+    "RES8": {
+        "Cliente": "Gerard Way da Silva",
+        "CPF": 11111111111,
+        "Voos": [
+            "ED-001",
+            "ED-006"
+        ]
+    },
+    "RES9": {
+        "Cliente": "Gerard Way da Silva",
+        "CPF": 11111111111,
+        "Voos": [
+            "ED-004"
+        ]
+    },
+    "RES10": {
+        "Cliente": "Gerard Way da Silva",
+        "CPF": 11111111111,
+        "Voos": [
+            "ED-002"
+        ]
+    },
+    "RES11": {
+        "Cliente": "Gerard Way da Silva",
+        "CPF": 11111111111,
+        "Voos": [
+            "ED-001",
+            "ED-006"
+        ]
+    },
+    "RES12": {
+        "Cliente": "Gerard Way da Silva",
+        "CPF": 11111111111,
+        "Voos": [
+            "ED-008",
+            "ED-007"
+        ]
+    },
+    "RES13": {
+        "Cliente": "Gerard Way da Silva",
+        "CPF": 11111111111,
+        "Voos": [
+            "ED-008",
+            "ED-007"
+        ],
+        "Assentos": {
+            "ED-008": "24F",
+            "ED-007": "29F"
+        },
+        "Status_Checkin": true
+    },
+    "RES14": {
+        "Cliente": "Bla Bla",
+        "CPF": 12345678911,
+        "Voos": [
+            "ED-004"
+        ]
+    }
+}
