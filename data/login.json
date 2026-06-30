@@ -1,8 +1,4 @@
 {
-    "Admin": {
-        "senha": "Farcry34!",
-        "role": "admin"
-    },
     "Gerente": {
         "senha": "12345",
         "role": "admin"
