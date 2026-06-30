@@ -80,8 +80,12 @@
                         <div class="form-floating">
                             <select name="origem" class="form-select border-0 shadow-sm" id="origemSelect">
                                 <option value ="" selected>Qualquer lugar</option> 
+                                {% set origens_unicas = [] %}
                                 {% for codigo, voo in voos.items() %}
-                                    <option value="{{ voo.Origem}}" {% if filtros.origem == voo.Origem %}selected{% endif %}>{{ voo.Origem }}</option>
+                                    {% if voo.Origem not in origens_unicas %}
+                                        {% if origens_unicas.append(voo.Origem) %}{% endif %}
+                                        <option value="{{ voo.Origem}}" {% if filtros.origem == voo.Origem %}selected{% endif %}>{{ voo.Origem }}</option>
+                                    {% endif %}
                                 {% endfor %}
                             </select>
                             <label for="origemSelect" class="text-muted fw-bold">🛫 Saindo de</label>
@@ -92,8 +96,12 @@
                         <div class="form-floating">
                             <select name="destino" class="form-select border-0 shadow-sm" id="destinoSelect">
                                 <option value="" selected>Qualquer lugar</option>
+                                {% set destinos_unicos = [] %}
                                 {% for codigo, voo in voos.items() %}
-                                    <option value="{{ voo.Destino}}" {% if filtros.destino == voo.Destino %}selected{% endif %}>{{ voo.Destino }}</option>
+                                    {% if voo.Destino not in destinos_unicos %}
+                                        {% if destinos_unicos.append(voo.Destino) %}{% endif %}
+                                        <option value="{{ voo.Destino}}" {% if filtros.destino == voo.Destino %}selected{% endif %}>{{ voo.Destino }}</option>
+                                    {% endif %}
                                 {% endfor %}
                             </select>
                             <label for="destinoSelect" class="text-muted fw-bold">🛬 Indo para</label>
@@ -281,7 +289,7 @@
                         
                         <form action="{{ url_for('passageiro.realizar_checkin') }}" method="POST" class="w-100">
                             <div class="input-group input-group-lg mb-3 shadow-sm">
-                                <input type="text" name="codigo_reserva" class="form-control border-end" border-end-0" placeholder="Código da Reserva (ex: RES1)" aria-label="Código da Reserva" required style="text-transform: uppercase;">
+                                <input type="text" name="codigo_reserva" class="form-control border-end-0" placeholder="Código da Reserva (ex: RES1)" aria-label="Código da Reserva" required style="text-transform: uppercase;">
                                 <button class="btn btn-primary px-4 fw-bold" type="submit">
                                     Confirmar Check-in
                                 </button>

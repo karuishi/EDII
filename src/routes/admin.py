@@ -32,6 +32,7 @@ def adicionar_voo():
             "Datas": lista_datas
         }
         salvar_voos(voos)
+        flash('Voo adicionado com sucesso!', 'success')
         return redirect(url_for('admin.listar_voos'))
     return render_template('voos/adicionar_voo.html')
 
@@ -41,6 +42,10 @@ def editar_voo(codigo_voo):
         return redirect(url_for('passageiro.pagina_passageiro'))
     
     voo = voos.get(codigo_voo)
+    if not voo:
+        flash(f'Voo {codigo_voo} não encontrado.', 'danger')
+        return redirect(url_for('admin.listar_voos'))
+
     if request.method == 'POST':
         preco_str = request.form['preco'].replace(',', '.')
         voo['Origem'] = request.form['origem']
@@ -53,10 +58,11 @@ def editar_voo(codigo_voo):
         if data:
             voo['Datas'] = [data]
         salvar_voos(voos)
+        flash('Voo atualizado com sucesso!', 'success')
         return redirect(url_for('admin.listar_voos'))
     return render_template('voos/editar_voo.html', voo=voo, codigo_voo=codigo_voo)
 
-@admin_bp.route('/voos/excluir/<codigo_voo>')
+@admin_bp.route('/voos/excluir/<codigo_voo>', methods=['POST'])
 def excluir_voo(codigo_voo):
     if session.get('role') != 'admin':
         return redirect(url_for('passageiro.pagina_passageiro'))
@@ -105,20 +111,29 @@ def adicionar_cliente():
         try:
             cpf = int(request.form['cpf'])
         except ValueError:
-            return "Erro: CPF deve conter apenas números."
+            flash('Erro: CPF deve conter apenas números.', 'danger')
+            return redirect(url_for('admin.adicionar_cliente'))
 
         if clientes_btree_cpf.buscar(cpf):
-            return "Erro: Cliente com este CPF já cadastrado!"
+            flash('Erro: Cliente com este CPF já cadastrado!', 'danger')
+            return redirect(url_for('admin.adicionar_cliente'))
         
         nome = request.form['nome']
         clientes_btree_cpf.inserir(cpf)
+
+        try:
+            milhas_valor = int(request.form['milhas'])
+        except ValueError:
+            milhas_valor = 0
+
         dados_clientes[cpf] = {
             "Nome" : nome,
             "Reservas" : [],
             "Data_viagem" : request.form['data_viagem'],
-            "Milhas" : request.form['milhas']
+            "Milhas" : milhas_valor
         }
         salvar_clientes(dados_clientes)
+        flash('Cliente cadastrado com sucesso!', 'success')
         return redirect(url_for('admin.listar_clientes'))
     return render_template('clientes/adicionar_cliente.html')
 
@@ -156,6 +171,10 @@ def fazer_reserva():
             flash("Erro: CPF inválido.", 'danger')
             return redirect(url_for('admin.fazer_reserva'))
 
+        if cpf_cliente not in dados_clientes:
+            flash("Erro: Cliente não encontrado.", 'danger')
+            return redirect(url_for('admin.fazer_reserva'))
+
         voos_selecionados = request.form.getlist('voos_selecionados')
 
         if not voos_selecionados:
@@ -163,6 +182,9 @@ def fazer_reserva():
             return redirect(url_for('admin.fazer_reserva'))
 
         for codigo_voo in voos_selecionados:
+            if codigo_voo not in voos:
+                flash(f'Voo {codigo_voo} não encontrado.', 'danger')
+                return redirect(url_for('admin.fazer_reserva'))
             if voos[codigo_voo]['Total_assentos'] <= 0:
                 flash(f'Voo {codigo_voo} esgotado!', 'danger')
                 return redirect(url_for('admin.fazer_reserva'))
@@ -236,7 +258,7 @@ def detalhes_reserva(codigo_reserva):
                            reserva=reserva, codigo=codigo_reserva, voos=detalhes_voos, 
                            total_preco=total_preco, total_milhas=total_milhas)
 
-@admin_bp.route('/reservas/excluir/<codigo_reserva>')
+@admin_bp.route('/reservas/excluir/<codigo_reserva>', methods=['POST'])
 def excluir_reserva(codigo_reserva):
     if session.get('role') != 'admin':
         return redirect(url_for('passageiro.pagina_passageiro'))

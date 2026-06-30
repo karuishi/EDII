@@ -95,7 +95,11 @@ def reservar_passagem(codigo_voo):
     if 'usuario' not in session: return redirect(url_for('auth.login'))
     if session.get('role') == 'admin': return redirect(url_for('passageiro.pagina_passageiro'))
     
-    cpf_cliente = int(session['cpf'])
+    cpf_sessao = session.get('cpf')
+    if not cpf_sessao:
+        flash('CPF não encontrado na sessão. Faça login novamente.', 'danger')
+        return redirect(url_for('auth.logout'))
+    cpf_cliente = int(cpf_sessao)
     lista_voos_para_reservar = []
     
     # Trata voo de conexão ou direto

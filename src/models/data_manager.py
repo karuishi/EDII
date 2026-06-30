@@ -20,8 +20,8 @@ def carregar_login():
     return { "Admin": { "senha": "admin", "role": "admin" } } 
 
 def salvar_login(login):
-    with open(ARQUIVO_LOGIN, 'w') as f:
-        json.dump(login, f, indent=4)
+    with open(ARQUIVO_LOGIN, 'w', encoding='utf-8') as f:
+        json.dump(login, f, indent=4, ensure_ascii=False)
 
 # --- Funções de Voos ---
 def carregar_voos():
@@ -31,8 +31,8 @@ def carregar_voos():
     return {} # Retorna vazio se não existir
 
 def salvar_voos(voos):
-    with open(ARQUIVO_VOOS, 'w') as f:
-        json.dump(voos, f, indent=4)
+    with open(ARQUIVO_VOOS, 'w', encoding='utf-8') as f:
+        json.dump(voos, f, indent=4, ensure_ascii=False)
 
 # --- Funções de Clientes ---
 def carregar_clientes():
@@ -57,9 +57,9 @@ def carregar_clientes():
     return dados_clientes, clientes_btree
 
 def salvar_clientes(dados_clientes):
-    with open(ARQUIVO_CLIENTES, 'w') as f:
+    with open(ARQUIVO_CLIENTES, 'w', encoding='utf-8') as f:
         dados_para_salvar = {str(cpf): dados for cpf, dados in dados_clientes.items()}
-        json.dump(dados_para_salvar, f, indent=4)
+        json.dump(dados_para_salvar, f, indent=4, ensure_ascii=False)
 
 # --- Funções de Reservas ---
 def carregar_reservas():
@@ -72,8 +72,8 @@ def carregar_reservas():
     return {}
 
 def salvar_reservas(reservas):
-    with open(ARQUIVO_RESERVAS, 'w') as f:
-        json.dump(reservas, f, indent=4)
+    with open(ARQUIVO_RESERVAS, 'w', encoding='utf-8') as f:
+        json.dump(reservas, f, indent=4, ensure_ascii=False)
 
 def gerar_codigo_reserva(reservas):
     if not reservas:

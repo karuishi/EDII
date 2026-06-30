@@ -58,8 +58,12 @@
                             <div class="form-floating">
                                 <select name="origem" class="form-select border-secondary-subtle fw-bold" id="floatingOrigem">
                                     <option value="" selected>Selecione</option>
+                                    {% set origens_unicas = [] %}
                                     {% for codigo, voo in voos.items() %}
-                                        <option value="{{ voo.Origem }}">{{ voo.Origem }}</option>
+                                        {% if voo.Origem not in origens_unicas %}
+                                            {% if origens_unicas.append(voo.Origem) %}{% endif %}
+                                            <option value="{{ voo.Origem }}">{{ voo.Origem }}</option>
+                                        {% endif %}
                                     {% endfor %}
                                 </select>
                                 <label for="floatingOrigem">🛫 De onde?</label>
@@ -70,8 +74,12 @@
                             <div class="form-floating">
                                 <select name="destino" class="form-select border-secondary-subtle fw-bold" id="floatingDestino">
                                     <option value="" selected>Selecione</option>
+                                    {% set destinos_unicos = [] %}
                                     {% for codigo, voo in voos.items() %}
-                                        <option value="{{ voo.Destino }}">{{ voo.Destino }}</option>
+                                        {% if voo.Destino not in destinos_unicos %}
+                                            {% if destinos_unicos.append(voo.Destino) %}{% endif %}
+                                            <option value="{{ voo.Destino }}">{{ voo.Destino }}</option>
+                                        {% endif %}
                                     {% endfor %}
                                 </select>
                                 <label for="floatingDestino">🛬 Para onde?</label>

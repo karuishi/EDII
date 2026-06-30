@@ -93,9 +93,11 @@
                                     <a href="{{ url_for('admin.editar_voo', codigo_voo=codigo) }}" class="btn btn-sm btn-outline-secondary border-0" title="Editar" data-bs-toggle="tooltip">
                                         <i class="bi bi-pencil-square"></i>
                                     </a>
-                                    <a href="{{ url_for('admin.excluir_voo', codigo_voo=codigo) }}" class="btn btn-sm btn-outline-secondary border-0 text-danger" title="Excluir" onclick="return confirm('Tem certeza que deseja excluir o voo {{ codigo }}?');">
-                                        <i class="bi bi-trash"></i>
-                                    </a>
+                                    <form action="{{ url_for('admin.excluir_voo', codigo_voo=codigo) }}" method="POST" class="d-inline" onsubmit="return confirm('Tem certeza que deseja excluir o voo {{ codigo }}?');">
+                                        <button type="submit" class="btn btn-sm btn-outline-secondary border-0 text-danger" title="Excluir">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+                                    </form>
                                 </div>
                             </td>
                         </tr>
