@@ -76,4 +76,4 @@ EDII/
 | Usuário | Senha | Perfil |
 |---------|-------|--------|
 | `Admin` | `Farcry34!` | Administrador |
-| `Sunoo` | `Sunghoonvida` | Cliente |
+| `blabla` | `blabla` | Cliente |
