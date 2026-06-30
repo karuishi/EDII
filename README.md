@@ -75,5 +75,5 @@ EDII/
 
 | Usuário | Senha | Perfil |
 |---------|-------|--------|
-| `Admin` | `Farcry34!` | Administrador |
+| `Gerente` | `12345` | Administrador |
 | `blabla` | `blabla` | Cliente |
