@@ -26,10 +26,12 @@
         "Nome": "Bla Bla",
         "Reservas": [
             "RES4",
-            "RES14"
+            "RES14",
+            "RES15",
+            "RES16"
         ],
-        "Data_viagem": "2026-02-15",
-        "Milhas": 2500
+        "Data_viagem": "2026-03-18",
+        "Milhas": 4200
     },
     "11111111111": {
         "Nome": "Gerard Way da Silva",

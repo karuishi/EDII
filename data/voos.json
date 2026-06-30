@@ -93,7 +93,7 @@
         "Preco": 320.5,
         "Milhas": 400,
         "Aeronave": "Boing 737",
-        "Total_assentos": 150,
+        "Total_assentos": 149,
         "Datas": [
             "2026-03-15"
         ]
@@ -115,7 +115,7 @@
         "Preco": 1100.0,
         "Milhas": 1300,
         "Aeronave": "Boing 777",
-        "Total_assentos": 200,
+        "Total_assentos": 199,
         "Datas": [
             "2026-03-18"
         ]

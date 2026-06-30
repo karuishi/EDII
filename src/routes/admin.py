@@ -253,7 +253,8 @@ def detalhes_reserva(codigo_reserva):
                 'data': v.get('Datas', ['--'])[0], 
                 'aeronave': v['Aeronave'],
                 'preco': v['Preco'],
-                'milhas': v['Milhas']
+                'milhas': v['Milhas'],
+                'assento': reserva.get('Assentos', {}).get(codigo_voo, 'Não escolhido')
             })
             total_preco += v['Preco']
             total_milhas += v['Milhas']

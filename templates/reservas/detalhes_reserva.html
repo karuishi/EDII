@@ -37,6 +37,7 @@
                                     <th>Voo</th>
                                     <th>Rota</th>
                                     <th>Data</th>
+                                    <th>Assento</th>
                                     <th class="text-end">Preço</th>
                                 </tr>
                             </thead>
@@ -51,17 +52,18 @@
                                         {{ voo.origem }} <i class="bi bi-arrow-right mx-1 text-muted"></i> {{ voo.destino }}
                                     </td>
                                     <td>{{ voo.data }}</td>
+                                    <td><span class="badge bg-primary-subtle text-primary-emphasis">{{ voo.assento }}</span></td>
                                     <td class="text-end">R$ {{ "%.2f"|format(voo.preco) }}</td>
                                 </tr>
                                 {% endfor %}
                             </tbody>
                             <tfoot class="border-top-2">
                                 <tr>
-                                    <td colspan="3" class="text-end fw-bold pt-3">Total Pago:</td>
+                                    <td colspan="4" class="text-end fw-bold pt-3">Total Pago:</td>
                                     <td class="text-end fw-bold fs-5 text-success pt-3">R$ {{ "%.2f"|format(total_preco) }}</td>
                                 </tr>
                                 <tr>
-                                    <td colspan="3" class="text-end small text-muted">Milhas Acumuladas:</td>
+                                    <td colspan="4" class="text-end small text-muted">Milhas Acumuladas:</td>
                                     <td class="text-end small text-warning fw-bold">+{{ total_milhas }}</td>
                                 </tr>
                             </tfoot>

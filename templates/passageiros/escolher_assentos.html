@@ -1,0 +1,196 @@
+{% extends "tela_inicial/base.html" %}
+{% block title %}Escolha seus Assentos{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    
+    <div class="text-center mb-5">
+        <h2 class="fw-bold text-body-emphasis">Escolha de Assentos <i class="bi bi-geo-alt-fill text-primary"></i></h2>
+        <p class="text-muted">Selecione o assento de sua preferência para cada trecho da sua viagem.</p>
+    </div>
+
+    <form action="{{ url_for('passageiro.confirmar_reserva', codigo_voo=codigo_combo) }}" method="POST">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                {% for voo in voos_info %}
+                <div class="card border-0 shadow-sm rounded-4 mb-4">
+                    <div class="card-header bg-primary text-white p-3 rounded-top-4">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h5 class="mb-0 fw-bold"><i class="bi bi-airplane me-2"></i>Voo {{ voo.codigo }}</h5>
+                            <span class="badge bg-white text-primary">{{ voo.origem.split('-')[0] | trim }} ➔ {{ voo.destino.split('-')[0] | trim }}</span>
+                        </div>
+                    </div>
+                    
+                    <div class="card-body p-4 bg-body-tertiary">
+                        <div class="plane-container bg-body border border-secondary-subtle rounded-4 p-4 mx-auto" style="max-width: 400px; overflow-x: auto;">
+                            <!-- Frente do avião -->
+                            <div class="text-center mb-4 text-body-emphasis">
+                                <i class="bi bi-caret-up-fill fs-2 text-muted"></i><br>
+                                <small class="text-uppercase fw-bold fs-6">Frente</small>
+                            </div>
+                            
+                            <div class="d-flex justify-content-center gap-4">
+                                <!-- Lado Esquerdo -->
+                                <div class="d-flex flex-column gap-2">
+                                    <div class="d-flex gap-2 mb-2 text-center text-body-emphasis fw-bold" style="font-size: 1rem;">
+                                        <div style="width: 35px;">A</div>
+                                        <div style="width: 35px;">B</div>
+                                        <div style="width: 35px;">C</div>
+                                    </div>
+                                    
+                                    {% for fileira in range(1, 31) %}
+                                    <div class="d-flex gap-2">
+                                        {% for letra in ['A', 'B', 'C'] %}
+                                        {% set assento = [fileira|string, letra]|join('') %}
+                                        <label class="seat-label" title="Assento {{ assento }}">
+                                            <input type="radio" name="assento_{{ voo.codigo }}" value="{{ assento }}" required class="seat-radio" {% if assento in voo.assentos_ocupados %}disabled{% endif %}>
+                                            <div class="seat {% if assento in voo.assentos_ocupados %}seat-occupied{% else %}seat-available{% endif %} d-flex align-items-center justify-content-center fw-bold shadow-sm" style="width: 35px; height: 35px; border-radius: 6px; font-size: 0.7rem; cursor: pointer;">
+                                                {{ fileira }}{{ letra }}
+                                            </div>
+                                        </label>
+                                        {% endfor %}
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                                
+                                <!-- Corredor -->
+                                <div class="d-flex flex-column justify-content-center align-items-center opacity-25">
+                                    <div class="h-100 border-start border-2 border-dashed"></div>
+                                </div>
+                                
+                                <!-- Lado Direito -->
+                                <div class="d-flex flex-column gap-2">
+                                    <div class="d-flex gap-2 mb-2 text-center text-body-emphasis fw-bold" style="font-size: 1rem;">
+                                        <div style="width: 35px;">D</div>
+                                        <div style="width: 35px;">E</div>
+                                        <div style="width: 35px;">F</div>
+                                    </div>
+                                    
+                                    {% for fileira in range(1, 31) %}
+                                    <div class="d-flex gap-2">
+                                        {% for letra in ['D', 'E', 'F'] %}
+                                        {% set assento = [fileira|string, letra]|join('') %}
+                                        <label class="seat-label" title="Assento {{ assento }}">
+                                            <input type="radio" name="assento_{{ voo.codigo }}" value="{{ assento }}" required class="seat-radio" {% if assento in voo.assentos_ocupados %}disabled{% endif %}>
+                                            <div class="seat {% if assento in voo.assentos_ocupados %}seat-occupied{% else %}seat-available{% endif %} d-flex align-items-center justify-content-center fw-bold shadow-sm" style="width: 35px; height: 35px; border-radius: 6px; font-size: 0.7rem; cursor: pointer;">
+                                                {{ fileira }}{{ letra }}
+                                            </div>
+                                        </label>
+                                        {% endfor %}
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            
+                            <!-- Traseira do avião -->
+                            <div class="text-center mt-4 text-body-emphasis">
+                                <small class="text-uppercase fw-bold fs-6">Fundo</small><br>
+                                <i class="bi bi-caret-down-fill fs-2 text-muted"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+                
+                <div class="d-flex justify-content-between align-items-center mt-4 p-4 bg-body-tertiary rounded-4 border shadow-sm">
+                    <div>
+                        <span class="d-block text-muted text-uppercase fw-bold mb-1" style="font-size: 0.8rem;">Resumo da Compra</span>
+                        <h4 class="fw-bold text-success mb-0">R$ {{ "%.2f"|format(preco_total) }}</h4>
+                    </div>
+                    <div>
+                        <a href="{{ url_for('passageiro.pagina_passageiro') }}" class="btn btn-outline-secondary fw-bold rounded-3 me-2">Cancelar</a>
+                        <button type="submit" class="btn btn-primary fw-bold rounded-3 px-4 shadow-sm">
+                            Confirmar Compra <i class="bi bi-check2-circle ms-2"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-3 d-none d-lg-block">
+                <div class="card border-0 shadow-sm rounded-4 position-sticky" style="top: 20px;">
+                    <div class="card-body p-4">
+                        <h5 class="fw-bold mb-4">Legenda</h5>
+                        
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="seat-legend bg-body border border-primary text-primary fw-bold d-flex align-items-center justify-content-center rounded" style="width: 30px; height: 30px;">✓</div>
+                            <span class="ms-3 text-muted">Livre</span>
+                        </div>
+                        
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="seat-legend bg-primary text-white fw-bold d-flex align-items-center justify-content-center rounded" style="width: 30px; height: 30px;">✓</div>
+                            <span class="ms-3 text-muted">Selecionado</span>
+                        </div>
+                        
+                        <div class="d-flex align-items-center">
+                            <div class="seat-legend bg-secondary bg-opacity-25 text-muted fw-bold d-flex align-items-center justify-content-center rounded opacity-50" style="width: 30px; height: 30px;">✕</div>
+                            <span class="ms-3 text-muted">Ocupado</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<style>
+    /* Esconde o radio button nativo */
+    .seat-radio {
+        display: none;
+    }
+
+    /* Estilos base dos assentos */
+    .seat {
+        position: relative;
+        transition: all 0.2s ease;
+        user-select: none;
+        color: var(--bs-primary-text-emphasis);
+        background-color: var(--bs-body-bg);
+        border: 2px solid var(--bs-primary-border-subtle);
+        font-weight: 800 !important;
+        font-size: 0.85rem !important;
+        overflow: hidden;
+    }
+
+    /* Assento disponível no hover */
+    .seat-label:not([disabled]) .seat:hover {
+        background-color: var(--bs-primary-bg-subtle);
+        transform: translateY(-2px);
+    }
+
+    /* Assento selecionado (checked) */
+    .seat-radio:checked + .seat {
+        background-color: var(--bs-primary) !important;
+        color: white !important;
+        border-color: var(--bs-primary) !important;
+        transform: scale(1.05);
+        box-shadow: 0 0 10px rgba(var(--bs-primary-rgb), 0.5) !important;
+    }
+
+    /* Assento ocupado (disabled) */
+    .seat-occupied {
+        background-color: var(--bs-secondary-bg-subtle) !important;
+        color: var(--bs-secondary) !important;
+        border-color: var(--bs-border-color) !important;
+        opacity: 0.6;
+        cursor: not-allowed !important;
+    }
+    
+    .seat-occupied::after {
+        content: "";
+        position: absolute;
+        width: 140%;
+        height: 2px;
+        background-color: var(--bs-secondary);
+        transform: rotate(45deg);
+        transform-origin: center;
+        top: 50%;
+        left: -20%;
+    }
+</style>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Interatividade visual extra pros assentos se necessário
+    });
+</script>
+{% endblock %}

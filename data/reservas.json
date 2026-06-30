@@ -105,5 +105,27 @@
         "Voos": [
             "ED-004"
         ]
+    },
+    "RES15": {
+        "Cliente": "Bla Bla",
+        "CPF": 12345678911,
+        "Voos": [
+            "ED-011"
+        ],
+        "Assentos": {
+            "ED-011": "22E"
+        },
+        "Status_Checkin": true
+    },
+    "RES16": {
+        "Cliente": "Bla Bla",
+        "CPF": 12345678911,
+        "Voos": [
+            "ED-013"
+        ],
+        "Assentos": {
+            "ED-013": "3D"
+        },
+        "Status_Checkin": true
     }
 }

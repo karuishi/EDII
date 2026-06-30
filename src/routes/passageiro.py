@@ -90,8 +90,55 @@ def pagina_passageiro():
         filtros = {'origem': origem_filtro, 'destino': destino_filtro}
     )
 
-@passageiro_bp.route('/passageiro/reservar/<codigo_voo>')
-def reservar_passagem(codigo_voo):
+@passageiro_bp.route('/passageiro/reservar/<codigo_voo>/assentos')
+def escolher_assentos(codigo_voo):
+    if 'usuario' not in session: return redirect(url_for('auth.login'))
+    if session.get('role') == 'admin': return redirect(url_for('passageiro.pagina_passageiro'))
+    
+    cpf_sessao = session.get('cpf')
+    if not cpf_sessao:
+        flash('CPF não encontrado na sessão. Faça login novamente.', 'danger')
+        return redirect(url_for('auth.logout'))
+    
+    lista_voos_para_reservar = []
+    
+    # Se for uma conexão, divide a string para pegar a lista de voos individuais
+    if codigo_voo.startswith("CONEXAO-"):
+        trecho_codigos = codigo_voo.replace("CONEXAO-", "")
+        lista_voos_para_reservar = trecho_codigos.split("_")
+    else:
+        lista_voos_para_reservar = [codigo_voo]
+
+    voos_info = []
+    preco_total = 0.0
+
+    # Validações e coleta de dados
+    for cod in lista_voos_para_reservar:
+        if cod not in voos:
+            flash(f"Erro: O voo '{cod}' não está disponível.", 'danger')
+            return redirect(url_for('passageiro.pagina_passageiro'))
+        if voos[cod]['Total_assentos'] <= 0:
+            flash(f"O voo {cod} está lotado!", 'danger')
+            return redirect(url_for('passageiro.pagina_passageiro'))
+        
+        # Encontra assentos ocupados
+        assentos_ocupados = []
+        for r_cod, r_dados in reservas.items():
+            if 'Assentos' in r_dados and cod in r_dados['Assentos']:
+                assentos_ocupados.append(r_dados['Assentos'][cod])
+
+        voos_info.append({
+            'codigo': cod,
+            'origem': voos[cod]['Origem'],
+            'destino': voos[cod]['Destino'],
+            'assentos_ocupados': assentos_ocupados
+        })
+        preco_total += voos[cod]['Preco']
+
+    return render_template('passageiros/escolher_assentos.html', voos_info=voos_info, codigo_combo=codigo_voo, preco_total=preco_total)
+
+@passageiro_bp.route('/passageiro/confirmar_reserva/<codigo_voo>', methods=['POST'])
+def confirmar_reserva(codigo_voo):
     if 'usuario' not in session: return redirect(url_for('auth.login'))
     if session.get('role') == 'admin': return redirect(url_for('passageiro.pagina_passageiro'))
     
@@ -102,7 +149,6 @@ def reservar_passagem(codigo_voo):
     cpf_cliente = int(cpf_sessao)
     lista_voos_para_reservar = []
     
-    # Se for uma conexão, divide a string para pegar a lista de voos individuais
     if codigo_voo.startswith("CONEXAO-"):
         trecho_codigos = codigo_voo.replace("CONEXAO-", "")
         lista_voos_para_reservar = trecho_codigos.split("_")
@@ -111,8 +157,9 @@ def reservar_passagem(codigo_voo):
 
     total_milhas_ganhas = 0
     primeira_data = ""
+    assentos_escolhidos = {}
 
-    # Validações
+    # Validações e verificação de assentos
     for cod in lista_voos_para_reservar:
         if cod not in voos:
             flash(f"Erro: O voo '{cod}' não está disponível.", 'danger')
@@ -121,6 +168,19 @@ def reservar_passagem(codigo_voo):
             flash(f"O voo {cod} está lotado!", 'danger')
             return redirect(url_for('passageiro.pagina_passageiro'))
         
+        assento_form = request.form.get(f'assento_{cod}')
+        if not assento_form:
+            flash(f"Por favor, escolha um assento para o voo {cod}.", 'warning')
+            return redirect(url_for('passageiro.escolher_assentos', codigo_voo=codigo_voo))
+        
+        # Verifica se alguém pegou o assento enquanto ele escolhia
+        for r_cod, r_dados in reservas.items():
+            if 'Assentos' in r_dados and cod in r_dados['Assentos']:
+                if r_dados['Assentos'][cod] == assento_form:
+                    flash(f"O assento {assento_form} do voo {cod} já foi reservado. Por favor, escolha outro.", 'danger')
+                    return redirect(url_for('passageiro.escolher_assentos', codigo_voo=codigo_voo))
+        
+        assentos_escolhidos[cod] = assento_form
         total_milhas_ganhas += voos[cod]['Milhas']
         if not primeira_data:
             datas = voos[cod].get('Datas', [])
@@ -136,7 +196,8 @@ def reservar_passagem(codigo_voo):
     reservas[novo_codigo_reserva] = {
         "Cliente": dados_clientes[cpf_cliente]['Nome'],
         "CPF": cpf_cliente,
-        "Voos": lista_voos_para_reservar
+        "Voos": lista_voos_para_reservar,
+        "Assentos": assentos_escolhidos
     }
     salvar_reservas(reservas)
 
@@ -150,7 +211,7 @@ def reservar_passagem(codigo_voo):
 
     salvar_clientes(dados_clientes)
 
-    flash(f'Reserva {novo_codigo_reserva} realizada com sucesso!', 'success')
+    flash(f'Reserva {novo_codigo_reserva} realizada com sucesso! Seus assentos foram garantidos.', 'success')
     return redirect(url_for('passageiro.pagina_passageiro'))
 
 @passageiro_bp.route('/checkin', methods=['POST'])
