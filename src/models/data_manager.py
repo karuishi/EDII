@@ -46,6 +46,7 @@ def carregar_clientes():
             
             dados_clientes = {int(cpf): dados for cpf, dados in dados_do_json.items()}
 
+            # Lê do disco e já insere na B-Tree para deixar a busca rápida
             print("A reconstruir o índice da Árvore B...")
             for cpf in dados_clientes.keys():
                 clientes_btree.inserir(cpf)
@@ -79,6 +80,7 @@ def gerar_codigo_reserva(reservas):
     if not reservas:
         return "RES1"
     
+    # Pega os códigos que já existem, acha o maior número e soma 1.
     numeros = [int(cod.replace('RES', '')) for cod in reservas.keys()]
     prox_codigo = max(numeros) + 1
     return f"RES{prox_codigo}"

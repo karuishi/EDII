@@ -2,8 +2,8 @@ import heapq
 
 class GrafoRotas:
     def __init__(self):
-        # Dicionário de adjacência (Rotas):
-        # Ex: { 'Salvador': [ ('São Paulo', 'ED-001', 1200.0), ... ] }
+        # O Grafo é basicamente um dicionário. A chave é a cidade, e os valores são as rotas saindo dela
+        # Exemplo: { 'Salvador': [ ('São Paulo', 'ED-001', 1200.0), ... ] }
         self.conexoes = {}
     
     def adicionar_rota(self, origem, destino, codigo_voo, preco):
@@ -17,11 +17,11 @@ class GrafoRotas:
         self.conexoes[origem].append((destino, codigo_voo, preco))
     
     def buscar_melhor_rota(self, aeroporto_partida, aeroporto_chegada):
-        # Usa o algoritmo Dijkstra para encontrar a rota mais barata.
-        # Retorna: (custo_total, [lista_de_voos] ou None)
+        # O Dijkstra é utilizado para achar a sequência de voos mais barata entre duas cidades.
+        # Ele retorna o custo total e a lista de voos que o passageiro tem que pegar
 
-        # Fila de prioridade: (custo_acumulado, cidade_atual, lista_de_voos)
-        # O heapq sempre coloca o menor custo no topo da fila
+        # A Fila de prioridade funciona como: (custo_acumulado, cidade_atual, lista_de_voos)
+        # O heap sempre encontra o menor custo e o coloca no topo da fila
         fila_prioridade = [(0, aeroporto_partida, [])]
 
         menores_custos = {aeroporto_partida: 0}
@@ -45,10 +45,10 @@ class GrafoRotas:
                 for proximo_destino, codigo_voo, valor_passagem in self.conexoes[cidade_atual]:
                     novo_custo_total = custo_atual + valor_passagem
 
-                    # Se encontramos um jeito mais barato
+                    # Se achamos um caminho mais barato pra essa cidade
                     if proximo_destino not in menores_custos or novo_custo_total < menores_custos[proximo_destino]:
                         menores_custos[proximo_destino] = novo_custo_total
-                        # Adiciona na fila para explorar depois
+                        # Adiciona na fila para continuar explorando a partir daqui
                         heapq.heappush(fila_prioridade, (novo_custo_total, proximo_destino, itinerario + [codigo_voo]))
                     
         return None

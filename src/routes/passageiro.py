@@ -15,7 +15,7 @@ def pagina_passageiro():
     role = session.get('role')
     cpf_sessao = session.get('cpf')
 
-    # Busca dados do cliente para exibir no painel
+    # Busca os dados do cliente para exibir no painel
     dados_do_clientes = {}
     if role == 'admin':
         dados_do_clientes = {"Nome": "ADM", "Milhas": "∞"}
@@ -33,7 +33,7 @@ def pagina_passageiro():
 
     voos_exibicao = {}
     
-    # 1. Busca Voos Diretos
+    # 1. Busca por Voos Diretos
     if origem_filtro or destino_filtro or data_ida_filtro:
         for codigo, dados in voos.items():
             corresponde = True
@@ -47,9 +47,9 @@ def pagina_passageiro():
     else:
         voos_exibicao = voos.copy()
 
-    # 2. Busca Conexões (Grafo) se não achou direto
+    # 2. Busca por voos com conexão usando o Grafo
     if origem_filtro and destino_filtro and not voos_exibicao:
-        # Recria grafo para garantir dados novos
+        # Recria o Grafo para garantir dados novos
         grafo_atualizado = GrafoRotas()
         for cod, dados in voos.items():
             grafo_atualizado.adicionar_rota(dados['Origem'], dados['Destino'], cod, dados['Preco'])
@@ -59,7 +59,7 @@ def pagina_passageiro():
         if resultado_grafo:
             custo_total, caminho_codigos = resultado_grafo
             if len(caminho_codigos) > 1:
-                # Usa UNDERSCORE para separar os códigos e evitar bug
+                # Usa UNDERSCORE para juntar os códigos da conexão em uma string só (exemplo: CONEXAO-ED-001_ED-002)
                 codigo_combo = "CONEXAO-" + "_".join(caminho_codigos)
                 primeiro_voo = voos[caminho_codigos[0]]
                 
@@ -75,7 +75,7 @@ def pagina_passageiro():
                 }
                 flash(f"Rota com conexão encontrada via {len(caminho_codigos)} voos!", "info")
     
-    # Filtrar reservas do cliente logado
+    # Filtra reservas do cliente logado
     minhas_reservas = {}
     if role != 'admin' and cpf_sessao:
         for codigo, reserva in reservas.items():
@@ -102,7 +102,7 @@ def reservar_passagem(codigo_voo):
     cpf_cliente = int(cpf_sessao)
     lista_voos_para_reservar = []
     
-    # Trata voo de conexão ou direto
+    # Se for uma conexão, divide a string para pegar a lista de voos individuais
     if codigo_voo.startswith("CONEXAO-"):
         trecho_codigos = codigo_voo.replace("CONEXAO-", "")
         lista_voos_para_reservar = trecho_codigos.split("_")
@@ -112,7 +112,7 @@ def reservar_passagem(codigo_voo):
     total_milhas_ganhas = 0
     primeira_data = ""
 
-    # Validação
+    # Validações
     for cod in lista_voos_para_reservar:
         if cod not in voos:
             flash(f"Erro: O voo '{cod}' não está disponível.", 'danger')

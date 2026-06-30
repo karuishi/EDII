@@ -11,6 +11,7 @@ def login():
         login = request.form['login']
         senha = request.form['senha']
 
+        # Verifica as credenciais comparando o hash salvo com a senha digitada
         if login in login_senha and check_password_hash(login_senha[login]["senha"], senha):
             session['usuario'] = login
             session['role'] = login_senha[login]["role"]
@@ -22,7 +23,8 @@ def login():
 
             if role == 'admin':
                 return redirect(url_for('admin.listar_voos'))
-            else : 
+            else: 
+                # Se não for admin, direciona para o painel do passageiro
                 return redirect(url_for('passageiro.pagina_passageiro'))
             
         else:
@@ -46,6 +48,7 @@ def criar_conta():
             flash('Login já existe!', 'danger')
             return redirect(url_for('auth.criar_conta'))
 
+        # Se for cliente, é necessário informar o CPF no cadastro
         if nova_role == 'cliente':
             if not cpf_digitado:
                  flash('CPF é obrigatório!', 'danger')
@@ -53,6 +56,7 @@ def criar_conta():
             try:
                 cpf_int = int(cpf_digitado)
                 if not clientes_btree_cpf.buscar(cpf_int):
+                    # Registra na B-Tree para buscas rápidas
                     clientes_btree_cpf.inserir(cpf_int)
                     nome_cliente = request.form.get('nome','passageiro')
                     dados_clientes[cpf_int] = {
@@ -79,5 +83,6 @@ def criar_conta():
 
 @auth_bp.route('/logout')
 def logout():
+    # Limpa a sessão
     session.clear()
     return redirect(url_for('auth.login'))

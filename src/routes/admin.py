@@ -20,6 +20,8 @@ def adicionar_voo():
         codigo_voo = request.form['codigo']
         data = request.form.get('data')
         lista_datas = [data] if data else []
+        
+        # Trata o preço caso o usuário digite com vírgula
         preco_str = request.form['preco'].replace(',', '.')
 
         voos[codigo_voo] = {
@@ -68,6 +70,7 @@ def excluir_voo(codigo_voo):
         return redirect(url_for('passageiro.pagina_passageiro'))
     
     for res in reservas.values():
+        # Bloqueia a exclusão se o voo já estiver em alguma reserva
         if codigo_voo in res['Voos']:
             flash(f'Não é possível excluir o voo {codigo_voo} pois existem reservas associadas.', 'danger')
             return redirect(url_for('admin.listar_voos'))
@@ -88,6 +91,7 @@ def listar_clientes():
     busca_inicial = request.args.get('busca_inicial')
     lista_filtrada = []
 
+    # Filtra os clientes por nome ou pela inicial, se não tiver filtro mostra todos os clientes
     if busca_nome:
         for cpf, dados in dados_clientes.items():
             if busca_nome.lower() in dados['Nome'].lower():
@@ -271,7 +275,7 @@ def excluir_reserva(codigo_reserva):
     cpf_cliente = int(reserva['CPF'])
     voos_reserva = reserva['Voos']
     
-    # Devolve assentos e remove milhas
+    # Ao cancelar a reserva, devolve os assentos pros voos e subtrai as milhas do cliente.
     milhas_a_remover = 0
     for codigo_voo in voos_reserva:
         if codigo_voo in voos:
