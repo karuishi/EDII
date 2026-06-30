@@ -1,6 +1,7 @@
 from flask import Blueprint, render_template, request, redirect, url_for, session, flash
 from src.database import login_senha, dados_clientes, clientes_btree_cpf
 from src.models.data_manager import salvar_login, salvar_clientes
+from werkzeug.security import check_password_hash, generate_password_hash
 
 auth_bp = Blueprint('auth', __name__)
 
@@ -10,7 +11,7 @@ def login():
         login = request.form['login']
         senha = request.form['senha']
 
-        if login in login_senha and login_senha[login]["senha"] == senha:
+        if login in login_senha and check_password_hash(login_senha[login]["senha"], senha):
             session['usuario'] = login
             session['role'] = login_senha[login]["role"]
 
@@ -68,7 +69,7 @@ def criar_conta():
         cpf_para_salvar = cpf_digitado if nova_role == 'cliente' else None
 
         login_senha[novo_login] = {
-            "senha" : nova_senha,
+            "senha" : generate_password_hash(nova_senha),
             "role" : nova_role,
             "cpf": cpf_para_salvar
         }

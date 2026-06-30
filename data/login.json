@@ -1,25 +1,25 @@
 {
     "Gerente": {
-        "senha": "12345",
+        "senha": "scrypt:32768:8:1$dWvEG8OuYhWfwG2N$b70a7e3676b9cd28a1a931c2c28924a7b42b3f8f93bb1fb308c6544d1b4cb74300dbab01eb025fb423f03979e1268ab6543ffc49135136063c55ede4742ade26",
         "role": "admin"
     },
     "karuishi": {
-        "senha": "Nelsu1208!",
+        "senha": "scrypt:32768:8:1$YafmY2NaCfUaq8Qf$7a18a1f3fdbbdf85b093b6f05fb14ed95b06a6ea55a491bcd6006032a2aa6193483b759fb359d112165fdf3420eab111924b370afa8bbb2cb5c636694536c40b",
         "role": "cliente",
         "cpf": "6409426526"
     },
     "Sunoo": {
-        "senha": "Sunghoonvida",
+        "senha": "scrypt:32768:8:1$4SxTToVbJJN2Qx48$5e8f7324e5d7722d11d346f171161af41537dbc4997882b678fe66d85e458215c419cf4ad3a25f81a5916d90d21f3248efe851db648df43b02058f94233538f3",
         "role": "cliente",
         "cpf": "12345678910"
     },
     "blabla": {
-        "senha": "blabla",
+        "senha": "scrypt:32768:8:1$ElOTxIn1qVtuUrOK$935d4d33e39fdd91e38834807f1605792d0c9dde1f058913fba3d127c25d544773fa4a434c4fbcaf3a73c3fd4c8280ebb42deee3068ec0589694d6cd43395aa1",
         "role": "cliente",
         "cpf": "12345678911"
     },
     "Gerard.way": {
-        "senha": "frank<#",
+        "senha": "scrypt:32768:8:1$eKnGBtZUL61xwWgH$c15314e41ecc61a7e5e8112dc05ce919d8b7e52f7484ffbc2b4130530f51af0468b00f3d829d4ed72101a18fae81acf405311ee5355c6159cd8c1097918a637a",
         "role": "cliente",
         "cpf": "11111111111"
     }
